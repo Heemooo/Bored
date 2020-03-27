@@ -1,0 +1,7 @@
+Usage:
+  hugo new [command] [name]
+
+Available Commands:
+  site        创建一个网站
+  theme       创建一个主题
+  page        创建一个内容页

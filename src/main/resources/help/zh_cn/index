@@ -1,0 +1,6 @@
+Available Commands:
+      help        Help about any command
+      new         Create new content for your site
+      server      A high performance webserver
+      version     Print the version number of Hugo
+      compile     Compile static site
