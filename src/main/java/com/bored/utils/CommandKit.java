@@ -1,5 +1,7 @@
-package com.bored.command;
+package com.bored.utils;
 
+
+import com.bored.command.*;
 
 import java.util.HashMap;
 import java.util.Map;

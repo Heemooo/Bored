@@ -5,25 +5,11 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.core.lang.Console;
 import com.bored.core.Bored;
-import com.bored.utils.Freemarker;
+import com.bored.core.SitePath;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
+@Slf4j
 public class NewCommandHandler implements CommandHandler {
-
-    private String site = "${root}${separator}${siteName}";
-    private String archetypes = "${site}${separator}archetypes";
-    private String content = "${site}${separator}content";
-    private String data = "${site}${separator}data";
-    private String layouts = "${site}${separator}layouts";
-    private String staticDir = "${site}${separator}static";
-    private String themes = "${site}${separator}themes";
-    private String config = "${site}${separator}config.toml";
-
-    private final String separator = File.separator;
-
     @Override
     public void exec(String[] commands) {
         if (commands.length < 3) {
@@ -50,35 +36,13 @@ public class NewCommandHandler implements CommandHandler {
 
     private void site(String siteName) {
         String root = Bored.config.getCommandPath();
-        Map<String, String> params = new HashMap<>();
-        params.put("root", root);
-        params.put("separator", this.separator);
-        params.put("siteName", siteName);
-        String site = Freemarker.process(this.site, params);
+        String site = Bored.replaceSlash(root + "/" + siteName);
         if (FileUtil.exist(site)) {
-            Bored.out("'{}' 已存在，请删除，或更换网站名 ", siteName);
+            log.info("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
         }
-        params.put("site", site);
-        createFolder(archetypes, params);
-        createFolder(content, params);
-        createFolder(data, params);
-        createFolder(layouts, params);
-        createFolder(staticDir, params);
-        createFolder(themes, params);
-        createFile(config, params);
-    }
-
-    private void createFolder(String template, Map<String, String> params) {
-        String path = Freemarker.process(template, params);
-        Bored.out("Create folder: {}",path);
-        FileUtil.mkdir(path);
-    }
-
-    private void createFile(String template, Map<String, String> params) {
-        String path = Freemarker.process(template, params);
-        Bored.out("Create file: {}",path);
-        FileUtil.touch(path);
+        SitePath sitePath = new SitePath().initQueue(site);
+        sitePath.createFolder().createFile();
     }
 
     private void theme(String name) {
