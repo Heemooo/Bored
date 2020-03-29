@@ -3,6 +3,7 @@ package com.bored;
 import com.bored.core.Bored;
 import lombok.SneakyThrows;
 
+
 public class Main {
     @SneakyThrows
     public static void main(String[] args) {

@@ -18,6 +18,11 @@ public class DefaultFile {
      */
     private DefaultFileContent content;
 
+    public DefaultFile setFilePath(String filePath) {
+        this.filePath = Bored.replaceSlash(filePath);
+        return this;
+    }
+
     public String getContent() {
         return content.content.toString();
     }
@@ -37,13 +42,5 @@ public class DefaultFile {
         private void addLine(String line) {
             content.append(line).append(System.getProperty("line.separator"));
         }
-    }
-
-    public static DefaultFile init(DefaultFileInit defaultFileInit) {
-        DefaultFile defaultFile = new DefaultFile();
-        DefaultFileContent content = new DefaultFileContent();
-        defaultFile.setContent(content);
-        defaultFileInit.init(defaultFile);
-        return defaultFile;
     }
 }

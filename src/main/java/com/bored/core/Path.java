@@ -11,10 +11,24 @@ import java.util.Queue;
 
 @Slf4j
 public abstract class Path {
-    Queue<String> folders = new LinkedList<>();
-    Queue<DefaultFile> files = new LinkedList<>();
+    private Queue<String> folders = new LinkedList<>();
+    private Queue<DefaultFile> files = new LinkedList<>();
 
     public abstract Path initQueue(String path);
+
+    public Path addFolder(String path){
+        this.folders.add(Bored.replaceSlash(path));
+        return this;
+    }
+
+    public Path addFiles(DefaultFile.DefaultFileInit defaultFileInit){
+        DefaultFile defaultFile = new DefaultFile();
+        DefaultFile.DefaultFileContent content = new DefaultFile.DefaultFileContent();
+        defaultFile.setContent(content);
+        defaultFileInit.init(defaultFile);
+        this.files.add(defaultFile);
+        return this;
+    }
 
     public Path createFolder() {
         folders.forEach(folder -> {
