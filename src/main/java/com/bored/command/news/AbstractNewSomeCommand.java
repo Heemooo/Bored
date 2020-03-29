@@ -1,6 +1,8 @@
-package com.bored.core;
+package com.bored.command.news;
 
 import cn.hutool.core.io.FileUtil;
+import com.bored.core.Bored;
+import com.bored.core.DefaultFile;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,13 +12,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 @Slf4j
-public abstract class Path {
+public abstract class AbstractNewSomeCommand {
 
-    public Path(String path) {
+    public AbstractNewSomeCommand(String path) {
         this.path = path;
     }
 
-    public Path(String path, String name) {
+    public AbstractNewSomeCommand(String path, String name) {
         this.path = path;
         this.name = name;
         this.initQueue();
@@ -30,12 +32,12 @@ public abstract class Path {
 
     public abstract void initQueue();
 
-    public Path addFolder(String path) {
+    public AbstractNewSomeCommand addFolder(String path) {
         this.folders.add(Bored.replaceSlash(path));
         return this;
     }
 
-    public Path addFiles(DefaultFile.DefaultFileInit defaultFileInit) {
+    public AbstractNewSomeCommand addFiles(DefaultFile.DefaultFileInit defaultFileInit) {
         DefaultFile defaultFile = new DefaultFile();
         defaultFileInit.init(defaultFile);
         this.files.add(defaultFile);
@@ -54,7 +56,7 @@ public abstract class Path {
                 @Cleanup FileWriter writer = new FileWriter(file.getFilePath());
                 writer.write(file.getContent());
             } catch (IOException e) {
-                log.error("",e);
+                log.error("", e);
             }
         });
     }

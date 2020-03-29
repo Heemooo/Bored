@@ -20,24 +20,29 @@ import java.util.regex.Matcher;
  */
 public final class Bored {
 
-    public static Props props = new Props("config.properties");
+    private static Props PROPS = new Props("db.setting");
 
-    public static Config config;
-
-
-    public static String _404NotFoundContent;
+    /**
+     * 命令执行路径
+     */
+    public static String EXEC_COMMAND_PATH = System.getProperty("user.dir");
+    /**
+     * 端口
+     */
+    public static int PORT = 8000;
+    /**
+     * 版本号
+     */
+    public static String VERSION = "1";
 
     public final static String CONTENT_TYPE = "text/html; charset=utf-8";
 
-    public static void run(String[] commands) {
-        //初始化配置
-        config = Config.init(props);
-        if (config.isDebug()) {
-            LogManager.getRootLogger().setLevel(Level.DEBUG);
-        }
-        //解析命令
-        //TODO DEBUG
-        config.setCommandPath(config.getCommandPath()+"/site-demo");
+    public static void run(String[] commands, String execPath) {
+        PROPS.setProperty("e", execPath);
+        boolean debug = true;
+        //设置为debug模式
+        LogManager.getRootLogger().setLevel(Level.DEBUG);
+        EXEC_COMMAND_PATH = execPath;
         CommandKit.init().parse(commands);
     }
 
@@ -67,5 +72,4 @@ public final class Bored {
         String separator = Matcher.quoteReplacement(File.separator);
         return path.replaceAll("/", separator);
     }
-
 }

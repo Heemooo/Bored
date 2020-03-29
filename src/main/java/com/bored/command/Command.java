@@ -1,5 +1,5 @@
 package com.bored.command;
 
-public interface CommandHandler {
+public interface Command {
     void exec(String[] args);
 }

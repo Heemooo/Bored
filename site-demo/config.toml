@@ -1,5 +1,0 @@
-baseURL = "http://127.0.0.1/"
-languageCode = "zh-cn"
-title = "My New Hugo Site"
-themes = "config.toml"
-

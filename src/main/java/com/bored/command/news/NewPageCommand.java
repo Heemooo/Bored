@@ -1,14 +1,17 @@
-package com.bored.core;
+package com.bored.command.news;
 
 import cn.hutool.core.io.file.FileReader;
+import com.bored.core.Bored;
+import com.bored.core.DefaultFile;
+import com.bored.core.FrontMatter;
 
-public class PagePath extends Path {
+public class NewPageCommand extends AbstractNewSomeCommand {
 
-    public PagePath(String path) {
+    public NewPageCommand(String path) {
         super(path);
     }
 
-    public PagePath(String path, String name) {
+    public NewPageCommand(String path, String name) {
         super(path, name);
     }
 

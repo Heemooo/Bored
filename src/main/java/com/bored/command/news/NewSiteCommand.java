@@ -1,14 +1,15 @@
-package com.bored.core;
+package com.bored.command.news;
 
 import com.bored.constant.TemplateResource;
+import com.bored.core.DefaultFile;
 
-public class SitePath extends Path {
+public class NewSiteCommand extends AbstractNewSomeCommand {
 
-    public SitePath(String path) {
+    public NewSiteCommand(String path) {
         super(path);
     }
 
-    public SitePath(String path, String name) {
+    public NewSiteCommand(String path, String name) {
         super(path, name);
     }
 

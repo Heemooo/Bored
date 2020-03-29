@@ -1,13 +1,15 @@
-package com.bored.core;
+package com.bored.command.news;
 
 import com.bored.constant.TemplateResource;
+import com.bored.core.Bored;
+import com.bored.core.DefaultFile;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ThemePath extends Path {
+public class NewThemeCommand extends AbstractNewSomeCommand {
 
-    public ThemePath(String path, String name) {
+    public NewThemeCommand(String path, String name) {
         super(path, name);
     }
 

@@ -9,7 +9,7 @@ public class BoredServer {
 
     @SneakyThrows
     public static void start() {
-        Server server = new Server(Bored.config.getPort());
+        Server server = new Server(Bored.PORT);
         HandlerList handlers = new HandlerList();
         handlers.addHandler(new UrlHandler());
         //设置handler

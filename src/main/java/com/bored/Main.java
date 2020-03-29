@@ -7,6 +7,6 @@ import lombok.SneakyThrows;
 public class Main {
     @SneakyThrows
     public static void main(String[] args) {
-        Bored.run(args);
+        Bored.run(args, System.getProperty("user.dir") + "site-demo");
     }
 }
