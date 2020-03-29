@@ -16,31 +16,14 @@ public class DefaultFile {
     /**
      * 文件内容
      */
-    private DefaultFileContent content;
+    private String content;
 
     public DefaultFile setFilePath(String filePath) {
         this.filePath = Bored.replaceSlash(filePath);
         return this;
     }
 
-    public String getContent() {
-        return content.content.toString();
-    }
-
-    public DefaultFile addLine(String line) {
-        this.content.addLine(line);
-        return this;
-    }
-
     public interface DefaultFileInit {
         void init(DefaultFile defaultFile);
-    }
-
-    static class DefaultFileContent {
-        StringBuilder content = new StringBuilder();
-
-        private void addLine(String line) {
-            content.append(line).append(System.getProperty("line.separator"));
-        }
     }
 }

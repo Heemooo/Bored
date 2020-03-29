@@ -36,6 +36,8 @@ public final class Bored {
             LogManager.getRootLogger().setLevel(Level.DEBUG);
         }
         //解析命令
+        //TODO DEBUG
+        config.setCommandPath(config.getCommandPath()+"/site-demo");
         CommandKit.init().parse(commands);
     }
 

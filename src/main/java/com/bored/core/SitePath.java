@@ -1,26 +1,34 @@
 package com.bored.core;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.bored.constant.TemplateResource;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
 public class SitePath extends Path {
+
+    public SitePath(String path) {
+        super(path);
+    }
+
+    public SitePath(String path, String name) {
+        super(path, name);
+    }
+
     @Override
-    public SitePath initQueue(String path) {
-        return (SitePath) this.addFolder(path + "/" + "archetypes")
+    public void initQueue() {
+        this.addFolder(path + "/" + "archetypes")
                 .addFolder(path + "/" + "content")
                 .addFolder(path + "/" + "data")
                 .addFolder(path + "/" + "static")
                 .addFolder(path + "/" + "layouts")
                 .addFolder(path + "/" + "themes")
-                .addFiles(defaultFile -> defaultFile.setFilePath(path + "/" + "config.toml")
-                        .addLine("baseURL = \"http://127.0.0.1/\"")
-                        .addLine("languageCode = \"zh-cn\"")
-                        .addLine("title = \"My New Hugo Site\""))
-                .addFiles(defaultFile -> defaultFile.setFilePath(path + "/" + "archetypes/default.md")
-                        .addLine("---").addLine("title: ${name}").addLine("date: ${data}").addLine("draft: true").addLine("---"));
+                .addFiles(this::configToml)
+                .addFiles(this::archetypesDefaultMd);
+    }
+
+    private void configToml(DefaultFile defaultFile) {
+        defaultFile.setFilePath(path + "/" + "config.toml").setContent(TemplateResource.SITE_CONFIG_TOML);
+    }
+
+    private void archetypesDefaultMd(DefaultFile defaultFile) {
+        defaultFile.setFilePath(path + "/" + "archetypes/default.md").setContent(TemplateResource.ARCHETYPES_DEFAULT_MD);
     }
 }

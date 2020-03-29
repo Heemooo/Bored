@@ -11,34 +11,42 @@ import java.util.Queue;
 
 @Slf4j
 public abstract class Path {
+
+    public Path(String path) {
+        this.path = path;
+    }
+
+    public Path(String path, String name) {
+        this.path = path;
+        this.name = name;
+        this.initQueue();
+        this.create();
+    }
+
+    public String name;
+    public String path;
     private Queue<String> folders = new LinkedList<>();
     private Queue<DefaultFile> files = new LinkedList<>();
 
-    public abstract Path initQueue(String path);
+    public abstract void initQueue();
 
-    public Path addFolder(String path){
+    public Path addFolder(String path) {
         this.folders.add(Bored.replaceSlash(path));
         return this;
     }
 
-    public Path addFiles(DefaultFile.DefaultFileInit defaultFileInit){
+    public Path addFiles(DefaultFile.DefaultFileInit defaultFileInit) {
         DefaultFile defaultFile = new DefaultFile();
-        DefaultFile.DefaultFileContent content = new DefaultFile.DefaultFileContent();
-        defaultFile.setContent(content);
         defaultFileInit.init(defaultFile);
         this.files.add(defaultFile);
         return this;
     }
 
-    public Path createFolder() {
+    private void create() {
         folders.forEach(folder -> {
             log.info("Create folder: {}", folder);
             FileUtil.mkdir(folder);
         });
-        return this;
-    }
-
-    public void createFile() {
         files.forEach(file -> {
             log.info("Create file: {}", file.getFilePath());
             FileUtil.touch(file.getFilePath());
@@ -46,7 +54,7 @@ public abstract class Path {
                 @Cleanup FileWriter writer = new FileWriter(file.getFilePath());
                 writer.write(file.getContent());
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("",e);
             }
         });
     }
