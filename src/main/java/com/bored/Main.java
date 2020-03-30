@@ -11,9 +11,5 @@ public class Main {
     @SneakyThrows
     public static void main(String[] args) {
         Bored.run(args, System.getProperty("user.dir") + "/site-demo");
-        var strings = new ArrayList<>();
-        strings.forEach((action)->{
-            System.out.println(action);
-        });
     }
 }
