@@ -18,6 +18,7 @@ public class NewCommand implements Command {
             String result = fileReader.readString();
             log.info(result);
             log.info("Run 'bored new [command] [name]' for usage.");
+            return;
         }
         String command = commands[1];
         String name = commands[2];

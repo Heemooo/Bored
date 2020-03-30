@@ -1,6 +1,5 @@
-package com.bored.core;
+package com.bored.command.server;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class PageParser {
         List<String> header = new ArrayList<>();
         StringBuilder content = new StringBuilder();
         for (String line : lines) {
-            if (line.contains("---")) {
+            if (line.contains("---") || line.contains("+++")) {
                 count.getAndIncrement();
                 continue;
             }

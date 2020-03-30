@@ -1,4 +1,4 @@
-package com.bored.server;
+package com.bored.command.server;
 
 import com.bored.core.Bored;
 import lombok.SneakyThrows;

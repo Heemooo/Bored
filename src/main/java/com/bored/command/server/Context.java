@@ -1,4 +1,4 @@
-package com.bored.server;
+package com.bored.command.server;
 
 import java.util.HashMap;
 import java.util.Map;

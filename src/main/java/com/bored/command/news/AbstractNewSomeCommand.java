@@ -16,6 +16,8 @@ public abstract class AbstractNewSomeCommand {
 
     public AbstractNewSomeCommand(String path) {
         this.path = path;
+        this.initQueue();
+        this.create();
     }
 
     public AbstractNewSomeCommand(String path, String name) {

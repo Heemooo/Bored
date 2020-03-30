@@ -1,4 +1,4 @@
-package com.bored.server;
+package com.bored.command.server;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.bored.core.Bored;

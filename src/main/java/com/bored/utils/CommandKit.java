@@ -1,6 +1,7 @@
 package com.bored.utils;
 
 
+import cn.hutool.core.lang.Console;
 import com.bored.command.*;
 import com.bored.command.compile.CompileCommand;
 import com.bored.command.debug.DebugCommand;
@@ -34,7 +35,8 @@ public class CommandKit {
 
     public void parse(String[] commands) {
         if (Objects.isNull(commands) || commands.length <= 0) {
-            CommandOut.nullCommand();
+            Console.log("Error:please input command");
+            Console.log("Run 'bored help' for usage.");
             return;
         }
         String command = commands[0];
