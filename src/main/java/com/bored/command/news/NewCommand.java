@@ -2,39 +2,37 @@ package com.bored.command.news;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
-import cn.hutool.core.io.resource.ClassPathResource;
-import cn.hutool.core.lang.Console;
 import com.bored.command.Command;
 import com.bored.core.Bored;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 @Slf4j
 public class NewCommand implements Command {
+
+    private final Map<String, Command> NEW_COMMANDS = new HashMap<>() {{
+        put("site", new NewSiteCommand());
+        put("theme", new NewThemeCommand());
+        put("page", new NewPageCommand());
+    }};
+
     @Override
     public void exec(String[] commands) {
         if (commands.length < 3) {
-            ClassPathResource resource = new ClassPathResource("/help/zh_cn/new");
-            FileReader fileReader = new FileReader(resource.getPath());
-            String result = fileReader.readString();
-            log.info(result);
-            log.info("Run 'bored new [command] [name]' for usage.");
+            FileReader fileReader = new FileReader("/help/zh_cn/new");
+            log.error(fileReader.readString());
             return;
         }
-        String command = commands[1];
-        String name = commands[2];
-        switch (command) {
-            case "site":
-                site(name);
-                break;
-            case "theme":
-                theme(name);
-                break;
-            case "page":
-                page(name);
-                break;
-            default:
-                log.info("Run 'bored new [command] [name]' for usage.");
+        String commandName = commands[1];
+        Command command = NEW_COMMANDS.get(commandName);
+        if(Objects.nonNull(command)){
+            command.exec(commands);
         }
+        log.info("Run 'bored new [command] [name]' for usage.");
+        String name = commands[2];
     }
 
     private void site(String siteName) {
@@ -43,7 +41,7 @@ public class NewCommand implements Command {
             log.info("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
         }
-        new NewSiteCommand(site);
+        new NewSitePageCommand(site);
     }
 
     private void theme(String name) {
@@ -55,7 +53,7 @@ public class NewCommand implements Command {
             return;
         }
         String currentPath = Bored.replaceSlash(Bored.EXEC_COMMAND_PATH + "/themes/" + name);
-        new NewThemeCommand(currentPath,name);
+        new NewThemePageCommand(currentPath, name);
     }
 
     private void page(String name) {
@@ -69,6 +67,6 @@ public class NewCommand implements Command {
         if (name.contains(".md") == Boolean.FALSE) {
             name = name += ".md";
         }
-        new NewPageCommand(Bored.replaceSlash(Bored.EXEC_COMMAND_PATH + "/content/" + name));
+        new NewPagePageCommand(Bored.replaceSlash(Bored.EXEC_COMMAND_PATH + "/content/" + name));
     }
 }

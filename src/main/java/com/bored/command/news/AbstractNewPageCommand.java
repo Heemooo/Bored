@@ -12,15 +12,15 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 @Slf4j
-public abstract class AbstractNewSomeCommand {
+public abstract class AbstractNewPageCommand {
 
-    public AbstractNewSomeCommand(String path) {
+    public AbstractNewPageCommand(String path) {
         this.path = path;
         this.initQueue();
         this.create();
     }
 
-    public AbstractNewSomeCommand(String path, String name) {
+    public AbstractNewPageCommand(String path, String name) {
         this.path = path;
         this.name = name;
         this.initQueue();
@@ -34,12 +34,12 @@ public abstract class AbstractNewSomeCommand {
 
     public abstract void initQueue();
 
-    public AbstractNewSomeCommand addFolder(String path) {
+    public AbstractNewPageCommand addFolder(String path) {
         this.folders.add(Bored.replaceSlash(path));
         return this;
     }
 
-    public AbstractNewSomeCommand addFiles(DefaultFile.DefaultFileInit defaultFileInit) {
+    public AbstractNewPageCommand addFiles(DefaultFile.DefaultFileInit defaultFileInit) {
         DefaultFile defaultFile = new DefaultFile();
         defaultFileInit.init(defaultFile);
         this.files.add(defaultFile);
