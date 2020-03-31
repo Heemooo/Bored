@@ -2,7 +2,7 @@ package com.bored.core;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.setting.dialect.Props;
-import com.bored.command.CommandReceiver;
+import com.bored.command.Commander;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.Cleanup;
@@ -43,7 +43,7 @@ public final class Bored {
         //设置为debug模式
         LogManager.getRootLogger().setLevel(Level.DEBUG);
         EXEC_COMMAND_PATH = execPath;
-        CommandReceiver.receive(commands);
+        Commander.parse(commands);
     }
 
     /**

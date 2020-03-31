@@ -1,5 +1,5 @@
 Usage:
-  hugo new [command] [name]
+  hugo new [commandHandler] [name]
 
 Available Commands:
   site        Create a new site (skeleton)

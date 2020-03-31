@@ -1,5 +1,5 @@
 Usage:
-  hugo new [command] [name]
+  hugo new [commandHandler] [name]
 
 Available Commands:
   site        创建一个网站
