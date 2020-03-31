@@ -1,26 +1,21 @@
 package com.bored.command;
 
 import com.bored.command.server.BoredServer;
+import com.bored.core.Bored;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+
+import java.util.Objects;
 
 @Slf4j
 public class ServerCommandHandler implements CommandHandler {
     @Override
     public void execute(String command, String value) {
-        if ("server".equals(command)) {
-            BoredServer.start(null);
-            return;
+        Integer port = Objects.nonNull(value) ? Integer.parseInt(value) : Bored.PORT;
+        if (command.endsWith("debug")) {
+            LogManager.getRootLogger().setLevel(Level.DEBUG);
         }
-        if ("server port".equals(command)) {
-            try {
-                int port = Integer.parseInt(value);
-                BoredServer.start(port);
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                log.error("Bored server port [port].");
-                log.error("port is number.");
-            }
-
-        }
+        BoredServer.start(port);
     }
 }

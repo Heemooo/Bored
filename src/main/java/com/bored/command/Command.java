@@ -11,7 +11,6 @@ public class Command {
     private String name;
     private List<String> targetParameter;
     private String description;
-    private boolean isStart = true;
-    private boolean isEnd = false;
+    private String allowAddTo;
     private CommandHandler handler;
 }

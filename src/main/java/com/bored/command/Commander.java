@@ -3,8 +3,6 @@ package com.bored.command;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
 import com.bored.core.Bored;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -22,32 +20,25 @@ public class Commander {
                 .targetParameter(List.of("theme", "site", "page"))
                 .description("new something")
                 .handler(new NewCommandHandler()).build();
-        Command debug = Command.builder()
-                .name("debug")
-                .description("debug enable")
-                .isEnd(true)
-                .handler((command, value) -> LogManager.getRootLogger().setLevel(Level.DEBUG)).build();
         Command help = Command.builder()
                 .name("help")
                 .targetParameter(List.of("new", "server", ""))
                 .description("Display help document")
-                .isStart(true)
                 .handler((command, value) -> {
                     Console.log("help");
                 }).build();
         Command version = Command.builder()
                 .name("version")
                 .description("Display bored version")
-                .isStart(true)
                 .handler((command, value) -> Console.log("Bored static site generator {}", Bored.VERSION))
                 .build();
         Command server = Command.builder()
                 .name("server")
                 .targetParameter(List.of("port", ""))
+                .allowAddTo("debug")
                 .description("start server")
-                .isStart(true)
                 .handler(new ServerCommandHandler()).build();
-        this.addCommand(newCommand).addCommand(debug).addCommand(help).addCommand(version).addCommand(server);
+        this.addCommand(newCommand).addCommand(help).addCommand(version).addCommand(server);
     }
 
     private static class CommanderHolder {
@@ -67,7 +58,8 @@ public class Commander {
             commandsMap.put(command.getName(), command);
         } else {
             targetParameter.forEach(child -> {
-                commandsMap.put(command.getName() + " " + child, command);
+                String key = StrUtil.isEmpty(child) ? command.getName() : command.getName() + " " + child;
+                commandsMap.put(key, command);
             });
         }
         return this;
@@ -76,17 +68,30 @@ public class Commander {
 
     private void parse(String args) {
         AtomicReference<String> longArg = new AtomicReference<>(args.trim());
+        AtomicReference<Command> execute = new AtomicReference<>();
+        AtomicReference<String> commandStr = new AtomicReference<>(StrUtil.EMPTY);
+        AtomicReference<String> valueStr = new AtomicReference<>();
         commandsMap.forEach((name, command) -> {
-            if (command.isEnd() && longArg.get().endsWith(name)) {
-                longArg.set(StrUtil.strip(longArg.get(), name));
-                command.getHandler().execute(name, name);
+            if (longArg.get().startsWith(name)) {
+                AtomicReference<Boolean> hasAddToCommand = new AtomicReference<>(Boolean.FALSE);
+                if (StrUtil.isNotEmpty(command.getAllowAddTo())) {
+                    if (longArg.get().endsWith(command.getAllowAddTo())) {
+                        hasAddToCommand.set(Boolean.TRUE);
+                    }
+                }
+                String value = StrUtil.strip(longArg.get(), name).trim();
+                if (hasAddToCommand.get()) {
+                    name = name + " " + command.getAllowAddTo();
+                    value = StrUtil.strip(value, command.getAllowAddTo()).trim();
+                }
+                if (name.length() > commandStr.get().length()) {
+                    execute.set(command);
+                    commandStr.set(name);
+                    valueStr.set(value);
+                }
             }
         });
-        commandsMap.forEach((name, command) -> {
-            if (command.isStart() && longArg.get().startsWith(name)) {
-                command.getHandler().execute(name, StrUtil.strip(longArg.get(), name).trim());
-            }
-        });
+        execute.get().getHandler().execute(commandStr.get(), valueStr.get());
     }
 
     public static void parse(String[] args) {
