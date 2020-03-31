@@ -1,7 +1,6 @@
 package com.bored.core;
 
 import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.setting.dialect.Props;
 import com.bored.command.Commander;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -20,29 +19,24 @@ import java.util.regex.Matcher;
  */
 public final class Bored {
 
-    private static Props PROPS = new Props("db.setting");
-
     /**
      * 命令执行路径
      */
-    public static String EXEC_COMMAND_PATH = System.getProperty("user.dir");
+    public static String execCommandPath = System.getProperty("user.dir");
     /**
      * 端口
      */
-    public static int PORT = 8000;
+    public static int port = 8000;
     /**
      * 版本号
      */
-    public static String VERSION = "1";
-
-    public final static String CONTENT_TYPE = "text/html; charset=utf-8";
+    public static String version = "v.01.2020.3.31";
 
     public static void run(String[] commands, String execPath) {
-        PROPS.setProperty("e", execPath);
         boolean debug = true;
         //设置为debug模式
         LogManager.getRootLogger().setLevel(Level.DEBUG);
-        EXEC_COMMAND_PATH = execPath;
+        execCommandPath = execPath;
         Commander.parse(commands);
     }
 
@@ -68,8 +62,17 @@ public final class Bored {
      * @param path 路径
      * @return 当前系统的路径
      */
-    public static String replaceSlash(String path) {
+    public static String convertCorrectPath(String path) {
         String separator = Matcher.quoteReplacement(File.separator);
         return path.replaceAll("/", separator);
+    }
+
+    /**
+     * 转换为正确的url
+     * @param url url
+     * @return 正确的url
+     */
+    public static String convertCorrectUrl(String url) {
+        return url.replaceAll("\\\\", "/");
     }
 }

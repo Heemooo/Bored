@@ -1,7 +1,9 @@
 package com.bored.command.server;
 
 import cn.hutool.core.io.file.FileReader;
+import com.youbenzi.mdtool.tool.MDTool;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -13,13 +15,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class PageParser {
 
-    public static Page parse(String path) {
-        FileReader fileReader = new FileReader(path);
-        List<String> lines = fileReader.readLines();
-        AtomicInteger count = new AtomicInteger();
-        List<String> header = new ArrayList<>();
-        StringBuilder content = new StringBuilder();
-        for (String line : lines) {
+    public static Page parse(List<String> lines) {
+        var count = new AtomicInteger();
+        var header = new ArrayList<String>();
+        var content = new StringBuilder();
+        for (var line : lines) {
             if (line.contains("---") || line.contains("+++")) {
                 count.getAndIncrement();
                 continue;
@@ -27,12 +27,9 @@ public class PageParser {
             if (count.get() < 2) {
                 header.add(line);
             } else {
-                content.append(line);
+                content.append(line).append(System.getProperty("line.separator"));
             }
         }
-        Page page = new Page();
-        page.setContent(content.toString());
-        page.setHeader(header);
-        return page;
+        return Page.builder().header(header).content(MDTool.markdown2Html(content.toString())).build();
     }
 }

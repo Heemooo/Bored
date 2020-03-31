@@ -24,13 +24,11 @@ public class Commander {
                 .name("help")
                 .targetParameter(List.of("new", "server", ""))
                 .description("Display help document")
-                .handler((command, value) -> {
-                    Console.log("help");
-                }).build();
+                .handler((command, value) -> Console.log("help")).build();
         Command version = Command.builder()
                 .name("version")
                 .description("Display bored version")
-                .handler((command, value) -> Console.log("Bored static site generator {}", Bored.VERSION))
+                .handler((command, value) -> Console.log("Bored static site generator {}", Bored.version))
                 .build();
         Command server = Command.builder()
                 .name("server")

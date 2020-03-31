@@ -19,7 +19,7 @@ public class DefaultFile {
     private String content;
 
     public DefaultFile setFilePath(String filePath) {
-        this.filePath = Bored.replaceSlash(filePath);
+        this.filePath = Bored.convertCorrectPath(filePath);
         return this;
     }
 

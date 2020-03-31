@@ -35,7 +35,7 @@ public class NewCommandHandler implements CommandHandler {
     }
 
     private void site(String siteName) {
-        String site = Bored.replaceSlash(Bored.EXEC_COMMAND_PATH + "/" + siteName);
+        String site = Bored.convertCorrectPath(Bored.execCommandPath + "/" + siteName);
         if (FileUtil.exist(site)) {
             log.info("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
@@ -44,19 +44,19 @@ public class NewCommandHandler implements CommandHandler {
     }
 
     private void theme(String name) {
-        String configToml = Bored.replaceSlash(Bored.EXEC_COMMAND_PATH + "/config.toml");
+        String configToml = Bored.convertCorrectPath(Bored.execCommandPath + "/config.toml");
         if (FileUtil.exist(configToml) == Boolean.FALSE) {
             log.error("请进入网站根目录,run bored new theme [name].");
             log.error("若网站不存在,请先run bored new site [name]");
             log.error("run cd [name]");
             return;
         }
-        String currentPath = Bored.replaceSlash(Bored.EXEC_COMMAND_PATH + "/themes/" + name);
+        String currentPath = Bored.convertCorrectPath(Bored.execCommandPath + "/themes/" + name);
         new NewThemePageCommand(currentPath, name);
     }
 
     private void page(String name) {
-        String configToml = Bored.replaceSlash(Bored.EXEC_COMMAND_PATH + "/config.toml");
+        String configToml = Bored.convertCorrectPath(Bored.execCommandPath + "/config.toml");
         if (FileUtil.exist(configToml) == Boolean.FALSE) {
             log.error("请进入网站根目录,run bored new page [name].");
             log.error("若网站不存在,请先run bored new site [name]");
@@ -64,9 +64,9 @@ public class NewCommandHandler implements CommandHandler {
             return;
         }
         if (name.contains(".md") == Boolean.FALSE) {
-            name = name += ".md";
+            name = name + ".md";
         }
-        new NewPagePageCommand(Bored.replaceSlash(Bored.EXEC_COMMAND_PATH + "/content/" + name));
+        new NewPagePageCommand(Bored.convertCorrectPath(Bored.execCommandPath + "/content/" + name));
     }
 
     @Slf4j
@@ -93,7 +93,7 @@ public class NewCommandHandler implements CommandHandler {
         public abstract void initQueue();
 
         public AbstractNewPageCommand addFolder(String path) {
-            this.folders.add(Bored.replaceSlash(path));
+            this.folders.add(Bored.convertCorrectPath(path));
             return this;
         }
 
@@ -206,7 +206,7 @@ public class NewCommandHandler implements CommandHandler {
         private String content;
 
         public DefaultFile setFilePath(String filePath) {
-            this.filePath = Bored.replaceSlash(filePath);
+            this.filePath = Bored.convertCorrectPath(filePath);
             return this;
         }
 

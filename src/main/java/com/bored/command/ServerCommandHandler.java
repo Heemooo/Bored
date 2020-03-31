@@ -12,7 +12,7 @@ import java.util.Objects;
 public class ServerCommandHandler implements CommandHandler {
     @Override
     public void execute(String command, String value) {
-        Integer port = Objects.nonNull(value) ? Integer.parseInt(value) : Bored.PORT;
+        Integer port = Objects.nonNull(value) ? Integer.parseInt(value) : Bored.port;
         if (command.endsWith("debug")) {
             LogManager.getRootLogger().setLevel(Level.DEBUG);
         }
