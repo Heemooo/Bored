@@ -2,9 +2,9 @@ package com.bored.command;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
+import com.bored.command.server.Page;
 import com.bored.constant.TemplateResource;
 import com.bored.core.Bored;
-import com.bored.core.FrontMatter;
 import lombok.Cleanup;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -141,7 +141,7 @@ public class NewCommandHandler implements CommandHandler {
         }
 
         private void archetypesDefaultMd(DefaultFile defaultFile) {
-            defaultFile.setFilePath(path + "/" + "archetypes/default.md").setContent(TemplateResource.ARCHETYPES_DEFAULT_MD);
+            defaultFile.setFilePath(path + "/" + "archetypes/default.toml").setContent(TemplateResource.ARCHETYPES_DEFAULT_MD);
         }
     }
 
@@ -187,9 +187,9 @@ public class NewCommandHandler implements CommandHandler {
         }
 
         public void loadContent(DefaultFile defaultFile) {
-            String templateContent = new FileReader("templates/archetypes/default.md").readString();
-            FrontMatter frontMatter = new FrontMatter();
-            String content = Bored.parseTemplate(templateContent, frontMatter.toMap());
+            String templateContent = new FileReader("templates/archetypes/default.toml").readString();
+            var frontMatter = new Page.FrontMatter();
+            String content = Bored.parseTemplate(templateContent, Bored.objToMap(frontMatter, frontMatter.getClass()));
             defaultFile.setContent(content);
         }
     }

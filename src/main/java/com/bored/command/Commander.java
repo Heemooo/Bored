@@ -44,13 +44,10 @@ public class Commander {
     }
 
 
-    private List<Command> commands = new ArrayList<>();
-
     private Map<String, Command> commandsMap = new HashMap<>();
 
 
     private Commander addCommand(Command command) {
-        commands.add(command);
         List<String> targetParameter = command.getTargetParameter();
         if (Objects.isNull(targetParameter) || targetParameter.isEmpty()) {
             commandsMap.put(command.getName(), command);

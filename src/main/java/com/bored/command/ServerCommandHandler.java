@@ -16,6 +16,6 @@ public class ServerCommandHandler implements CommandHandler {
         if (command.endsWith("debug")) {
             LogManager.getRootLogger().setLevel(Level.DEBUG);
         }
-        BoredServer.start(port);
+        BoredServer.start(Bored.convertCorrectPath(System.getProperty("user.dir") + "/site-demo"), port);
     }
 }

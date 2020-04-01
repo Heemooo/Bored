@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Main {
     @SneakyThrows
     public static void main(String[] commands) {
-        String[] args = {"server", "port", "8080"};
+        String[] args = {"server", "port", "8080","debug"};
         Bored.execCommandPath = System.getProperty("user.dir") + "/site-demo";
         Commander.parse(args);
     }

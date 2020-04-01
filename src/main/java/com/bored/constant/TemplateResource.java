@@ -9,9 +9,9 @@ import cn.hutool.core.io.file.FileReader;
  */
 public class TemplateResource {
     /**
-     * templates/archetypes/default.md
+     * templates/archetypes/default.toml
      */
-    public final static String ARCHETYPES_DEFAULT_MD = new FileReader("templates/archetypes/default.md").readString();
+    public final static String ARCHETYPES_DEFAULT_MD = new FileReader("templates/archetypes/default.toml").readString();
     /**
      * templates/site/config.toml
      */
