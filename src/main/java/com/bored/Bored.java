@@ -58,8 +58,8 @@ public final class Bored {
 
     @SneakyThrows
     public static void main(String[] commands) {
-        String[] args = {"server", "port", "8080"};
-        Commander.parse(args);
+        //String[] args = {"server", "port", "8080"};
+        Commander.parse(commands);
     }
 
 
