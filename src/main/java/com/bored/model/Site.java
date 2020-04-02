@@ -1,9 +1,5 @@
-package com.bored.command.server;
+package com.bored.model;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.Console;
-import com.bored.core.Bored;
-import com.moandjiezana.toml.Toml;
 import lombok.Data;
 
 import java.util.List;
@@ -11,7 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Data
-public class SiteConfig {
+public class Site {
 
     private String title;
 
@@ -39,13 +35,4 @@ public class SiteConfig {
     }
 
     private Map<String, Object> params;
-
-
-    public static void main(String[] args) {
-        var toml = new Toml();
-        var root = Bored.convertCorrectPath(System.getProperty("user.dir") + "/site-demo/config.toml");
-        toml.read(FileUtil.file(root));
-        var siteConfig = toml.to(SiteConfig.class);
-        Console.log(siteConfig.toString());
-    }
 }

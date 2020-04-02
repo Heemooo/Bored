@@ -1,9 +1,12 @@
-package com.bored.command.server;
+package com.bored.util;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
-import com.bored.core.Bored;
+import com.bored.Bored;
+import com.bored.model.Page;
+import com.bored.model.Site;
+import com.bored.util.TomlUtil;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
 import com.github.houbb.markdown.toc.vo.TocGen;
 import com.youbenzi.mdtool.tool.MDTool;
@@ -18,18 +21,18 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author https://gitee.com/heemooo
  * @since 2020/3/29
  */
-public class PageParser {
+public class PageUtil {
 
     private final static String MD_SUFFIX = ".md";
 
     private final static String HTML_SUFFIX = ".html";
 
-    private SiteConfig siteConfig;
+    private Site site;
 
     private String path;
 
-    public PageParser(String path, SiteConfig config) {
-        this.siteConfig = config;
+    public PageUtil(String path, Site site) {
+        this.site = site;
         this.path = path;
     }
 
@@ -42,13 +45,14 @@ public class PageParser {
             var url = StrUtil.removePrefix(filePath, root);
             var fileReader = new FileReader(file);
             var page = parse(fileReader.readLines());
+            page.setSite(site);
             TocGen toc = AtxMarkdownToc.newInstance()
                     .charset("UTF-8")
                     .write(false)
                     .subTree(false).genTocFile(filePath);
             page.setToc(toc.getTocLines());
             url = StrUtil.removeSuffix(url, MD_SUFFIX);
-            if (siteConfig.getEnableHtmlSuffix()) {
+            if (site.getEnableHtmlSuffix()) {
                 url = url + HTML_SUFFIX;
             }
             url = Bored.convertCorrectUrl(url);
@@ -63,7 +67,7 @@ public class PageParser {
         var header = new StringBuilder();
         var content = new StringBuilder();
         for (var line : lines) {
-            if (line.contains(siteConfig.getFrontMatterSeparator())) {
+            if (line.contains(site.getFrontMatterSeparator())) {
                 count.getAndIncrement();
                 continue;
             }
@@ -73,19 +77,9 @@ public class PageParser {
                 content.append(line).append(System.getProperty("line.separator"));
             }
         }
-        var frontMatter = Bored.tomlToObj(header.toString(), Page.FrontMatter.class);
+        var frontMatter = TomlUtil.tomlToObj(header.toString(), Page.FrontMatter.class);
         var page = new Page(frontMatter);
         page.setContent(MDTool.markdown2Html(content.toString()));
-        parseContent(page);
         return page;
     }
-
-    private void parseContent(Page page) {
-        var path = Bored.convertCorrectPath(this.path + "/themes/" + siteConfig.getTheme() + "/layouts");
-        var template = page.getType() + "/" + page.getLayout() + ".ftl";
-        page.setSite(siteConfig);
-        String content = Bored.parseTemplate(new File(path), template, page);
-        page.setContent(content);
-    }
-
 }

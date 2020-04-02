@@ -1,4 +1,4 @@
-package com.bored.command.server;
+package com.bored.model;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
@@ -48,7 +48,7 @@ public class Page {
 
     @Setter
     @Getter
-    private SiteConfig site;
+    private Site site;
 
     public String getType() {
         return Objects.isNull(type) ? StrUtil.EMPTY : type;

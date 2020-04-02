@@ -12,5 +12,5 @@ public class Command {
     private List<String> targetParameter;
     private String description;
     private String allowAddTo;
-    private CommandHandler handler;
+    private CommandExecuter handler;
 }

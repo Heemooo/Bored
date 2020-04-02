@@ -1,6 +1,6 @@
 package com.bored.command;
 
 @FunctionalInterface
-public interface CommandHandler {
+public interface CommandExecuter {
     void execute(String command,String value);
 }

@@ -20,7 +20,7 @@ defaultContentLanguage = "zh-cn"           # Default language to use
   changefreq = "weekly"
   priority = 0.5
   filename = "sitemap.xml"
-[[menu.main]]             # config your menu              # 配置目录
+[[menu.main]]             # site your menu              # 配置目录
   name = "首页"
   weight = 10
   identifier = "home"

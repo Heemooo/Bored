@@ -23,6 +23,6 @@ lxrun /setdefaultuser root
 ```
 最后在一篇博客中找到解决办法，使用下面的命令：
 ```
-ubuntu config --default-user  your_username
+ubuntu site --default-user  your_username
 ```
 博客地址在这儿[重置Windows中Linux子系统用户密码](https://www.hida.in/reset-the-password-in-linux-bash-in-windows.html)

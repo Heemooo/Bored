@@ -7,7 +7,7 @@ title = "管他谁谁谁"
 enableHtmlSuffix = true
 #前辅文分隔符
 frontMatterSeparator = "---"
-# config your menu              # 配置目录
+# site your menu              # 配置目录
 [[menu.main]]            
   name = "首页"
   weight = 10

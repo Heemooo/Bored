@@ -2,9 +2,12 @@ package com.bored.command;
 
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
-import com.bored.core.Bored;
+import com.bored.Bored;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Commander {
@@ -19,7 +22,7 @@ public class Commander {
                 .name("new")
                 .targetParameter(List.of("theme", "site", "page"))
                 .description("new something")
-                .handler(new NewCommandHandler()).build();
+                .handler(new NewCommandExecuter()).build();
         Command help = Command.builder()
                 .name("help")
                 .targetParameter(List.of("new", "server", ""))
@@ -28,14 +31,14 @@ public class Commander {
         Command version = Command.builder()
                 .name("version")
                 .description("Display bored version")
-                .handler((command, value) -> Console.log("Bored static site generator {}", Bored.version))
+                .handler((command, value) -> Console.log("Bored static site generator {}", Bored.of().getVersion()))
                 .build();
         Command server = Command.builder()
                 .name("server")
                 .targetParameter(List.of("port", ""))
                 .allowAddTo("debug")
                 .description("start server")
-                .handler(new ServerCommandHandler()).build();
+                .handler(new ServerCommandExecuter()).build();
         this.addCommand(newCommand).addCommand(help).addCommand(version).addCommand(server);
     }
 

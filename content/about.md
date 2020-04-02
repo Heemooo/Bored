@@ -7,7 +7,7 @@ weight: 50
 type: other
 layout: about
 
-# you can close something for this content if you open it in config.toml.
+# you can close something for this content if you open it in site.toml.
 comment: false
 mathjax: false
 ---

@@ -2,9 +2,10 @@ package com.bored.command;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
-import com.bored.command.server.Page;
+import com.bored.Bored;
 import com.bored.constant.TemplateResource;
-import com.bored.core.Bored;
+import com.bored.model.Page;
+import com.bored.util.TemplateUtil;
 import lombok.Cleanup;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,13 @@ import java.util.Map;
 import java.util.Queue;
 
 @Slf4j
-public class NewCommandHandler implements CommandHandler {
+public class NewCommandExecuter implements CommandExecuter {
+
+    private String root;
 
     @Override
     public void execute(String command, String value) {
+        root = Bored.of().getProps().getStr("root");
         switch (command) {
             case "new site":
                 site(value);
@@ -35,7 +39,7 @@ public class NewCommandHandler implements CommandHandler {
     }
 
     private void site(String siteName) {
-        String site = Bored.convertCorrectPath(Bored.execCommandPath + "/" + siteName);
+        String site = Bored.convertCorrectPath(root + "/" + siteName);
         if (FileUtil.exist(site)) {
             log.info("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
@@ -44,19 +48,19 @@ public class NewCommandHandler implements CommandHandler {
     }
 
     private void theme(String name) {
-        String configToml = Bored.convertCorrectPath(Bored.execCommandPath + "/config.toml");
+        String configToml = Bored.convertCorrectPath(root + "/config.toml");
         if (FileUtil.exist(configToml) == Boolean.FALSE) {
             log.error("请进入网站根目录,run bored new theme [name].");
             log.error("若网站不存在,请先run bored new site [name]");
             log.error("run cd [name]");
             return;
         }
-        String currentPath = Bored.convertCorrectPath(Bored.execCommandPath + "/themes/" + name);
+        String currentPath = Bored.convertCorrectPath(root + "/themes/" + name);
         new NewThemePageCommand(currentPath, name);
     }
 
     private void page(String name) {
-        String configToml = Bored.convertCorrectPath(Bored.execCommandPath + "/config.toml");
+        String configToml = Bored.convertCorrectPath(root + "/config.toml");
         if (FileUtil.exist(configToml) == Boolean.FALSE) {
             log.error("请进入网站根目录,run bored new page [name].");
             log.error("若网站不存在,请先run bored new site [name]");
@@ -66,7 +70,7 @@ public class NewCommandHandler implements CommandHandler {
         if (name.contains(".md") == Boolean.FALSE) {
             name = name + ".md";
         }
-        new NewPagePageCommand(Bored.convertCorrectPath(Bored.execCommandPath + "/content/" + name));
+        new NewPagePageCommand(Bored.convertCorrectPath(root + "/content/" + name));
     }
 
     @Slf4j
@@ -167,7 +171,7 @@ public class NewCommandHandler implements CommandHandler {
         private void themeToml(DefaultFile defaultFile) {
             Map<String, Object> params = new HashMap<>(1);
             params.put("themeName", this.name);
-            String content = Bored.parseTemplate(TemplateResource.THEMES_CONFIG_TOML, params);
+            String content = TemplateUtil.parseTemplate(TemplateResource.THEMES_CONFIG_TOML, params);
             defaultFile.setFilePath(path + "/theme.toml").setContent(content);
         }
     }
@@ -189,7 +193,7 @@ public class NewCommandHandler implements CommandHandler {
         public void loadContent(DefaultFile defaultFile) {
             String templateContent = new FileReader("templates/archetypes/default.toml").readString();
             var frontMatter = new Page.FrontMatter();
-            String content = Bored.parseTemplate(templateContent, Bored.objToMap(frontMatter, frontMatter.getClass()));
+            String content = TemplateUtil.parseTemplate(templateContent, Bored.objToMap(frontMatter, frontMatter.getClass()));
             defaultFile.setContent(content);
         }
     }
