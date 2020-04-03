@@ -2,16 +2,17 @@ package com.bored.util;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.model.Page;
 import com.bored.model.Site;
-import com.bored.util.TomlUtil;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
-import com.github.houbb.markdown.toc.vo.TocGen;
 import com.youbenzi.mdtool.tool.MDTool;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,11 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author https://gitee.com/heemooo
  * @since 2020/3/29
  */
+@Slf4j
 public class PageUtil {
-
-    private final static String MD_SUFFIX = ".md";
-
-    private final static String HTML_SUFFIX = ".html";
 
     private Site site;
 
@@ -42,21 +40,17 @@ public class PageUtil {
         var files = FileUtil.loopFiles(root);
         for (File file : files) {
             var filePath = file.getPath();
-            var url = StrUtil.removePrefix(filePath, root);
+            var permLink = StrUtil.removePrefix(filePath, root);
             var fileReader = new FileReader(file);
             var page = parse(fileReader.readLines());
-            page.setSite(site);
-            TocGen toc = AtxMarkdownToc.newInstance()
-                    .charset("UTF-8")
-                    .write(false)
-                    .subTree(false).genTocFile(filePath);
+            var toc = AtxMarkdownToc.newInstance().charset("UTF-8").write(false).subTree(false).genTocFile(filePath);
             page.setToc(toc.getTocLines());
-            url = StrUtil.removeSuffix(url, MD_SUFFIX);
+            permLink = StrUtil.removeSuffix(permLink, ".md");
             if (site.getEnableHtmlSuffix()) {
-                url = url + HTML_SUFFIX;
+                permLink = permLink + ".html";
             }
-            url = Bored.convertCorrectUrl(url);
-            page.getUrls().add(url);
+            permLink = Bored.convertCorrectUrl(permLink);
+            page.setPermLink(permLink);
             pages.add(page);
         }
         return pages;

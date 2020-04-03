@@ -6,7 +6,7 @@ title = "管他谁谁谁"
 #theme= "hugo-theme-amaze"
 enableHtmlSuffix = true
 #前辅文分隔符
-frontMatterSeparator = "---"
+frontMatterSeparator = "+++"
 # site your menu              # 配置目录
 [[menu.main]]            
   name = "首页"

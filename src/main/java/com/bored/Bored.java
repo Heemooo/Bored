@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -54,12 +55,14 @@ public final class Bored {
 
     private Map<String, Page> pages;
 
+    private List<Page> pageList;
+
     private Map<String, String> statics;
 
     @SneakyThrows
     public static void main(String[] commands) {
-        //String[] args = {"server", "port", "8080"};
-        Commander.parse(commands);
+        String[] args = {"server", "port", "8080","debug"};
+        Commander.parse(args);
     }
 
 

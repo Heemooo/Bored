@@ -1,4 +1,4 @@
----
++++
 title = "SpringBoot项目启动时执行自定义操作"
 description = ""
 tags = [
@@ -9,7 +9,7 @@ date = "2019-07-04"
 categories = [
 	"Java"
 ]
----
++++
 # SpringBoot项目启动时执行自定义操作
 
 > 最近打算将blog项目重构，由原来的blade框架搭建的tale博客重构为SpringBoot+Freemarker+MyBatis+mysql的项目，这次重构会尽可能的用上SpringBoot的中的组件，方便我们熟悉SpringBoot

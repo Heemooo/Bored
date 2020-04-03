@@ -26,7 +26,7 @@ public class ResourceUtil {
     private static Map<String, String> loadStatics() {
         var rootPath = Bored.convertCorrectPath(root + "/themes/" + site.getTheme());
         var staticPath = Bored.convertCorrectPath(rootPath + "/static");
-        return loading(rootPath,staticPath);
+        return loading(rootPath, staticPath);
     }
 
 
@@ -34,10 +34,15 @@ public class ResourceUtil {
         Map<String, Page> pageMapping = new HashMap<>();
         PageUtil pageUtil = new PageUtil(root, site);
         var pages = pageUtil.parse();
-        pages.forEach(page -> page.getUrls().forEach(url -> {
-            pageMapping.put(url, page);
-            log.info("Mapping {}", url);
-        }));
+        pages.forEach(page -> {
+            pageMapping.put(page.getPermLink(), page);
+            log.debug("Mapping {}", page.getPermLink());
+            if (StrUtil.isNotBlank(page.getUrl())) {
+                pageMapping.put(page.getUrl(), page);
+                log.debug("Mapping page{}", page.getUrl());
+            }
+        });
+        Bored.of().setPageList(pages);
         return pageMapping;
     }
 
@@ -47,7 +52,7 @@ public class ResourceUtil {
         for (File file : files) {
             var url = Bored.convertCorrectUrl(StrUtil.removePrefix(file.getPath(), root));
             resource.put(url, file.getPath());
-            log.info("Mapping {}", url);
+            log.info("Mapping static resource {}", url);
         }
         return resource;
     }

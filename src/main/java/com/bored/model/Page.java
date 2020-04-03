@@ -11,44 +11,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@ToString
+@Data
 public class Page {
-    @Getter
     private String title;
 
-    @Getter
     private String date;
 
-    @Getter
     private Boolean draft;
 
     private String type;
 
     private String layout;
 
-    @Getter
-    private List<String> urls = new ArrayList<>();
+    private String url;
 
-    @Getter
+    private String permLink;
+
     private List<String> tags;
 
-    @Getter
     private List<String> categories;
 
-    @Getter
     private String description;
 
-    @Getter
-    @Setter
     private String content;
 
-    @Setter
-    @Getter
     private List<String> toc;
-
-    @Setter
-    @Getter
-    private Site site;
 
     public String getType() {
         return Objects.isNull(type) ? StrUtil.EMPTY : type;
@@ -64,9 +51,7 @@ public class Page {
         this.draft = frontMatter.getDraft();
         this.type = frontMatter.getType();
         this.layout = frontMatter.getLayout();
-        if (StrUtil.isNotBlank(frontMatter.getUrl())) {
-            this.urls.add(frontMatter.getUrl());
-        }
+        this.url = frontMatter.getUrl();
         this.tags = frontMatter.getTags();
         this.categories = frontMatter.getCategories();
         this.description = frontMatter.getDescription();
