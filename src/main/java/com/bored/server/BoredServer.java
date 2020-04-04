@@ -19,10 +19,13 @@ public class BoredServer {
         var port = Bored.of().getPort();
         var root = Bored.of().getProps().getStr("root");
         var site = TomlUtil.loadTomlFile(root + "/config.toml", Site.class);
+        log.info(site.toString());
         Bored.of().setSite(site);
         ResourceUtil.init();
         Server server = new Server(port);
         HandlerList handlers = new HandlerList();
+        handlers.addHandler(new DefaultHandler());
+        handlers.addHandler(new PaginationHandler());
         handlers.addHandler(new PageHandler());
         handlers.addHandler(new StaticHandler());
         //handlers.addHandler(new ImageHandler());

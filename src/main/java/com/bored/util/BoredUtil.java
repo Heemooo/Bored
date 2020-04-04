@@ -31,11 +31,11 @@ public class BoredUtil {
         return pages.stream().filter(page -> page.getPermLink().startsWith(folderName)).collect(Collectors.toList());
     }
 
-    public static Map<Integer, List<Page>> groupByYear() {
-        List<Page> pageList = pages.stream().sorted(Comparator.comparing(Page::getDate)).collect(Collectors.toList());
+    public static Map<String, List<Page>> groupByYear() {
+        List<Page> pageList = pages.stream().sorted(Comparator.comparing(Page::getDate).reversed()).collect(Collectors.toList());
         return pageList.stream().collect(Collectors.groupingBy(page -> {
             var date = page.getDate();
-            return DateUtil.year(DateUtil.parseDate(date));
+            return String.valueOf(DateUtil.year(DateUtil.parseDate(date)));
         }));
     }
 

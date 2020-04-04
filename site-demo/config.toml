@@ -7,23 +7,24 @@ title = "管他谁谁谁"
 enableHtmlSuffix = true
 #前辅文分隔符
 frontMatterSeparator = "+++"
-# site your menu              # 配置目录
-[[menu.main]]            
+
+# site your menus              # 配置目录
+[[menus.main]]            
   name = "首页"
   weight = 10
   identifier = "home"
   url = "/"
-[[menu.main]]
+[[menus.main]]
   name = "归档"
   weight = 20
   identifier = "archives"
   url = "/post.html"
-[[menu.main]]
+[[menus.main]]
   name = "标签"
   weight = 40
   identifier = "tags"
   url = "/tags.html"
-[[menu.main]]
+[[menus.main]]
   name = "categories"
   weight = 30
   identifier = "categories"

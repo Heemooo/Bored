@@ -4,6 +4,7 @@ import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.setting.dialect.Props;
 import com.bored.command.Commander;
 import com.bored.model.Page;
+import com.bored.model.Pagination;
 import com.bored.model.Site;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,13 +56,17 @@ public final class Bored {
 
     private Map<String, Page> pages;
 
+    private Map<String, String> defaultPages;
+
+    private Map<String, Pagination> paginationMap;
+
     private List<Page> pageList;
 
     private Map<String, String> statics;
 
     @SneakyThrows
     public static void main(String[] commands) {
-        String[] args = {"server", "port", "8080","debug"};
+        String[] args = {"server", "port", "8080"};
         Commander.parse(args);
     }
 

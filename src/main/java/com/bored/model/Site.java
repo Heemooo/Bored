@@ -4,7 +4,6 @@ import lombok.Data;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Data
 public class Site {
@@ -13,26 +12,19 @@ public class Site {
 
     private String baseURL;
 
-    private String theme;
+    private String theme = "default";
 
-    private Boolean enableHtmlSuffix;
+    private Boolean enableHtmlSuffix = false;
 
-    private String frontMatterSeparator;
+    private Boolean disableTags = false;
 
-    private Map<String, List<Menu>> menu;
+    private Boolean disableCategories = false;
 
-    public String getTheme() {
-        return Objects.nonNull(theme) ? theme : "default";
-    }
+    private String frontMatterSeparator = "---";
 
-    @Data
-    private static class Menu {
-        private String id;
-        private String name;
-        private String url;
-        private Integer weight;
-        private List<Menu> child;
-    }
+    private Integer pageSize = 10;
+
+    private Map<String, List<Menu>> menus;
 
     private Map<String, Object> params;
 }

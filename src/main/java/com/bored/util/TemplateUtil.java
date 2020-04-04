@@ -45,15 +45,15 @@ public final class TemplateUtil {
     /**
      * 解析模板
      * @param basePackage 模板根目录
-     * @param template 模板
+     * @param templateName 模板
      * @param params   模板参数
      * @return 完成解析后的模板
      */
-    public static String parseTemplate(String basePackage, String template, Object params) {
+    public static String parseTemplate(String basePackage, String templateName, Object params) {
         try {
             basePackage = Bored.convertCorrectPath(basePackage);
             CONFIG.setDirectoryForTemplateLoading(new File(basePackage));
-            var tpl = CONFIG.getTemplate(template);
+            var tpl = CONFIG.getTemplate(templateName);
             @Cleanup var writer = new StringWriter();
             tpl.process(params, writer);
             return writer.toString();
