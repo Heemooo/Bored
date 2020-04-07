@@ -1,6 +1,7 @@
 package com.bored.command;
 
 import com.bored.Bored;
+import com.bored.model.CompleteEnvironment;
 import com.bored.server.BoredServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Level;
@@ -17,6 +18,7 @@ public class ServerCommandExecuter implements CommandExecuter {
             LogManager.getRootLogger().setLevel(Level.DEBUG);
         }
         Bored.of().setPort(port);
+        Bored.of().setEnv(new CompleteEnvironment(Bored.of().getRoot()));
         BoredServer.start();
     }
 }

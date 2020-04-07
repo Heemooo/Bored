@@ -1,13 +1,11 @@
 package com.bored;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.setting.dialect.Props;
 import com.bored.command.Commander;
+import com.bored.model.Environment;
 import com.bored.model.Page;
 import com.bored.model.Pagination;
-import com.bored.model.Site;
-import com.bored.util.TomlUtil;
+import com.bored.template.JetTemplateHelper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -31,15 +29,19 @@ public final class Bored {
 
     @SneakyThrows
     public static void main(String[] commands) {
-        //String[] args = {"server", "port", "8080"};
-        String[] args = {"new", "page", "post/demo.md"};
+        String[] args = {"server", "port", "8080"};
+        //String[] args = {"new", "page", "post/demo.md"};
         Commander.parse(args);
     }
 
+    /**
+     * 环境
+     */
+    private Environment env;
+
     private Bored() {
-        String path = System.getProperty("user.dir")+"/site-demo1";
-        props = new Props();
-        props.setProperty("root", path);
+        String path = System.getProperty("user.dir") + "/site-demo1";
+        this.setRoot(path);
     }
 
     private static class BoredHolder {
@@ -50,6 +52,7 @@ public final class Bored {
         return BoredHolder.INSTANCE;
     }
 
+    private String root;
     /**
      * 端口
      */
@@ -58,36 +61,6 @@ public final class Bored {
      * 版本号
      */
     private String version = "v.01.2020.3.31";
-
-    private Props props;
-
-    private Site site;
-
-    private Map<String, Page> pages;
-
-    private Map<String, String> defaultPages;
-
-    private Map<String, Pagination> paginationMap;
-
-    private List<Page> pageList;
-
-    private Map<String, String> statics;
-
-    public Site getSite() {
-        var root = this.getProps().getStr("root");
-        var siteConfigPath = String.format("%s/config.toml", root);
-        if (FileUtil.exist(siteConfigPath)) {
-            var site = TomlUtil.loadTomlFile(siteConfigPath, Site.class);
-            Bored.of().setSite(site);
-            log.info(site.toString());
-            return site;
-        }
-        log.error("Site config.toml not found.");
-        log.error("Maybe should create new site or change directory to the site path.");
-        System.exit(0);
-        return site;
-    }
-
 
     /**
      * 替换路径中的斜杠为当前系统的斜杠

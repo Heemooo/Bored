@@ -65,6 +65,11 @@
             <artifactId>MDTool</artifactId>
             <version>1.2.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.subchen</groupId>
+            <artifactId>jetbrick-template</artifactId>
+            <version>2.1.10</version>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>compile</defaultGoal>

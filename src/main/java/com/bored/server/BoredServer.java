@@ -17,10 +17,6 @@ public class BoredServer {
     @SneakyThrows
     public static void start() {
         var port = Bored.of().getPort();
-        var root = Bored.of().getProps().getStr("root");
-        var site = TomlUtil.loadTomlFile(root + "/config.toml", Site.class);
-        Bored.of().setSite(site);
-        log.info(site.toString());
         ResourceUtil.init();
         Server server = new Server(port);
         HandlerList handlers = new HandlerList();

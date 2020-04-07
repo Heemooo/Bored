@@ -6,8 +6,9 @@ import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.bored.Bored;
+import com.bored.model.CompleteEnvironment;
+import com.bored.model.Environment;
 import com.bored.model.Page;
-import com.bored.util.TemplateUtil;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,11 +20,8 @@ import java.util.List;
 @Slf4j
 public class NewCommandExecuter implements CommandExecuter {
 
-    private String root;
-
     @Override
     public void execute(String command, String value) {
-        root = Bored.of().getProps().getStr("root");
         switch (command) {
             case "new site":
                 site(value);
@@ -38,7 +36,9 @@ public class NewCommandExecuter implements CommandExecuter {
     }
 
     private void site(String siteName) {
-        String site = Bored.convertCorrectPath(root + "/" + siteName);
+        var env = new Environment(Bored.of().getRoot());
+        Bored.of().setEnv(env);
+        String site = Bored.convertCorrectPath(env.getRoot() + "/" + siteName);
         if (FileUtil.exist(site)) {
             log.info("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
@@ -48,39 +48,41 @@ public class NewCommandExecuter implements CommandExecuter {
     }
 
     private void theme(String name) {
-        String themePath = Bored.convertCorrectPath(root + "/themes/" + name);
+        var env = new CompleteEnvironment(Bored.of().getRoot());
+        Bored.of().setEnv(env);
+        String themePath = Bored.convertCorrectPath(env.getRoot() + "/themes/" + name);
         ClassPathResource resource = new ClassPathResource("demo/theme-template.zip");
         ZipUtil.unzip(resource.getPath(), themePath);
     }
 
     private void page(String name) {
+        var env = new CompleteEnvironment(Bored.of().getRoot());
+        Bored.of().setEnv(env);
         if (name.contains(".md") == Boolean.FALSE) {
             name = name + ".md";
         }
-        String filePath = String.format("%s/content/%s", root, name);
+        String filePath = String.format("%s/%s", env.getPagePath(), name);
         var page = new File(filePath);
-        if(FileUtil.exist(page)){
-            log.error("Page {} existed!",name);
+        if (FileUtil.exist(page)) {
+            log.error("Page {} existed!", name);
             return;
         }
         FileUtil.touch(page);
         try {
-            var site = Bored.of().getSite();
-            String archetypesPath = String.format("%s/themes/%s/archetypes/default.toml", root, site.getTheme());
-            List<String> archetypeContents = new FileReader(archetypesPath).readLines();
-            var lineSeparator = System.getProperty("line.separator");
-            StringBuilder templateContent = new StringBuilder(site.getFrontMatterSeparator());
-            templateContent.append(lineSeparator);
+            String frontMatterPath = env.getFrontMatterPath();
+            List<String> archetypeContents = new FileReader(frontMatterPath).readLines();
+            StringBuilder templateContent = new StringBuilder(env.getSiteConfig().getFrontMatterSeparator());
+            templateContent.append(env.getLineSeparator());
             archetypeContents.forEach(line -> {
                 if (!line.startsWith("#") && !line.isBlank()) {
                     templateContent.append(line);
-                    templateContent.append(lineSeparator);
+                    templateContent.append(env.getLineSeparator());
                 }
             });
-            templateContent.append(site.getFrontMatterSeparator());
+            templateContent.append(env.getSiteConfig().getFrontMatterSeparator());
             var frontMatter = new Page.FrontMatter();
             frontMatter.setTitle(StrUtil.removeSuffix(page.getName(), ".md"));
-            String content = TemplateUtil.parseTemplate(templateContent.toString(), Bored.objToMap(frontMatter, frontMatter.getClass()));
+            String content = env.getJetTemplateHelper().parseSource(templateContent.toString(), Bored.objToMap(frontMatter, frontMatter.getClass()));
             @Cleanup FileWriter writer = new FileWriter(filePath);
             writer.write(content);
             log.info("Create file: {}", filePath);

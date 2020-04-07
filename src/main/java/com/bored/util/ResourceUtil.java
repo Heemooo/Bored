@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -17,25 +18,35 @@ public class ResourceUtil {
     private static String root;
     private static Site site;
 
+    public static Map<String, Page> pages;
+
+    public static Map<String, String> defaultPages;
+
+    public static Map<String, Pagination> paginationMap;
+
+    public static List<Page> pageList;
+
+    public static Map<String, String> statics;
+
     public static void init() {
-        root = Bored.of().getProps().getStr("root");
-        site = Bored.of().getSite();
-        Bored.of().setPages(loadPages());
-        Bored.of().setStatics(loadStatics());
-        Bored.of().setDefaultPages(loadDefaultPages());
-        Bored.of().setPaginationMap(loadPaginationMap());
+        root = Bored.of().getEnv().getRoot();
+        site = Bored.of().getEnv().getSiteConfig();
+        pages = loadPages();
+        defaultPages = loadDefaultPages();
+        paginationMap = loadPaginationMap();
+        statics = loadStatics();
     }
 
     private static Map<String, Pagination> loadPaginationMap() {
         var paginationMap = new HashMap<String, Pagination>();
         var pageSize = site.getPageSize();
-        var pages = Bored.of().getPageList();
+        var pages = pageList;
         int pageCount = PageUtil.getPageCount(pages, pageSize);
         for (int i = 1; i <= pageCount; i++) {
             var pagination = new Pagination();
             pagination.setCurrent(i);
             pagination.setPageCount(pageCount);
-            pagination.setData(PageUtil.startPage(pages,i,pageSize));
+            pagination.setData(PageUtil.startPage(pages, i, pageSize));
             if (i == 1) {
                 pagination.setHasPrev(false);
                 pagination.setHasNext(true);
@@ -82,8 +93,8 @@ public class ResourceUtil {
     private static Map<String, Page> loadPages() {
         Map<String, Page> pageMapping = new HashMap<>();
         PageUtil pageUtil = new PageUtil(root, site);
-        var pages = pageUtil.parse();
-        pages.forEach(page -> {
+        pageList = pageUtil.parse();
+        pageList.forEach(page -> {
             pageMapping.put(page.getPermLink(), page);
             log.info("Mapping {}", page.getPermLink());
             if (StrUtil.isNotBlank(page.getUrl())) {
@@ -91,7 +102,6 @@ public class ResourceUtil {
                 log.info("Mapping page {}", page.getUrl());
             }
         });
-        Bored.of().setPageList(pages);
         return pageMapping;
     }
 

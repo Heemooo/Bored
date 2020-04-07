@@ -2,8 +2,7 @@ package com.bored.server.handler;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.bored.Bored;
-import com.bored.util.BoredUtil;
-import com.bored.util.TemplateUtil;
+import com.bored.util.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -19,18 +18,17 @@ public class PageHandler extends AbstractHandler {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         String uri = request.getRequestURI();
-        var pages = Bored.of().getPages();
-        var root = Bored.of().getProps().getStr("root");
-        var site = Bored.of().getSite();
+        var env = Bored.of().getEnv();
+        var site = env.getSiteConfig();
+        var pages = ResourceUtil.pages;
         if (pages.containsKey(uri)) {
             response.setStatus(HttpServletResponse.SC_OK);
             var page = pages.get(uri);
-            var path = root + "/themes/" + site.getTheme() + "/layouts";
-            var template = page.getType() + "/" + page.getLayout() + ".ftl";
-            Map<String, Object> params = new HashMap<>();
-            params.put("page", page);
-            params.put("site", site);
-            var content = TemplateUtil.parseTemplate(path, template, params);
+            var template = page.getType() + "/" + page.getLayout() + "." + site.getLayoutSuffix();
+            Map<String, Object> context = new HashMap<>() {{
+                put("page", page);
+            }};
+            var content = env.getJetTemplateHelper().parse(template, context);
             ServletUtil.write(response, content, "text/html;charset=utf-8");
             baseRequest.setHandled(true);
         }

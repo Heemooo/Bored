@@ -14,7 +14,9 @@ public class Site {
 
     private String theme = "default";
 
-    private Boolean enableHtmlSuffix = false;
+    private String layoutSuffix = "";
+
+    private Boolean enableHtmlSuffix = true;
 
     private Boolean disableTags = false;
 
