@@ -27,4 +27,6 @@ public class Site {
     private Map<String, List<Menu>> menus;
 
     private Map<String, Object> params;
+
+
 }

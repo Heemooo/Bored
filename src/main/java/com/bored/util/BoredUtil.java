@@ -32,9 +32,9 @@ public class BoredUtil {
     }
 
     public static Map<String, List<Page>> groupByYear() {
-        List<Page> pageList = pages.stream().sorted(Comparator.comparing(Page::getDate).reversed()).collect(Collectors.toList());
+        List<Page> pageList = pages.stream().sorted(Comparator.comparing(Page::getCreateTime).reversed()).collect(Collectors.toList());
         return pageList.stream().collect(Collectors.groupingBy(page -> {
-            var date = page.getDate();
+            var date = page.getCreateTime();
             return String.valueOf(DateUtil.year(DateUtil.parseDate(date)));
         }));
     }

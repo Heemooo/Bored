@@ -2,20 +2,19 @@ package com.bored.command;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.io.resource.ClassPathResource;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.ZipUtil;
 import com.bored.Bored;
-import com.bored.constant.TemplateResource;
 import com.bored.model.Page;
 import com.bored.util.TemplateUtil;
 import lombok.Cleanup;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.List;
 
 @Slf4j
 public class NewCommandExecuter implements CommandExecuter {
@@ -44,178 +43,49 @@ public class NewCommandExecuter implements CommandExecuter {
             log.info("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
         }
-        new NewSitePageCommand(site);
+        ClassPathResource resource = new ClassPathResource("demo/site-template.zip");
+        ZipUtil.unzip(resource.getPath(), site);
     }
 
     private void theme(String name) {
-        String configToml = Bored.convertCorrectPath(root + "/config.toml");
-        if (FileUtil.exist(configToml) == Boolean.FALSE) {
-            log.error("请进入网站根目录,run bored new theme [name].");
-            log.error("若网站不存在,请先run bored new site [name]");
-            log.error("run cd [name]");
-            return;
-        }
-        String currentPath = Bored.convertCorrectPath(root + "/themes/" + name);
-        new NewThemePageCommand(currentPath, name);
+        String themePath = Bored.convertCorrectPath(root + "/themes/" + name);
+        ClassPathResource resource = new ClassPathResource("demo/theme-template.zip");
+        ZipUtil.unzip(resource.getPath(), themePath);
     }
 
     private void page(String name) {
-        String configToml = Bored.convertCorrectPath(root + "/config.toml");
-        if (FileUtil.exist(configToml) == Boolean.FALSE) {
-            log.error("请进入网站根目录,run bored new page [name].");
-            log.error("若网站不存在,请先run bored new site [name]");
-            log.error("run cd [name]");
-            return;
-        }
         if (name.contains(".md") == Boolean.FALSE) {
             name = name + ".md";
         }
-        new NewPagePageCommand(Bored.convertCorrectPath(root + "/content/" + name));
-    }
-
-    @Slf4j
-    public abstract static class AbstractNewPageCommand {
-
-        public AbstractNewPageCommand(String path) {
-            this.path = path;
-            this.initQueue();
-            this.create();
+        String filePath = String.format("%s/content/%s", root, name);
+        var page = new File(filePath);
+        if(FileUtil.exist(page)){
+            log.error("Page {} existed!",name);
+            return;
         }
-
-        public AbstractNewPageCommand(String path, String name) {
-            this.path = path;
-            this.name = name;
-            this.initQueue();
-            this.create();
-        }
-
-        public String name;
-        public String path;
-        private Queue<String> folders = new LinkedList<>();
-        private Queue<DefaultFile> files = new LinkedList<>();
-
-        public abstract void initQueue();
-
-        public AbstractNewPageCommand addFolder(String path) {
-            this.folders.add(Bored.convertCorrectPath(path));
-            return this;
-        }
-
-        public AbstractNewPageCommand addFiles(DefaultFile.DefaultFileInit defaultFileInit) {
-            DefaultFile defaultFile = new DefaultFile();
-            defaultFileInit.init(defaultFile);
-            this.files.add(defaultFile);
-            return this;
-        }
-
-        private void create() {
-            folders.forEach(folder -> {
-                log.info("Create folder: {}", folder);
-                FileUtil.mkdir(folder);
-            });
-            files.forEach(file -> {
-                log.info("Create file: {}", file.getFilePath());
-                FileUtil.touch(file.getFilePath());
-                try {
-                    @Cleanup FileWriter writer = new FileWriter(file.getFilePath());
-                    writer.write(file.getContent());
-                } catch (IOException e) {
-                    log.error("", e);
+        FileUtil.touch(page);
+        try {
+            var site = Bored.of().getSite();
+            String archetypesPath = String.format("%s/themes/%s/archetypes/default.toml", root, site.getTheme());
+            List<String> archetypeContents = new FileReader(archetypesPath).readLines();
+            var lineSeparator = System.getProperty("line.separator");
+            StringBuilder templateContent = new StringBuilder(site.getFrontMatterSeparator());
+            templateContent.append(lineSeparator);
+            archetypeContents.forEach(line -> {
+                if (!line.startsWith("#") && !line.isBlank()) {
+                    templateContent.append(line);
+                    templateContent.append(lineSeparator);
                 }
             });
-        }
-    }
-
-    public static class NewSitePageCommand extends AbstractNewPageCommand {
-
-        public NewSitePageCommand(String path) {
-            super(path);
-        }
-
-        @Override
-        public void initQueue() {
-            this.addFolder(path + "/" + "content")
-                    .addFolder(path + "/" + "themes")
-                    .addFiles(this::configToml)
-                    .addFiles(this::archetypesDefaultMd);
-        }
-
-        private void configToml(DefaultFile defaultFile) {
-            defaultFile.setFilePath(path + "/" + "config.toml").setContent(TemplateResource.SITE_CONFIG_TOML);
-        }
-
-        private void archetypesDefaultMd(DefaultFile defaultFile) {
-            defaultFile.setFilePath(path + "/" + "archetypes/default.toml").setContent(TemplateResource.ARCHETYPES_DEFAULT_MD);
-        }
-    }
-
-    public static class NewThemePageCommand extends AbstractNewPageCommand {
-
-        public NewThemePageCommand(String path, String name) {
-            super(path, name);
-        }
-
-        @Override
-        public void initQueue() {
-            this.addFolder(path + "/archetypes")
-                    .addFolder(path + "/layouts")
-                    .addFolder(path + "/static")
-                    .addFiles(this::license)
-                    .addFiles(this::themeToml);
-        }
-
-        private void license(DefaultFile defaultFile) {
-            defaultFile.setFilePath(path + "/LICENSE").setContent(TemplateResource.THEMES_LICENSE);
-        }
-
-        private void themeToml(DefaultFile defaultFile) {
-            Map<String, Object> params = new HashMap<>(1);
-            params.put("themeName", this.name);
-            String content = TemplateUtil.parseTemplate(TemplateResource.THEMES_CONFIG_TOML, params);
-            defaultFile.setFilePath(path + "/theme.toml").setContent(content);
-        }
-    }
-
-    public static class NewPagePageCommand extends AbstractNewPageCommand {
-
-        public NewPagePageCommand(String path) {
-            super(path);
-        }
-
-        @Override
-        public void initQueue() {
-            this.addFiles(defaultFile -> {
-                defaultFile.setFilePath(this.path);
-                loadContent(defaultFile);
-            });
-        }
-
-        public void loadContent(DefaultFile defaultFile) {
-            String templateContent = new FileReader("templates/archetypes/default.toml").readString();
+            templateContent.append(site.getFrontMatterSeparator());
             var frontMatter = new Page.FrontMatter();
-            String content = TemplateUtil.parseTemplate(templateContent, Bored.objToMap(frontMatter, frontMatter.getClass()));
-            defaultFile.setContent(content);
-        }
-    }
-
-    @Data
-    public static class DefaultFile {
-        /**
-         * 文件全路径
-         */
-        private String filePath;
-        /**
-         * 文件内容
-         */
-        private String content;
-
-        public DefaultFile setFilePath(String filePath) {
-            this.filePath = Bored.convertCorrectPath(filePath);
-            return this;
-        }
-
-        public interface DefaultFileInit {
-            void init(DefaultFile defaultFile);
+            frontMatter.setTitle(StrUtil.removeSuffix(page.getName(), ".md"));
+            String content = TemplateUtil.parseTemplate(templateContent.toString(), Bored.objToMap(frontMatter, frontMatter.getClass()));
+            @Cleanup FileWriter writer = new FileWriter(filePath);
+            writer.write(content);
+            log.info("Create file: {}", filePath);
+        } catch (IOException e) {
+            log.error("", e);
         }
     }
 }

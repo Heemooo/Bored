@@ -1,0 +1,11 @@
+title= "${name}"      #文章标题
+#创建时间,格式化为yyyy-MM-dd
+createTime = "${createTime?date('yyyy-MM-dd'}"
+draft= true           #是否为草稿
+
+#type  ="post"        #模板路径
+#layout="page.ftl"    #模板名
+#url   =""            #自定义URL
+#tags  = []           #标签
+#categories = []      #分类
+#description = ""     #描述

@@ -3,11 +3,7 @@ package com.bored.model;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +11,7 @@ import java.util.Objects;
 public class Page {
     private String title;
 
-    private String date;
+    private String createTime;
 
     private Boolean draft;
 
@@ -47,7 +43,7 @@ public class Page {
 
     public Page(FrontMatter frontMatter) {
         this.title = frontMatter.getTitle();
-        this.date = frontMatter.getDate();
+        this.createTime = frontMatter.getCreateTime();
         this.draft = frontMatter.getDraft();
         this.type = frontMatter.getType();
         this.layout = frontMatter.getLayout();
@@ -60,7 +56,7 @@ public class Page {
     @Data
     public static class FrontMatter {
         public String title = StrUtil.EMPTY;
-        public String date = DateUtil.now();
+        public String createTime = DateUtil.now();
         public Boolean draft = Boolean.TRUE;
         private String url = StrUtil.EMPTY;
         private String type;

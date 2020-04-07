@@ -1,11 +1,13 @@
 package com.bored;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.setting.dialect.Props;
 import com.bored.command.Commander;
 import com.bored.model.Page;
 import com.bored.model.Pagination;
 import com.bored.model.Site;
+import com.bored.util.TomlUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -27,8 +29,15 @@ import java.util.regex.Matcher;
 @Getter
 public final class Bored {
 
+    @SneakyThrows
+    public static void main(String[] commands) {
+        //String[] args = {"server", "port", "8080"};
+        String[] args = {"new", "page", "post/demo.md"};
+        Commander.parse(args);
+    }
+
     private Bored() {
-        String path = System.getProperty("user.dir") + "/site-demo";
+        String path = System.getProperty("user.dir")+"/site-demo1";
         props = new Props();
         props.setProperty("root", path);
     }
@@ -64,10 +73,19 @@ public final class Bored {
 
     private Map<String, String> statics;
 
-    @SneakyThrows
-    public static void main(String[] commands) {
-        String[] args = {"server", "port", "8080"};
-        Commander.parse(args);
+    public Site getSite() {
+        var root = this.getProps().getStr("root");
+        var siteConfigPath = String.format("%s/config.toml", root);
+        if (FileUtil.exist(siteConfigPath)) {
+            var site = TomlUtil.loadTomlFile(siteConfigPath, Site.class);
+            Bored.of().setSite(site);
+            log.info(site.toString());
+            return site;
+        }
+        log.error("Site config.toml not found.");
+        log.error("Maybe should create new site or change directory to the site path.");
+        System.exit(0);
+        return site;
     }
 
 

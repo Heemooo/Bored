@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>404(找不到页面)</title>
+    <title>首页</title>
 </head>
 <style>
     body {
@@ -672,92 +672,10 @@
 </style>
 <body>
 <main class="container">
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">4</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
-    <span class="particle">0</span>
     <article class="content">
-        <p>很抱歉，没有找到这个页面！</p>
-        <p><strong>404</strong> 错误提示。</p>
         <p>
             <a href="/">
-                <button>返回主页.</button>
+                <button>主页.</button>
             </a>
         </p>
     </article>
