@@ -1,10 +1,14 @@
 package com.bored.model;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Data
@@ -64,6 +68,15 @@ public class Page {
         private List<String> tags;
         private List<String> categories;
         private String description;
+
+        public Map<String, Object> toMap() {
+            Field[] fields = ReflectUtil.getFields(this.getClass());
+            Map<String, Object> params = new HashMap<>(fields.length);
+            for (Field field : fields) {
+                params.put(field.getName(), ReflectUtil.getFieldValue(this, field));
+            }
+            return params;
+        }
     }
 
 }

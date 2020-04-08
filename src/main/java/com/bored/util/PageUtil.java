@@ -35,7 +35,7 @@ public class PageUtil {
 
     public List<Page> parse() {
         var pages = new ArrayList<Page>();
-        var root = Bored.convertCorrectPath(this.path + "/content");
+        var root = PathUtil.convertCorrectPath(this.path + "/content");
         var files = FileUtil.loopFiles(root);
         for (File file : files) {
             var filePath = file.getPath();
@@ -48,7 +48,7 @@ public class PageUtil {
             if (site.getEnableHtmlSuffix()) {
                 permLink = permLink + ".html";
             }
-            permLink = Bored.convertCorrectUrl(permLink);
+            permLink = PathUtil.convertCorrectUrl(permLink);
             page.setPermLink(permLink);
             pages.add(page);
         }

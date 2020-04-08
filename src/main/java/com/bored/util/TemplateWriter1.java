@@ -66,7 +66,7 @@ public final class TemplateWriter1 {
      */
     public  String parseTemplate(String basePackage, String templateName, Object params) {
         try {
-            basePackage = Bored.convertCorrectPath(basePackage);
+            basePackage = PathUtil.convertCorrectPath(basePackage);
             this.config.setDirectoryForTemplateLoading(new File(basePackage));
             var tpl = this.config.getTemplate(templateName);
             @Cleanup var writer = new StringWriter();

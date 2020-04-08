@@ -17,7 +17,7 @@ public final class TomlUtil {
      */
     public static <T> T loadTomlFile(String path, Class<T> t) {
         var toml = new Toml();
-        var root = Bored.convertCorrectPath(path);
+        var root = PathUtil.convertCorrectPath(path);
         toml.read(FileUtil.file(root));
         return toml.to(t);
     }
@@ -30,7 +30,7 @@ public final class TomlUtil {
 
     public static void main(String[] args) {
         var path = System.getProperty("user.dir") + "/site-demo/themes/default/static";
-        path = Bored.convertCorrectPath(path);
+        path = PathUtil.convertCorrectPath(path);
         var files = FileUtil.loopFiles(path);
         for (File file : files) {
             System.out.println(file.getPath());

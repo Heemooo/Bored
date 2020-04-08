@@ -9,54 +9,82 @@ import com.bored.Bored;
 import com.bored.model.CompleteEnvironment;
 import com.bored.model.Environment;
 import com.bored.model.Page;
+import com.bored.util.PathUtil;
 import lombok.Cleanup;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Deque;
 import java.util.List;
 
-@Slf4j
-public class NewCommandExecuter implements CommandExecuter {
+public class NewCommand extends Command {
+    @Override
+    public String getOptionSyntax() {
+        return "[site|theme|page] <name>";
+    }
 
     @Override
-    public void execute(String command, String value) {
+    public void displayOptionUsage() {
+        println("  site  <name>   创建一个新网站");
+        println("  theme <name>   创建一个主题");
+        println("  page  <name>   创建一个页面");
+        println("  <name>  网站、主题、页面名称");
+    }
+
+    @Override
+    public String getName() {
+        return "new";
+    }
+
+    @Override
+    public String getDescription() {
+        return "New something";
+    }
+
+    @Override
+    public void execute(Deque<String> options) {
+        ensureMaxArgumentCount(options, 2);
+        ensureMinArgumentCount(options, 2);
+        String command = options.remove();
         switch (command) {
-            case "new site":
-                site(value);
+            case "site":
+                site(options.remove());
                 break;
-            case "new theme":
-                theme(value);
+            case "theme":
+                theme(options.remove());
                 break;
-            case "new page":
-                page(value);
+            case "page":
+                page(options.remove());
                 break;
+            default:
+                printlnError("Unknown option {}", command);
         }
     }
 
     private void site(String siteName) {
-        var env = new Environment(Bored.of().getRoot());
+        var env = new Environment();
         Bored.of().setEnv(env);
-        String site = Bored.convertCorrectPath(env.getRoot() + "/" + siteName);
+        String site = PathUtil.convertCorrectPath(env.getRoot() + "/" + siteName);
         if (FileUtil.exist(site)) {
-            log.info("'{}' 已存在，请删除，或更换网站名 ", siteName);
+            printlnError("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
         }
         ClassPathResource resource = new ClassPathResource("demo/site-template.zip");
         ZipUtil.unzip(resource.getPath(), site);
+        println("Created site {}.", siteName);
     }
 
     private void theme(String name) {
-        var env = new CompleteEnvironment(Bored.of().getRoot());
+        var env = new CompleteEnvironment();
         Bored.of().setEnv(env);
-        String themePath = Bored.convertCorrectPath(env.getRoot() + "/themes/" + name);
+        String themePath = PathUtil.convertCorrectPath(env.getRoot() + "/themes/" + name);
         ClassPathResource resource = new ClassPathResource("demo/theme-template.zip");
         ZipUtil.unzip(resource.getPath(), themePath);
     }
 
     private void page(String name) {
-        var env = new CompleteEnvironment(Bored.of().getRoot());
+        var env = new CompleteEnvironment();
         Bored.of().setEnv(env);
         if (name.contains(".md") == Boolean.FALSE) {
             name = name + ".md";
@@ -64,7 +92,7 @@ public class NewCommandExecuter implements CommandExecuter {
         String filePath = String.format("%s/%s", env.getPagePath(), name);
         var page = new File(filePath);
         if (FileUtil.exist(page)) {
-            log.error("Page {} existed!", name);
+            printlnError("Page {} existed!", name);
             return;
         }
         FileUtil.touch(page);
@@ -82,12 +110,12 @@ public class NewCommandExecuter implements CommandExecuter {
             templateContent.append(env.getSiteConfig().getFrontMatterSeparator());
             var frontMatter = new Page.FrontMatter();
             frontMatter.setTitle(StrUtil.removeSuffix(page.getName(), ".md"));
-            String content = env.getJetTemplateHelper().parseSource(templateContent.toString(), Bored.objToMap(frontMatter, frontMatter.getClass()));
+            String content = env.getJetTemplateHelper().parseSource(templateContent.toString(), frontMatter.toMap());
             @Cleanup FileWriter writer = new FileWriter(filePath);
             writer.write(content);
-            log.info("Create file: {}", filePath);
+            //log.info("Create file: {}", filePath);
         } catch (IOException e) {
-            log.error("", e);
+            printlnError("", e);
         }
     }
 }

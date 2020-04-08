@@ -84,8 +84,8 @@ public class ResourceUtil {
     }
 
     private static Map<String, String> loadStatics() {
-        var rootPath = Bored.convertCorrectPath(root + "/themes/" + site.getTheme());
-        var staticPath = Bored.convertCorrectPath(rootPath + "/static");
+        var rootPath = PathUtil.convertCorrectPath(root + "/themes/" + site.getTheme());
+        var staticPath = PathUtil.convertCorrectPath(rootPath + "/static");
         return loading(rootPath, staticPath);
     }
 
@@ -109,7 +109,7 @@ public class ResourceUtil {
         var resource = new HashMap<String, String>();
         var files = FileUtil.loopFiles(path);
         for (File file : files) {
-            var url = Bored.convertCorrectUrl(StrUtil.removePrefix(file.getPath(), root));
+            var url = PathUtil.convertCorrectUrl(StrUtil.removePrefix(file.getPath(), root));
             resource.put(url, file.getPath());
             log.info("Mapping static resource {}", url);
         }

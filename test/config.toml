@@ -1,0 +1,31 @@
+# This is a simple configuration.
+# And see https://gohugo.io/getting-started/configuration/ .
+
+baseURL = "127.0.0.1"
+title = "管他谁谁谁"
+#theme= ""                    #默认使用default
+#enableHtmlSuffix = false     #关闭html后缀，默认开启
+frontMatterSeparator = "+++"  #前辅文分隔符，默认为"---"
+
+[URLMapping]
+  name:home
+  #type:"layouts"             #默认配置模板路径为主题下layouts，不配置此项则在根目录查找index.ftl
+  layout:index.ftl
+  #pagging:true                #开启分页，启用此项将为页面注入分页的对象，并在静态化时做分页处理
+  
+
+# site your menus             # 配置目录，根据权重排序
+[[menus.main]]            
+  name = "首页"
+  weight = 10
+  identifier = "home"
+  url = "/"
+[[menus.main]]
+  name = "归档"
+  weight = 20
+  identifier = "archives"
+  url = "/post.html"
+
+  
+[params]                      #额外配置
+  dateFormatToUse = "2006-01-02"

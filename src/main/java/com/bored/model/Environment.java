@@ -6,14 +6,10 @@ import lombok.Data;
 @Data
 public class Environment {
 
-    public Environment(String root) {
-        this.root = root;
-    }
-
     /**
      * 根目录
      */
-    private String root;
+    private String root = System.getProperty("user.dir");
     /**
      * 主题目录
      */

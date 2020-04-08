@@ -1,6 +1,7 @@
 package com.bored.server;
 
 import com.bored.Bored;
+import com.bored.model.CompleteEnvironment;
 import com.bored.model.Site;
 import com.bored.server.handler.*;
 import com.bored.util.ResourceUtil;
@@ -15,8 +16,8 @@ public class BoredServer {
 
 
     @SneakyThrows
-    public static void start() {
-        var port = Bored.of().getPort();
+    public static void start(int port) {
+        Bored.of().setEnv(new CompleteEnvironment());
         ResourceUtil.init();
         Server server = new Server(port);
         HandlerList handlers = new HandlerList();
