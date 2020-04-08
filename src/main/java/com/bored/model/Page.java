@@ -47,7 +47,7 @@ public class Page {
 
     public Page(FrontMatter frontMatter) {
         this.title = frontMatter.getTitle();
-        this.createTime = frontMatter.getCreateTime();
+        this.createTime = (Objects.isNull(frontMatter.getCreateTime())) ? frontMatter.getDate() : frontMatter.getCreateTime();
         this.draft = frontMatter.getDraft();
         this.type = frontMatter.getType();
         this.layout = frontMatter.getLayout();
@@ -60,7 +60,8 @@ public class Page {
     @Data
     public static class FrontMatter {
         public String title = StrUtil.EMPTY;
-        public String createTime = DateUtil.now();
+        public String createTime;
+        public String date;
         public Boolean draft = Boolean.TRUE;
         private String url = StrUtil.EMPTY;
         private String type;

@@ -1,5 +1,6 @@
 package com.bored.command;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.io.resource.ClassPathResource;
@@ -58,7 +59,7 @@ public class NewCommand extends Command {
                 page(options.remove());
                 break;
             default:
-                printlnError("Unknown option {}", command);
+                printlnError("Unknown new option {}", command);
         }
     }
 
@@ -79,6 +80,10 @@ public class NewCommand extends Command {
         var env = new CompleteEnvironment();
         Bored.of().setEnv(env);
         String themePath = PathUtil.convertCorrectPath(env.getRoot() + "/themes/" + name);
+        if(FileUtil.exist(themePath)){
+            printlnError("'{}' 已存在，请删除，或更换主题名 ", name);
+            return;
+        }
         ClassPathResource resource = new ClassPathResource("demo/theme-template.zip");
         ZipUtil.unzip(resource.getPath(), themePath);
     }
@@ -110,6 +115,8 @@ public class NewCommand extends Command {
             templateContent.append(env.getSiteConfig().getFrontMatterSeparator());
             var frontMatter = new Page.FrontMatter();
             frontMatter.setTitle(StrUtil.removeSuffix(page.getName(), ".md"));
+            frontMatter.setCreateTime(DateUtil.now());
+
             String content = env.getJetTemplateHelper().parseSource(templateContent.toString(), frontMatter.toMap());
             @Cleanup FileWriter writer = new FileWriter(filePath);
             writer.write(content);

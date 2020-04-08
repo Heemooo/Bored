@@ -9,9 +9,11 @@ import com.bored.model.Site;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class ResourceUtil {
@@ -93,7 +95,9 @@ public class ResourceUtil {
     private static Map<String, Page> loadPages() {
         Map<String, Page> pageMapping = new HashMap<>();
         PageUtil pageUtil = new PageUtil(root, site);
-        pageList = pageUtil.parse();
+        //默认时间创建时间排序
+        pageList = pageUtil.parse().stream().sorted(Comparator.comparing(Page::getCreateTime).reversed()).collect(Collectors.toList());
+        pageList.forEach(page -> System.out.println(page.getCreateTime()));
         pageList.forEach(page -> {
             pageMapping.put(page.getPermLink(), page);
             log.info("Mapping {}", page.getPermLink());

@@ -14,7 +14,7 @@ public class Site {
 
     private String theme = "default";
 
-    private String layoutSuffix = "";
+    private String layoutSuffix = "jetx";
 
     private Boolean enableHtmlSuffix = true;
 

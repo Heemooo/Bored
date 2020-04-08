@@ -26,7 +26,7 @@ public final class Bored {
 
 
     public static void main(String[] commands) {
-        String[] args = {"new", "theme", "test"};
+        String[] args = {"server", "port", "8080"};
         CommandExecute.start(args);
     }
 

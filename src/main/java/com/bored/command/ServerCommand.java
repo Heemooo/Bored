@@ -67,7 +67,7 @@ public class ServerCommand extends Command {
                 }
                 break;
             default:
-                printlnError("Unknown option {}", command);
+                printlnError("Unknown server option {}", command);
                 nonError = false;
         }
         if (!options.isEmpty()) {

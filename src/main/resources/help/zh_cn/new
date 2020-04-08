@@ -1,7 +1,0 @@
-Usage:
-  hugo new [commandHandler] [name]
-
-Available Commands:
-  site        Create a new site (skeleton)
-  theme       Create a new theme
-  page        Create a new page

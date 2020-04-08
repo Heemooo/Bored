@@ -9,7 +9,7 @@ public class Environment {
     /**
      * 根目录
      */
-    private String root = System.getProperty("user.dir");
+    private String root = System.getProperty("user.dir")+"/site-demo1";
     /**
      * 主题目录
      */

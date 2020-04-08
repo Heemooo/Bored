@@ -27,6 +27,7 @@ public class PageHandler extends AbstractHandler {
             var template = page.getType() + "/" + page.getLayout() + "." + site.getLayoutSuffix();
             Map<String, Object> context = new HashMap<>() {{
                 put("page", page);
+                put("pages", ResourceUtil.pageList);
             }};
             var content = env.getJetTemplateHelper().parse(template, context);
             ServletUtil.write(response, content, "text/html;charset=utf-8");

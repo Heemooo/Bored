@@ -1,0 +1,8 @@
+###
+POST http://localhost:8080/db.html
+Content-Type: application/x-www-form-urlencoded
+
+sql=INSERT INTO PAGE VALUES ('1','1','1', '1', '1', '1', '1', '1', '1', '1', '1')
+
+
+###
