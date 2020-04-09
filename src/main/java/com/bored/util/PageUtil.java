@@ -1,9 +1,11 @@
 package com.bored.util;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
+import com.bored.model.FrontMatter;
 import com.bored.model.Page;
 import com.bored.model.Site;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
@@ -12,8 +14,10 @@ import jetbrick.util.annotation.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -50,7 +54,13 @@ public class PageUtil {
             }
             permLink = PathUtil.convertCorrectUrl(permLink);
             page.setPermLink(permLink);
-            pages.add(page);
+            if(Objects.isNull(page.getUrl())){
+                page.setUrl(page.getPermLink());
+
+            }
+            if(!page.isDraft()){
+                pages.add(page);
+            }
         }
         return pages;
     }
@@ -70,9 +80,20 @@ public class PageUtil {
                 content.append(line).append(System.getProperty("line.separator"));
             }
         }
-        var frontMatter = TomlUtil.tomlToObj(header.toString(), Page.FrontMatter.class);
-        var page = new Page(frontMatter);
-        page.setContent(MDTool.markdown2Html(content.toString()));
+        //var frontMatter = TomlUtil.tomlToObj(header.toString(), FrontMatter.class);
+        //var page = new Page(frontMatter);
+        var page = TomlUtil.tomlToObj(header.toString(), Page.class);
+        if(Objects.isNull(page.getLayout())){
+            page.setLayout("page");
+        }
+        if(Objects.isNull(page.getType())){
+            page.setType(StrUtil.EMPTY);
+        }
+        if(Objects.isNull(page.getDate())){
+            page.setDate(DateUtil.now());
+        }
+        page.setContent(content.toString());
+        //page.setContent(MDTool.markdown2Html(content.toString()));
         return page;
     }
 
@@ -87,7 +108,7 @@ public class PageUtil {
         //记录总数
         int count = list.size();
         //页数
-        Integer pageCount = getPageCount(list,pageSize);
+        Integer pageCount = getPageCount(list, pageSize);
         //开始索引
         int fromIndex = 0;
         //结束索引

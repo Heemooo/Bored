@@ -1,9 +1,1 @@
-<a>${page.title}</a>
-<a>${site.title}</a>
-<a>${new Date().format("yyyy-MM-dd")}</a>
-#for(Map.Entry entry :pages.groupBy("year"))
- <p> KEY: ${entry.key}</p>
-  #for(Page p:entry.value)
-  ${p.title}
-  #end
-#end
+${page.content}

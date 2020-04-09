@@ -9,6 +9,7 @@ import cn.hutool.core.util.ZipUtil;
 import com.bored.Bored;
 import com.bored.model.CompleteEnvironment;
 import com.bored.model.Environment;
+import com.bored.model.FrontMatter;
 import com.bored.model.Page;
 import com.bored.util.PathUtil;
 import lombok.Cleanup;
@@ -113,7 +114,7 @@ public class NewCommand extends Command {
                 }
             });
             templateContent.append(env.getSiteConfig().getFrontMatterSeparator());
-            var frontMatter = new Page.FrontMatter();
+            var frontMatter = new FrontMatter();
             frontMatter.setTitle(StrUtil.removeSuffix(page.getName(), ".md"));
             frontMatter.setCreateTime(DateUtil.now());
 

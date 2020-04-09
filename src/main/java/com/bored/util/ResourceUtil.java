@@ -96,8 +96,8 @@ public class ResourceUtil {
         Map<String, Page> pageMapping = new HashMap<>();
         PageUtil pageUtil = new PageUtil(root, site);
         //默认时间创建时间排序
-        pageList = pageUtil.parse().stream().sorted(Comparator.comparing(Page::getCreateTime).reversed()).collect(Collectors.toList());
-        pageList.forEach(page -> System.out.println(page.getCreateTime()));
+        pageList = pageUtil.parse().stream().sorted(Comparator.comparing(Page::getDate).reversed()).collect(Collectors.toList());
+        pageList.forEach(page -> System.out.println(page.getDate()));
         pageList.forEach(page -> {
             pageMapping.put(page.getPermLink(), page);
             log.info("Mapping {}", page.getPermLink());
