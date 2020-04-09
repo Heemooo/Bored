@@ -1,12 +1,8 @@
 package com.bored.server.handler;
 
-import cn.hutool.core.lang.Console;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.bored.Bored;
 import com.bored.db.Db;
-import com.bored.model.Page;
-import com.bored.util.ResourceUtil;
-import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
 import com.youbenzi.mdtool.tool.MDTool;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Request;
@@ -15,7 +11,6 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j

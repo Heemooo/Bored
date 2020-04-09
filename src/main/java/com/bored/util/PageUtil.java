@@ -4,17 +4,12 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
-import com.bored.Bored;
-import com.bored.model.FrontMatter;
 import com.bored.model.Page;
 import com.bored.model.Site;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
-import com.youbenzi.mdtool.tool.MDTool;
-import jetbrick.util.annotation.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -54,11 +49,11 @@ public class PageUtil {
             }
             permLink = PathUtil.convertCorrectUrl(permLink);
             page.setPermLink(permLink);
-            if(Objects.isNull(page.getUrl())){
+            if (Objects.isNull(page.getUrl())) {
                 page.setUrl(page.getPermLink());
 
             }
-            if(!page.isDraft()){
+            if (!page.isDraft()) {
                 pages.add(page);
             }
         }
@@ -83,59 +78,17 @@ public class PageUtil {
         //var frontMatter = TomlUtil.tomlToObj(header.toString(), FrontMatter.class);
         //var page = new Page(frontMatter);
         var page = TomlUtil.tomlToObj(header.toString(), Page.class);
-        if(Objects.isNull(page.getLayout())){
+        if (Objects.isNull(page.getLayout())) {
             page.setLayout("page");
         }
-        if(Objects.isNull(page.getType())){
+        if (Objects.isNull(page.getType())) {
             page.setType(StrUtil.EMPTY);
         }
-        if(Objects.isNull(page.getDate())){
+        if (Objects.isNull(page.getDate())) {
             page.setDate(DateUtil.now());
         }
         page.setContent(content.toString());
         //page.setContent(MDTool.markdown2Html(content.toString()));
         return page;
-    }
-
-    /**
-     * 开始分页
-     * @param list     页面列表
-     * @param pageNum  页码
-     * @param pageSize 每页多少条数据
-     * @return 单页数据
-     */
-    public static List<Page> startPage(@NotNull List<Page> list, Integer pageNum, Integer pageSize) {
-        //记录总数
-        int count = list.size();
-        //页数
-        Integer pageCount = getPageCount(list, pageSize);
-        //开始索引
-        int fromIndex = 0;
-        //结束索引
-        int toIndex = 0;
-        if (pageNum > pageCount) {
-            pageNum = pageCount;
-        }
-        if (!pageNum.equals(pageCount)) {
-            fromIndex = (pageNum - 1) * pageSize;
-            toIndex = fromIndex + pageSize;
-        } else {
-            fromIndex = (pageNum - 1) * pageSize;
-            toIndex = count;
-        }
-        return list.subList(fromIndex, toIndex);
-    }
-
-    public static Integer getPageCount(List<Page> list, Integer pageSize) {
-        //记录总数
-        Integer count = list.size();
-        //页数
-        int pageCount = 0;
-        if (count % pageSize == 0) {
-            pageCount = count / pageSize;
-        } else {
-            pageCount = count / pageSize + 1;
-        }
-        return pageCount;
     }
 }

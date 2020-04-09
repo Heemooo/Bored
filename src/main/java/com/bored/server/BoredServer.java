@@ -1,10 +1,12 @@
 package com.bored.server;
 
 import com.bored.Bored;
-import com.bored.model.CompleteEnvironment;
-import com.bored.server.handler.*;
 import com.bored.db.Db;
-import com.bored.util.ResourceUtil;
+import com.bored.model.CompleteEnvironment;
+import com.bored.server.handler.DbHandler;
+import com.bored.server.handler.NotFoundHandler;
+import com.bored.server.handler.PageHandler;
+import com.bored.server.handler.StaticHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Server;
@@ -16,14 +18,11 @@ public class BoredServer {
     @SneakyThrows
     public static void start(int port) {
         Bored.of().setEnv(new CompleteEnvironment());
-        ResourceUtil.init();
         Db.init();
         Db.loadData();
         Server server = new Server(port);
         HandlerList handlers = new HandlerList();
         handlers.addHandler(new DbHandler());
-        handlers.addHandler(new DefaultHandler());
-        handlers.addHandler(new PaginationHandler());
         handlers.addHandler(new PageHandler());
         handlers.addHandler(new StaticHandler());
         handlers.addHandler(new NotFoundHandler());

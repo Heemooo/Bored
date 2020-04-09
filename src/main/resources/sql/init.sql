@@ -11,7 +11,6 @@ create table page
 	perm_link varchar(255),
 	description varchar(255),
 	content clob,
-	toc clob,
 	constraint page_pk
 		primary key (id)
 );
@@ -44,6 +43,11 @@ create table page_category
 (
 	page_id int,
 	category_id int
+);
+drop table if exists static_resource;
+create table static_resource(
+    uri varchar(255),
+    file_path varchar(255)
 );
 
 

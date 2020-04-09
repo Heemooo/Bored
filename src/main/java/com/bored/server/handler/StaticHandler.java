@@ -3,8 +3,7 @@ package com.bored.server.handler;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.extra.servlet.ServletUtil;
-import com.bored.Bored;
-import com.bored.util.ResourceUtil;
+import com.bored.db.Db;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -17,10 +16,10 @@ import java.io.IOException;
 @Slf4j
 public class StaticHandler extends AbstractHandler {
     @Override
-    public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         String uri = request.getRequestURI();
         response.setStatus(HttpServletResponse.SC_OK);
-        var statics = ResourceUtil.statics;
+        var statics = Db.getStaticResource();
         if (statics.containsKey(uri)) {
             String contentType = "application/octet-stream";
             String filePath = statics.get(uri);
