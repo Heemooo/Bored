@@ -1,10 +1,11 @@
 package com.bored.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
-@Data
+@Builder
 public class Pagination {
 
     private List<Page> data;

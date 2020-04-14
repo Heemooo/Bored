@@ -3,7 +3,6 @@ package com.bored.model;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Console;
 import com.bored.template.JetTemplateHelper;
-import com.bored.template.JetTemplateMethod;
 import com.bored.util.PathUtil;
 import com.bored.util.TomlUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +32,5 @@ public class CompleteEnvironment extends Environment {
 
     public void jetTemplateConfig(Site site) {
         this.getJetTemplateHelper().getEngine().getGlobalContext().set(Site.class, "site", site);
-        this.getJetTemplateHelper().getEngine().getGlobalResolver().registerMethods(JetTemplateMethod.class);
     }
 }

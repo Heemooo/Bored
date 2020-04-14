@@ -11,4 +11,6 @@ public class Tag {
     private Integer id;
     @Column("NAME")
     private String name;
+    @Column("COUNT")
+    private String count;
 }

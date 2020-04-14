@@ -9,4 +9,6 @@ public class Category {
     private Integer id;
     @Column("NAME")
     private String name;
+    @Column("COUNT")
+    private String count;
 }
