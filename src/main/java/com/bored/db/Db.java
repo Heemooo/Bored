@@ -168,4 +168,15 @@ public class Db {
         resources.forEach(resource -> pageMap.put(resource.getUri(), resource.getFilePath()));
         return pageMap;
     }
+
+
+    @SneakyThrows
+    public static void main(String[] args) {
+        String sql = "select *from page";
+        Connection connection = Db.of().getConnection();
+        @Cleanup Statement stmt = connection.createStatement();
+        @Cleanup ResultSet resultSet = stmt.executeQuery(sql);
+        List<Page> pageEntities = ResultSetUtil.toObject(resultSet, Page.class);
+        pageEntities.forEach(pageEntity -> Console.log("id={},date={}",pageEntity.getId(),pageEntity.getDate()));
+    }
 }

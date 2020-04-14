@@ -11,9 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * 页面解析工具
@@ -57,7 +59,7 @@ public class PageUtil {
                 pages.add(page);
             }
         }
-        return pages;
+        return pages.stream().sorted(Comparator.comparing(Page::getDate)).collect(Collectors.toList());
     }
 
     private Page parse(List<String> lines) {

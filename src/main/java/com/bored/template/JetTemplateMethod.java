@@ -12,8 +12,14 @@ public class JetTemplateMethod {
         return pages.stream().collect(Collectors.groupingBy(page -> {
             var date = page.getDate();
             var year = DateUtil.year(DateUtil.parseDate(date));
-            var mounth = DateUtil.month(DateUtil.parseDate(date))+1;
-            return year+"-"+mounth;
+            if ("year".equals(type.trim())) {
+                return year + "";
+            }
+            if ("month".equals(type.trim())) {
+                var mounth = DateUtil.month(DateUtil.parseDate(date)) + 1;
+                return year + "-" + mounth;
+            }
+            return year + "";
         }));
     }
 
