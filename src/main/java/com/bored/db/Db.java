@@ -146,7 +146,7 @@ public class Db {
     }
 
     public static Map<String, Page> getPages() {
-        List<Page> pages = select("SELECT *FROM PAGE", Page.class);
+        List<Page> pages = select(props.getStr("select_page") + " ORDER BY DATE", Page.class);
         Map<String, Page> pageMap = new HashMap<>(pages.size());
         pages.forEach(page -> {
             List<Tag> tagList = select(props.getStr("select_tags"), Tag.class, page.getId());
@@ -154,6 +154,7 @@ public class Db {
 
             List<Category> categoryList = select(props.getStr("select_categories"), Category.class, page.getId());
             page.setCategories(categoryList.stream().map(Category::getName).collect(Collectors.toList()));
+
             pageMap.put(page.getUrl(), page);
             if (!page.getPermLink().equals(page.getUrl())) {
                 pageMap.put(page.getPermLink(), page);
@@ -177,6 +178,6 @@ public class Db {
         @Cleanup Statement stmt = connection.createStatement();
         @Cleanup ResultSet resultSet = stmt.executeQuery(sql);
         List<Page> pageEntities = ResultSetUtil.toObject(resultSet, Page.class);
-        pageEntities.forEach(pageEntity -> Console.log("id={},date={}",pageEntity.getId(),pageEntity.getDate()));
+        pageEntities.forEach(pageEntity -> Console.log("id={},date={}", pageEntity.getId(), pageEntity.getDate()));
     }
 }

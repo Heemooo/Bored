@@ -8,6 +8,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class JetTemplateMethod {
+
+    /**
+     * 对页面列表进行分组，目前包含按年分组和按月分组
+     * @param pages 页面列表
+     * @param type {year,month}
+     * @return 分组集合
+     */
     public static Map<String, List<Page>> groupBy(List<Page> pages, String type) {
         return pages.stream().collect(Collectors.groupingBy(page -> {
             var date = page.getDate();
@@ -22,6 +29,8 @@ public class JetTemplateMethod {
             return year + "";
         }));
     }
+
+
 
     public static void main(String[] args) {
         System.out.println(DateUtil.monthEnum(DateUtil.parseDate("2019-01-02")));
