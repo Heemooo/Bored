@@ -13,4 +13,6 @@ public class Tag {
     private String name;
     @Column("COUNT")
     private String count;
+
+    private String url;
 }
