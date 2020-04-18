@@ -14,7 +14,7 @@ public class BoredUtil {
     }
 
     private static class BoredUtilHolder {
-        private static BoredUtil INSTANCE = new BoredUtil();
+        private static final BoredUtil INSTANCE = new BoredUtil();
     }
 
     public static BoredUtil of() {
@@ -37,9 +37,5 @@ public class BoredUtil {
             var date = page.getDate();
             return String.valueOf(DateUtil.year(DateUtil.parseDate(date)));
         }));
-    }
-
-    public static String test(){
-        return "<h1>nihao</h1>";
     }
 }

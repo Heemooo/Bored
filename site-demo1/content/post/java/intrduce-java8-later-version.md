@@ -165,26 +165,26 @@ public static class Car {
 
 第一种方法引用是构造器引用，它的语法是Class::new，或者更一般的Class< T >::new。请注意构造器没有参数。
 
-```java
+```
 final Car car = Car.create( Car::new );
 final List< Car > cars = Arrays.asList( car );
 ```
 
 第二种方法引用是静态方法引用，它的语法是Class::static_method。请注意这个方法接受一个Car类型的参数。
 
-```java
+```
 cars.forEach( Car::collide );
 ```
 
 第三种方法引用是特定类的任意对象的方法引用，它的语法是Class::method。请注意，这个方法没有参数。
 
-```java
+```
 cars.forEach( Car::repair );
 ```
 
 最后，第四种方法引用是特定对象的方法引用，它的语法是instance::method。请注意，这个方法接受一个Car类型的参数
 
-```java
+```
 final Car police = Car.create( Car::new);
 cars.forEach( police::follow );
 ```
@@ -195,7 +195,7 @@ cars.forEach( police::follow );
 
 重复注解机制本身必须用@Repeatable注解。事实上，这并不是语言层面上的改变，更多的是编译器的技巧，底层的原理保持不变。让我们看一个快速入门的例子：
 
-```java
+```
 @Target(ElementType.TYPE)  
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Persons {
@@ -220,7 +220,7 @@ public class Man {
 
 Java 8在类型推测方面有了很大的提高。在很多情况下，编译器可以推测出确定的参数类型，这样就能使代码更整洁。让我们看一个例子：
 
-```java
+```
 public class Value< T > {
     public static< T > T defaultValue() { 
         return null; 
@@ -240,7 +240,7 @@ public class TypeInference {
 public class TypeInference {
     public static void main(String[] args) {
         final Value<String> value = new Value<String>();
-        value.getOrDefault( "22", Value.<String>defaultValue() );
+        value.getOrDefault( "22", Value.defaultValue() );
     }
 }
 ```
@@ -249,13 +249,13 @@ public class TypeInference {
 
 Java 8扩展了注解的上下文。现在几乎可以为任何东西添加注解：局部变量、泛型类、父类与接口的实现，就连方法的异常也能添加注解。
 
-```java
+```
 ElementType.TYPE_USE//表示注解可以再任何用到类型的地方使用，比如创建对象，类型转换，实现接口，抛出异常
 ElementType.TYPE_PARAMETER//表示该注解能写在类型参数的声明语句中
 ```
 示例如下：
 
-```java
+```
 public class Annotations {
     @Retention( RetentionPolicy.RUNTIME )
     @Target( { ElementType.TYPE_USE, ElementType.TYPE_PARAMETER } )
@@ -281,7 +281,7 @@ public class Annotations {
 
 很长一段时间里，Java程序员一直在发明不同的方式使得[方法参数的名字能保留在Java字节码](http://www.javacodegeeks.com/2014/04/constructormethod-parameters-metadata-available-via-reflection-in-jdk-8.html)中，并且能够在运行时获取它们（比如，[Paranamer类库](https://github.com/paul-hammant/paranamer)）。最终，在Java 8中把这个强烈要求的功能添加到语言层面（通过反射API与Parameter.getName()方法）与字节码文件（通过新版的javac的–parameters选项）中。
 
-```java
+```
   public static void main(String[] args) throws Exception {
         Method method = ParameterNames.class.getMethod( "main", String[].class );
         for( final Parameter parameter: method.getParameters() ) {
@@ -292,13 +292,13 @@ public class Annotations {
 
 如果不使用–parameters参数来编译这个类，然后运行这个类，会得到下面的输出：
 
-```java
+```
 `Parameter: arg0`
 ```
 
 如果使用–parameters参数来编译这个类，程序的结构会有所不同（参数的真实名字将会显示出来）：
 
-```java
+```
 `Parameter: args`
 ```
 
@@ -314,13 +314,13 @@ Optional实际上是个容器：它可以保存类型T的值，或者仅仅保�
 
 在 Java 8 之前，任何访问对象方法或属性的调用都可能导致 *NullPointerException*：
 
-```java
+```
 String isocode = user.getAddress().getCountry().getIsocode().toUpperCase();
 ```
 
 在这个小示例中，如果我们需要确保不触发异常，就得在访问每一个值之前对其进行明确地检查：
 
-```java
+```
 if (user != null) {
     Address address = user.getAddress();
     if (address != null) {
@@ -337,7 +337,7 @@ if (user != null) {
 
 为了简化这个过程，我们来看看用 *Optional*  类是怎么做的:
 
-```java
+```
 public class User {
     private Address address;
 
@@ -358,7 +358,7 @@ public class Address {
 }
 ```
 
-```java
+```
 String result = Optional.ofNullable(user)
   .flatMap(User::getAddress)
   .flatMap(Address::getCountry)
@@ -378,11 +378,11 @@ String result = Optional.ofNullable(user)
 
 Stream API极大简化了集合框架的处理（但它的处理的范围不仅仅限于集合框架的处理，这点后面我们会看到）。让我们以一个简单的Task类为例进行介绍：
 
-```java
+```
 public class Streams  {
     private enum Status {
         OPEN, CLOSED
-    };
+    }
      
     private static final class Task {
         private final Status status;
@@ -548,7 +548,7 @@ Java 9 的定义功能是一套全新的模块系统。当代码库越来越大�
 
 模块化的 JAR 文件都包含一个额外的模块描述器。在这个模块描述器中, 对其它模块的依赖是通过 “requires” 来表示的。另外, “exports” 语句控制着哪些包是可以被其它模块访问到的。所有不被导出的包默认都封装在模块的里面。如下是一个模块描述器的示例，存在于 “module-info.java” 文件中:
 
-```java
+```
 module blog {
   exports com.pluralsight.blog;
  
@@ -568,7 +568,7 @@ module blog {
 
 通过下面 的方式直接声明不可变集合
 
-```java
+```
 Set<Integer> ints = Set.of(1, 2, 3);
 List<String> strings = List.of("first", "second");
 ```
@@ -579,7 +579,7 @@ List<String> strings = List.of("first", "second");
 
 Java 8 为我们带来了接口的默认方法。 接口现在也可以包含行为，而不仅仅是方法签名。 但是，如果在接口上有几个默认方法，代码几乎相同，会发生什么情况？ 通常，您将[重构](http://www.amazon.cn/gp/product/B003BY6PLK/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&tag=importnew-23&linkCode=as2&camp=536&creative=3200&creativeASIN=B003BY6PLK)这些方法，调用一个可复用的私有方法。 但默认方法不能是私有的。 将复用代码创建为一个默认方法不是一个解决方案，因为该辅助方法会成为公共API的一部分。 使用 Java 9，您可以向接口添加私有辅助方法来解决此问题：
 
-```java
+```
 public interface MyInterface {
  
     void normalInterfaceMethod();
@@ -602,7 +602,7 @@ Java 9 中有新的方式来处理 HTTP 调用。这个迟到的特性用于代�
 
 #### 1.1 局部变量类型推断
 
-```java
+```
 final var clock = Clock.systemUTC();
 System.out.println(clock.instant());
 System.out.println(clock.millis());

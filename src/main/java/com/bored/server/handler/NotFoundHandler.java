@@ -5,16 +5,13 @@ import com.bored.Bored;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 public class NotFoundHandler extends AbstractHandler {
     @Override
-    public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         var env = Bored.of().getEnv();
         var site = env.getSiteConfig();
         var template = "404." + site.getLayoutSuffix();

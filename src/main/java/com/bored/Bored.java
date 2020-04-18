@@ -17,7 +17,7 @@ public final class Bored {
     private Environment env;
 
     private static class BoredHolder {
-        private static Bored INSTANCE = new Bored();
+        private static final Bored INSTANCE = new Bored();
     }
 
     public static Bored of() {

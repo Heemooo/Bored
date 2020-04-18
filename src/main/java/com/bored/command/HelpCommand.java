@@ -36,6 +36,7 @@ public class HelpCommand extends Command {
             Command c = Command.valueOf(commandName);
             if (c == null) {
                 userFailed("Unknown command " + commandName);
+                return;
             }
             c.displayUsage();
         }

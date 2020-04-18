@@ -2,7 +2,6 @@ package com.bored.util;
 
 import cn.hutool.core.io.FileTypeUtil;
 import cn.hutool.core.io.FileUtil;
-import com.bored.Bored;
 import com.moandjiezana.toml.Toml;
 
 import java.io.File;

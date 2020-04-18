@@ -15,7 +15,7 @@ import java.util.Map;
 public class JetTemplateHelper {
 
     @Getter
-    private JetEngine engine;
+    private final JetEngine engine;
 
     public JetTemplateHelper(String loadRootPath) {
         log.debug("Layout load root path {}", loadRootPath);

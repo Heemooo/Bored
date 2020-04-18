@@ -10,7 +10,6 @@ import com.bored.Bored;
 import com.bored.model.CompleteEnvironment;
 import com.bored.model.Environment;
 import com.bored.model.FrontMatter;
-import com.bored.model.Page;
 import com.bored.util.PathUtil;
 import lombok.Cleanup;
 
@@ -81,7 +80,7 @@ public class NewCommand extends Command {
         var env = new CompleteEnvironment();
         Bored.of().setEnv(env);
         String themePath = PathUtil.convertCorrectPath(env.getRoot() + "/themes/" + name);
-        if(FileUtil.exist(themePath)){
+        if (FileUtil.exist(themePath)) {
             printlnError("'{}' 已存在，请删除，或更换主题名 ", name);
             return;
         }

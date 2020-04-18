@@ -20,7 +20,6 @@ public abstract class Command {
     }
 
     void displayUsage() {
-        String javaText = "java " + Command.class.getName();
         println("Usage: Bored command " + getName() + " " + getOptionSyntax());
         displayOptionUsage();
     }

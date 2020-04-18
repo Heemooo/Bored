@@ -5,7 +5,6 @@ import com.bored.db.Column;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Objects;
 
 @Data
 public class Page {

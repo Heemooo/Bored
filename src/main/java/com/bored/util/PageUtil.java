@@ -25,9 +25,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PageUtil {
 
-    private Site site;
+    private final Site site;
 
-    private String path;
+    private final String path;
 
     public PageUtil(String path, Site site) {
         this.site = site;
