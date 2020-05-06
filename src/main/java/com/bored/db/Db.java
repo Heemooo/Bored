@@ -2,16 +2,13 @@ package com.bored.db;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
-import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.dialect.Props;
 import cn.schoolwow.quickdao.QuickDAO;
 import cn.schoolwow.quickdao.dao.DAO;
 import com.bored.Bored;
 import com.bored.db.entity.Category;
-import com.bored.db.entity.StaticResource;
 import com.bored.db.entity.Tag;
-import com.bored.db.entity.User;
 import com.bored.model.Page;
 import com.bored.util.PageUtil;
 import com.bored.util.PathUtil;
@@ -37,8 +34,16 @@ public class Db {
     //private static final String url = "jdbc:h2:~/test";
     private static final String user = "sa";
     private static final String password = StrUtil.EMPTY;
+    private final DAO dao;
 
     private Db() {
+        BasicDataSource mysqlDataSource = new BasicDataSource();
+        mysqlDataSource.setDriverClassName(driver);
+        mysqlDataSource.setUrl(url);
+        mysqlDataSource.setUsername(user);
+        mysqlDataSource.setPassword(password);
+        QuickDAO quickDAO = QuickDAO.newInstance().dataSource(mysqlDataSource).packageName("com.bored.db.entity");
+        dao = quickDAO.build();
         props = new Props("sql.properties");
         props.setProperty("sql", "sql");
     }
@@ -51,6 +56,9 @@ public class Db {
         return DbHolder.db;
     }
 
+    public static DAO getDao(){
+        return Db.of().dao;
+    }
     @SneakyThrows
     private Connection getConnection() {
         Class.forName(driver);
@@ -114,14 +122,14 @@ public class Db {
             List<String> category = page.getCategories();
             if (Objects.nonNull(category)) {
                 category.forEach(name -> {
-                    int categoryId = insertCategory(name);
+                    var categoryId = insertCategory(name);
                     insert(props.getStr("insert_page_category"), pageId, categoryId);
                 });
             }
             List<String> tag = page.getTags();
             if (Objects.nonNull(tag)) {
                 tag.forEach(name -> {
-                    int tagId = insertTag(name);
+                    var tagId = insertTag(name);
                     insert(props.getStr("insert_page_tag"), pageId, tagId);
                 });
             }
@@ -138,8 +146,8 @@ public class Db {
     }
 
 
-    public static Integer insertTag(String name) {
-        int id;
+    public static long insertTag(String name) {
+        long id;
         List<Tag> tags = select(props.getStr("select_tag"), Tag.class, name);
         if (tags.isEmpty()) {
             id = insert(props.getStr("insert_tag"), name);
@@ -151,8 +159,8 @@ public class Db {
     }
 
 
-    public static Integer insertCategory(String name) {
-        int id;
+    public static long insertCategory(String name) {
+        long id;
         List<Category> categories = select(props.getStr("select_category"), Category.class, name);
         if (categories.isEmpty()) {
             id = insert(props.getStr("insert_category"), name);
@@ -182,10 +190,10 @@ public class Db {
     }
 
     public static Map<String, String> getStaticResource() {
-        List<StaticResource> resources = select(props.getStr("select_static_resource"), StaticResource.class);
-        Map<String, String> pageMap = new HashMap<>(resources.size());
-        resources.forEach(resource -> pageMap.put(resource.getUri(), resource.getFilePath()));
-        return pageMap;
+        //List<StaticResource> resources = select(props.getStr("select_static_resource"), StaticResource.class);
+        //Map<String, String> pageMap = new HashMap<>(resources.size());
+        //resources.forEach(resource -> pageMap.put(resource.getUri(), resource.getFilePath()));
+        return null;
     }
 
 
@@ -197,20 +205,6 @@ public class Db {
         @Cleanup ResultSet resultSet = stmt.executeQuery(sql);
         List<Page> pageEntities = ResultSetUtil.toObject(resultSet, Page.class);
         pageEntities.forEach(pageEntity -> Console.log("id={},date={}", pageEntity.getId(), pageEntity.getDate()));*/
-        BasicDataSource mysqlDataSource = new BasicDataSource();
-        mysqlDataSource.setDriverClassName(driver);
-        mysqlDataSource.setUrl(url);
-        mysqlDataSource.setUsername(user);
-        mysqlDataSource.setPassword(password);
-        QuickDAO quickDAO = QuickDAO.newInstance().dataSource(mysqlDataSource).packageName("com.bored.db.entity");
-        DAO dao = quickDAO.build();
-        //dao.create(User.class);
-        var user = new User();
-        user.setId(1);
-        user.setPassword("passwd");
-        user.setUsername("username");
-        dao.insert(user);
-        var data = dao.fetch(User.class, 1);
-        Console.log(data);
+
     }
 }
