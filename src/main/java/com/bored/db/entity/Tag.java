@@ -1,18 +1,27 @@
 package com.bored.db.entity;
 
-import com.bored.db.Column;
-import com.bored.db.Table;
 import lombok.Data;
 
+/**
+ * 标签
+ */
 @Data
-@Table("TAG")
 public class Tag {
-    @Column("ID")
-    private Integer id;
-    @Column("NAME")
+    /**
+     * 标签id
+     */
+    private long id;
+    /**
+     * 标签名
+     */
     private String name;
-    @Column("COUNT")
+    /**
+     * 标签数量
+     */
     private String count;
-
+    /**
+     * 、
+     * 标签url
+     */
     private String url;
 }
