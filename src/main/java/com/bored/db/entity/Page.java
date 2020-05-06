@@ -1,4 +1,4 @@
-package com.bored.model;
+package com.bored.db.entity;
 
 import cn.hutool.core.util.StrUtil;
 import com.bored.db.Column;
@@ -10,7 +10,7 @@ import java.util.List;
 public class Page {
 
     @Column("ID")
-    private Integer id;
+    private long id;
 
     @Column("TITLE")
     private String title;

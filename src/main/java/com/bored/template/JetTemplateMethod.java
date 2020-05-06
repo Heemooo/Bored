@@ -2,7 +2,7 @@ package com.bored.template;
 
 import cn.hutool.core.date.DateUtil;
 import com.bored.model.Context;
-import com.bored.model.Page;
+import com.bored.db.entity.Page;
 import com.bored.model.Pagination;
 
 import java.util.List;

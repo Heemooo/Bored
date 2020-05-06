@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
-import com.bored.model.Page;
+import com.bored.db.entity.Page;
 import com.bored.model.Site;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
 import lombok.extern.slf4j.Slf4j;
