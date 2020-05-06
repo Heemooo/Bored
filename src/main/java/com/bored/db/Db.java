@@ -5,18 +5,25 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.dialect.Props;
+import cn.schoolwow.quickdao.QuickDAO;
+import cn.schoolwow.quickdao.dao.DAO;
 import com.bored.Bored;
 import com.bored.db.entity.Category;
 import com.bored.db.entity.StaticResource;
 import com.bored.db.entity.Tag;
+import com.bored.db.entity.User;
 import com.bored.model.Page;
 import com.bored.util.PageUtil;
 import com.bored.util.PathUtil;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
+import org.apache.commons.dbcp.BasicDataSource;
 
 import java.io.File;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +33,8 @@ import java.util.stream.Collectors;
 public class Db {
     private static Props props;
     private static final String driver = "org.h2.Driver";
-    //private static final String url = "jdbc:h2:mem:core";
-    private static final String url = "jdbc:h2:~/test";
+    private static final String url = "jdbc:h2:mem:core";
+    //private static final String url = "jdbc:h2:~/test";
     private static final String user = "sa";
     private static final String password = StrUtil.EMPTY;
 
@@ -60,14 +67,19 @@ public class Db {
     }
 
     @SneakyThrows
-    public static int insert(String sql, Object... params) {
-        @Cleanup PreparedStatement statement = Db.of().getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+    private static void setParams(PreparedStatement statement, Object... params) {
         for (int i = 0; i < params.length; i++) {
             statement.setObject(i + 1, params[i]);
         }
+    }
+
+    @SneakyThrows
+    public static int insert(String sql, Object... params) {
+        @Cleanup var statement = Db.of().getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        setParams(statement, params);
         int id = 0;
         statement.executeUpdate();
-        @Cleanup ResultSet resultSet = statement.getGeneratedKeys();
+        @Cleanup var resultSet = statement.getGeneratedKeys();
         if (resultSet.next()) {
             id = resultSet.getInt(1);
         }
@@ -76,13 +88,19 @@ public class Db {
 
     @SneakyThrows
     public static <T> List<T> select(String sql, Class<T> zClass, Object... params) {
-        @Cleanup PreparedStatement statement = Db.of().getConnection().prepareStatement(sql);
-        for (int i = 0; i < params.length; i++) {
-            statement.setObject(i + 1, params[i]);
-        }
-        @Cleanup ResultSet resultSet = statement.executeQuery();
+        @Cleanup var statement = Db.of().getConnection().prepareStatement(sql);
+        setParams(statement, params);
+        @Cleanup var resultSet = statement.executeQuery();
         return ResultSetUtil.toObject(resultSet, zClass);
     }
+
+    @SneakyThrows
+    public static int updateOrDelete(String sql, Object... params) {
+        @Cleanup var statement = Db.of().getConnection().prepareStatement(sql);
+        setParams(statement, params);
+        return statement.executeUpdate();
+    }
+
 
     @SneakyThrows
     public static void loadData() {
@@ -173,11 +191,26 @@ public class Db {
 
     @SneakyThrows
     public static void main(String[] args) {
-        String sql = "select *from page";
+        /*String sql = "select *from page";
         Connection connection = Db.of().getConnection();
         @Cleanup Statement stmt = connection.createStatement();
         @Cleanup ResultSet resultSet = stmt.executeQuery(sql);
         List<Page> pageEntities = ResultSetUtil.toObject(resultSet, Page.class);
-        pageEntities.forEach(pageEntity -> Console.log("id={},date={}", pageEntity.getId(), pageEntity.getDate()));
+        pageEntities.forEach(pageEntity -> Console.log("id={},date={}", pageEntity.getId(), pageEntity.getDate()));*/
+        BasicDataSource mysqlDataSource = new BasicDataSource();
+        mysqlDataSource.setDriverClassName(driver);
+        mysqlDataSource.setUrl(url);
+        mysqlDataSource.setUsername(user);
+        mysqlDataSource.setPassword(password);
+        QuickDAO quickDAO = QuickDAO.newInstance().dataSource(mysqlDataSource).packageName("com.bored.db.entity");
+        DAO dao = quickDAO.build();
+        //dao.create(User.class);
+        var user = new User();
+        user.setId(1);
+        user.setPassword("passwd");
+        user.setUsername("username");
+        dao.insert(user);
+        var data = dao.fetch(User.class, 1);
+        Console.log(data);
     }
 }
