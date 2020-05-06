@@ -12,4 +12,8 @@ public class Path {
      * 文件路径
      */
     private String filePath;
+    /**
+     * 文件类型
+     */
+    private String type;
 }
