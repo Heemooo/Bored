@@ -40,8 +40,8 @@ public class JetTemplateMethod {
                 return year + "";
             }
             if ("month".equals(type.trim())) {
-                var mounth = DateUtil.month(DateUtil.parseDate(date)) + 1;
-                return year + "-" + mounth;
+                var month = DateUtil.month(DateUtil.parseDate(date)) + 1;
+                return year + "-" + month;
             }
             return year + "";
         }));
