@@ -2,8 +2,6 @@ package com.bored.server.handler;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.bored.Bored;
-import com.bored.db.Db;
-import com.youbenzi.mdtool.tool.MDTool;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -21,13 +19,10 @@ public class PageHandler extends AbstractHandler {
         String uri = request.getRequestURI();
         var env = Bored.of().getEnv();
         var site = env.getSiteConfig();
-        var pages = Db.getPages();
+        var pages = env.getPageMap();
         if (pages.containsKey(uri)) {
             response.setStatus(HttpServletResponse.SC_OK);
             var page = pages.get(uri);
-            page.setContent(MDTool.markdown2Html(page.getContent()));
-            //var toc = AtxMarkdownToc.newInstance().charset("UTF-8").write(false).subTree(false).genTocFile(filePath);
-            //page.setToc(toc.getTocLines());
             var template = page.getType() + "/" + page.getLayout() + "." + site.getLayoutSuffix();
             Map<String, Object> context = new HashMap<>() {{
                 put("page", page);

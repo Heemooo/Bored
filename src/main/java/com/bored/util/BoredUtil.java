@@ -1,7 +1,7 @@
 package com.bored.util;
 
 import cn.hutool.core.date.DateUtil;
-import com.bored.db.entity.Page;
+import com.bored.db.model.Page;
 
 import java.util.Comparator;
 import java.util.List;

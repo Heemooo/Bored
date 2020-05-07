@@ -3,7 +3,7 @@ package com.bored.db.entity;
 /**
  * 文件路径
  */
-public class Path {
+class PathEntity {
     /**
      * 文件名
      */

@@ -1,6 +1,6 @@
 package com.bored.model;
 
-import com.bored.db.entity.Page;
+import com.bored.db.model.Page;
 import lombok.Builder;
 
 import java.util.List;

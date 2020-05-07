@@ -1,7 +1,11 @@
 package com.bored.model;
 
+import com.bored.db.model.Page;
 import com.bored.template.JetTemplateHelper;
 import lombok.Data;
+
+import java.util.List;
+import java.util.Map;
 
 @Data
 public class Environment {
@@ -9,7 +13,7 @@ public class Environment {
     /**
      * 根目录
      */
-    private String root = System.getProperty("user.dir")+"/site-demo1";
+    private String root = System.getProperty("user.dir") + "/site-demo1";
     /**
      * 主题目录
      */
@@ -42,4 +46,16 @@ public class Environment {
      * 系统换行符
      */
     private String lineSeparator = System.getProperty("line.separator");
+    /**
+     * 文章列表
+     */
+    private List<Page> pageList;
+    /**
+     * 文章列表
+     */
+    private Map<String, Page> pageMap;
+    /**
+     * 静态资源列表
+     */
+    private Map<String, String> staticResources;
 }
