@@ -5,7 +5,7 @@ public interface BaseDAO<T> {
 
     long update(T t);
 
-    long delete(T t);
+    long delete(long id);
 
     long insert(T t);
 }

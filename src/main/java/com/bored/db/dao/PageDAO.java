@@ -1,4 +1,26 @@
 package com.bored.db.dao;
 
-public class PageDAO {
+import com.bored.db.Db;
+import com.bored.db.entity.Page;
+
+public class PageDAO implements BaseDAO<Page> {
+    @Override
+    public Page query(long id) {
+        return Db.getDao().fetch(Page.class, id);
+    }
+
+    @Override
+    public long update(Page page) {
+        return Db.getDao().update(page);
+    }
+
+    @Override
+    public long delete(long id) {
+        return Db.getDao().delete(Page.class, id);
+    }
+
+    @Override
+    public long insert(Page page) {
+        return Db.getDao().insert(page);
+    }
 }
