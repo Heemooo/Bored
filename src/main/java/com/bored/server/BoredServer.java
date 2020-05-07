@@ -26,6 +26,11 @@ public class BoredServer {
         Bored.of().setEnv(new CompleteEnvironment());
         PageUtil pageUtil = new PageUtil();
         List<Page> pages = pageUtil.loadPages();
+        for (int i = 0, len = pages.size(); i < len; i++) {
+            if (i < (len - 1)) pages.get(i).setNext(pages.get(i + 1));
+            if (i > 0) pages.get(i).setPrev(pages.get(i - 1));
+        }
+        Bored.of().getEnv().setPageList(pages);
         loadPages(pages);
         loadStatics();
 

@@ -30,5 +30,13 @@ public class Page {
     private List<String> categories;
 
     private List<String> tags;
+    /**
+     * 下一篇
+     */
+    private Page next;
+    /**
+     * 上一篇
+     */
+    private Page prev;
 }
 

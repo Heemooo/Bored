@@ -45,7 +45,7 @@ public class PageUtil {
                 pages.add(page);
             }
         }
-        return pages.stream().sorted(Comparator.comparing(Page::getDate)).collect(Collectors.toList());
+        return pages.stream().sorted(Comparator.comparing(Page::getDate).reversed()).collect(Collectors.toList());
     }
 
     private Page parse(File file) {

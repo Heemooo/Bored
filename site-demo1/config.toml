@@ -29,3 +29,4 @@ frontMatterSeparator = "+++"  #前辅文分隔符，默认为"---"
   
 [params]                      #额外配置
   dateFormatToUse = "2006-01-02"
+  subTitle = "逍遥天地外、不在五行中"

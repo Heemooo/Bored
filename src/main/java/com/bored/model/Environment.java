@@ -49,6 +49,10 @@ public class Environment {
     /**
      * 文章列表
      */
+    private List<Page> pageList;
+    /**
+     * 文章列表
+     */
     private Map<String, Page> pageMap = new HashMap<>();
     /**
      * 静态资源列表
