@@ -9,7 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 首页处理
@@ -29,7 +31,7 @@ public class IndexHandler extends AbstractHandler {
             var template = "index.html";
             var context = new HashMap<String, Object>() {{
                 put("site", env.getSiteConfig());
-                put("pages", env.getPageMap().values());
+                put("pages", new ArrayList<>(env.getPageMap().values()));
                 put("tags", env.getTags());
                 put("categories", env.getCategories());
             }};

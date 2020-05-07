@@ -20,6 +20,7 @@ public class JetTemplateMethod {
      * @return 最新的文章
      */
     public static List<Page> top(List<Page> pages, int number) {
+        Console.log(number);
         return pages.subList(0, number);
     }
 
