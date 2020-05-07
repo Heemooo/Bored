@@ -2,6 +2,7 @@ package com.bored.server.handler;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.bored.Bored;
+import com.bored.model.Pagination;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
@@ -32,6 +33,10 @@ public class IndexHandler extends AbstractHandler {
                 put("pages", env.getPageList());
                 put("tags", env.getTags());
                 put("categories", env.getCategories());
+                var pagination = new Pagination();
+                pagination.setTemplatePath(template);
+                pagination.setUri(uri);
+                put("pagination", pagination);
             }};
             var content = env.getJetTemplateHelper().parse(template, context);
             ServletUtil.write(response, content, "text/html;charset=utf-8");

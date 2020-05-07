@@ -1,24 +1,28 @@
 package com.bored.model;
 
-import lombok.Builder;
+import lombok.Data;
 
 import java.util.List;
 
-@Builder
+@Data
 public class Pagination {
 
-    private final List<Page> data;
+    private List<Page> data;
 
-    private final Boolean hasPrev;
+    private Boolean hasPrev;
 
-    private final String prev;
+    private String prev;
 
-    private final Boolean hasNext;
+    private Boolean hasNext;
 
-    private final String next;
+    private String next;
 
-    private final Integer pageCount;
+    private Integer pageCount;
 
-    private final Integer current;
+    private Integer current;
+
+    private String templatePath;
+
+    private String uri;
 
 }

@@ -3,13 +3,15 @@ package com.bored.template;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Console;
 import com.bored.Bored;
-import com.bored.model.Context;
 import com.bored.model.Page;
 import com.bored.model.Pagination;
+import com.bored.util.PageUtil;
+import com.bored.util.PaginationUtil;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class JetTemplateMethod {
@@ -45,13 +47,11 @@ public class JetTemplateMethod {
         }));
     }
 
-    public static String pagination(List<Page> pages, Context context, String layoutPath) {
-        if (context.isPaginationStart()) {
-            Pagination.builder().build();
-        }
-        return "";
-    }
+    public static Pagination start(Pagination pagination) {
+        if (Objects.nonNull(pagination.getCurrent())){
 
+        }
+    }
 
     public static void main(String[] args) {
         System.out.println(DateUtil.monthEnum(DateUtil.parseDate("2019-01-02")));
