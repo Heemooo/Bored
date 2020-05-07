@@ -1,7 +1,7 @@
 package com.bored.db.dao;
 
 import com.bored.db.Db;
-import com.bored.db.model.Page;
+import com.bored.model.Page;
 
 public class PageDAO implements BaseDAO<Page> {
     @Override

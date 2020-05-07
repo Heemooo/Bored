@@ -1,5 +1,6 @@
 package com.bored.model;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 
 import java.util.List;
@@ -30,5 +31,7 @@ public class Site {
 
     private Map<String, Object> params;
 
-
+    public String getLayoutSuffix() {
+        return enableHtmlSuffix ? layoutSuffix : StrUtil.EMPTY;
+    }
 }

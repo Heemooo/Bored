@@ -1,9 +1,9 @@
 package com.bored.model;
 
-import com.bored.db.model.Page;
 import com.bored.template.JetTemplateHelper;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,13 +49,13 @@ public class Environment {
     /**
      * 文章列表
      */
-    private List<Page> pageList;
-    /**
-     * 文章列表
-     */
-    private Map<String, Page> pageMap;
+    private Map<String, Page> pageMap = new HashMap<>();
     /**
      * 静态资源列表
      */
-    private Map<String, String> staticResources;
+    private Map<String, String> staticResources = new HashMap<>();
+
+    private Map<String, Tag> tags = new HashMap<>();
+
+    private Map<String, Category> categories = new HashMap<>();
 }

@@ -1,4 +1,4 @@
-package com.bored.db.model;
+package com.bored.model;
 
 import lombok.Data;
 

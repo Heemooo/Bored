@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class StaticHandler extends AbstractHandler {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
-        String uri = request.getRequestURI();
+        var uri = request.getRequestURI();
         response.setStatus(HttpServletResponse.SC_OK);
         var statics = Bored.of().getEnv().getStaticResources();
         if (statics.containsKey(uri)) {

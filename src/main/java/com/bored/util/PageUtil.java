@@ -5,7 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.db.model.Page;
+import com.bored.model.Page;
 import com.bored.model.Site;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
 import lombok.SneakyThrows;
@@ -55,9 +55,7 @@ public class PageUtil {
         var page = parseContent(fileReader.readLines());
         page.setToc(parseToc(filePath));
         permLink = StrUtil.removeSuffix(permLink, ".md");
-        if (site.getEnableHtmlSuffix()) {
-            permLink = permLink + ".html";
-        }
+        permLink = String.format("%s.%s", permLink, site.getLayoutSuffix());
         permLink = PathUtil.convertCorrectUrl(permLink);
         page.setPermLink(permLink);
 
