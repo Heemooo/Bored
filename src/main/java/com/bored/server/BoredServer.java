@@ -72,7 +72,7 @@ public class BoredServer {
                     Category category = new Category();
                     category.setName(categoryName);
                     category.getPages().add(page);
-                    category.setUrl(String.format("/category/%s.%s", env.getCategories(), Bored.of().getEnv().getSiteConfig().getLayoutSuffix()));
+                    category.setUrl(String.format("/category/%s.%s", categoryName, Bored.of().getEnv().getSiteConfig().getLayoutSuffix()));
                     env.getCategories().put(categoryName, category);
                 }
             });

@@ -1,22 +1,20 @@
-<!--首页-->
-#call header('首页')
-<body nonce-data="4fb3a4be0d" class="home blog hfeed chinese-font">
-<div class="scrollbar" id="bar">
+#tag layout_block("head")
+#call head()
+#end
+
+#tag layout_block("header")
+#call header()
+#end
+
+#tag layout_block("footer")
+#call footer()
+#end
+
+#tag layout_block("main")
+<div class="am-g am-g-fixed blog-fixed">
+    #include("/partials/body-left.html")
+    #include("/partials/body-right.html")
 </div>
-<section id="main-container">
-    <div class="headertop filter-dot">
-        <#include 'macro-header.ftl'>
-        <div id="content" class="site-content">
-            <div id="primary" class="content-area">
-                <#if pjax><!---- pjax {#pjax} start ----></#if>
-            <#include "article-list.ftl">
-            <#if pjax><!---- pjax {#pjax} end ----></#if>
-    </div>
-    </div>
-    </div>
-    <#include 'macro-footer.ftl'>
-</section>
-<#include 'side-mobile.ftl'>
-<#include 'footer.ftl'>
-</body>
-</html>
+#end
+
+#include ("/base/layout.html")
