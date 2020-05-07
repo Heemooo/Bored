@@ -6,7 +6,6 @@ title = "管他谁谁谁"
 #theme= ""                    #默认使用default
 #enableHtmlSuffix = false     #关闭html后缀，默认开启
 frontMatterSeparator = "+++"  #前辅文分隔符，默认为"---"
-layoutSuffix = "jetx"         #模板文件后缀
 
 [URLMapping]
   name="home"
