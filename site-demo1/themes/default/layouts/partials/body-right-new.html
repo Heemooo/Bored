@@ -7,7 +7,12 @@
     <div class="sidebar-list" style="width:400px;">
         <ul class="sidebar-list-body sidebar-list-items">
             <section id="archive" class="archive">
-                ${pages.top(5,"#for(Page page:newest)<li class="sidebar-list-item"><a href="${page.url}">${page.date} ${page.title}</a></li>#end")}
+                #set(List<Page> newest = pages.top(5))
+                #for(Page page:newest)
+                <li class="sidebar-list-item">
+                    <a href="${page.url}">${page.date} ${page.title}</a>
+                </li>
+                #end
             </section>
         </ul>
     </div>

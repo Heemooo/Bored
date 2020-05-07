@@ -19,15 +19,8 @@ public class JetTemplateMethod {
      * @param number 数量
      * @return 最新的文章
      */
-    public static String top(List<Page> pages, int number, String template) {
-        Console.log(template);
-        List<Page> newest = pages.subList(0, number);
-        var context = new HashMap<String, Object>() {{
-            put("newest", newest);
-        }};
-        String content = Bored.of().getEnv().getJetTemplateHelper().parseSource(template, context);
-        Console.log(content);
-        return content;
+    public static List<Page> top(List<Page> pages, int number) {
+        return pages.subList(0, number);
     }
 
     /**
