@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public class PaginationUtil {
-    public static Map<String, Pagination> loadPagination(String templatePath, List<Page> pages) {
+    public static Map<String, Pagination> loadPagination(String templatePath) {
+        var pages = Bored.of().getEnv().getPageContainer().list();
         var paginationMap = new HashMap<String, Pagination>();
         var env = Bored.of().getEnv();
         var pageSize = env.getSiteConfig().getPageSize();
@@ -42,7 +43,7 @@ public class PaginationUtil {
     }
 
     private static String getPaginationUrl(int pageSize) {
-        return "/pages/" + pageSize + "." + Bored.of().getEnv().getSiteConfig().getLayoutSuffix();
+        return "/pages/" + pageSize + "." + Bored.of().getEnv().getSiteConfig().getURLSuffix();
     }
 
     /**

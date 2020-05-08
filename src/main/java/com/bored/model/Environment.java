@@ -1,10 +1,10 @@
 package com.bored.model;
 
+import com.bored.container.PageContainer;
 import com.bored.template.JetTemplateHelper;
 import lombok.Data;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -46,20 +46,21 @@ public class Environment {
      * 系统换行符
      */
     private String lineSeparator = System.getProperty("line.separator");
+
     /**
-     * 文章列表
+     * page容器
      */
-    private List<Page> pageList;
-    /**
-     * 文章列表
-     */
-    private Map<String, Page> pageMap = new HashMap<>();
+    private PageContainer pageContainer;
     /**
      * 静态资源列表
      */
     private Map<String, String> staticResources = new HashMap<>();
-
+    /**
+     * tag列表
+     */
     private Map<String, Tag> tags = new HashMap<>();
-
+    /**
+     * 分类列表
+     */
     private Map<String, Category> categories = new HashMap<>();
 }

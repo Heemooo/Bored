@@ -38,5 +38,9 @@ public class Page {
      * 上一篇
      */
     private Page prev;
+
+    public String getTemplatePath() {
+        return getType() + "/" + getLayout() + ".html";
+    }
 }
 

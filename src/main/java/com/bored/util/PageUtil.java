@@ -55,7 +55,7 @@ public class PageUtil {
         var page = parseContent(fileReader.readLines());
         page.setToc(parseToc(filePath));
         permLink = StrUtil.removeSuffix(permLink, ".md");
-        permLink = String.format("%s.%s", permLink, site.getLayoutSuffix());
+        permLink = permLink + site.getURLSuffix();
         permLink = PathUtil.convertCorrectUrl(permLink);
         page.setPermLink(permLink);
 

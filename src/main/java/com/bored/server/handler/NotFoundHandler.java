@@ -14,7 +14,7 @@ public class NotFoundHandler extends AbstractHandler {
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         var env = Bored.of().getEnv();
         var site = env.getSiteConfig();
-        var template = "404." + site.getLayoutSuffix();
+        var template = "404.html";
         var content = "404 not found";
         //var content = Bored.of().getTemplateWriter1().addModel("site", site).parseTemplate(path, template);
         var jetTemplateHelper = env.getJetTemplateHelper();

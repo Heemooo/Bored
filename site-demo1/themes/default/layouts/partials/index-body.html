@@ -1,3 +1,14 @@
+<!--Body Start-->
+<div class="am-u-lg-8 am-u-sm-12">
+    {{/* (index .Site.Paginate) */}}
+    {{ $paginator := .Paginate (where .Site.RegularPages "Section" "post") }}
+    {{ range $paginator.Pages }}
+    {{ .Render "summary" }}
+    {{ end }}
+    <!-- pagination -->
+    {{ partial "pagination.html" . }}
+</div>
+<!--Body End-->
 <div class="am-u-lg-4 am-u-sm-10 am-u-lg-offset-0 am-u-sm-offset-0 sidebar-container">
     <!--About Me Start-->
     <section>
@@ -56,5 +67,24 @@
         </div>
     </section>
     <!--Tag End-->
-    #include("/partials/body-right-new.html")
+    <!--Newest Start-->
+    <section>
+        <div class="sidebar-header">
+        <span class="sidebar-header-title">
+            最新文章
+        </span>
+        </div>
+        <div class="sidebar-list" style="width:400px;">
+            <ul class="sidebar-list-body sidebar-list-items">
+                <section id="archive" class="archive">
+                    #for(Page page:pages.top(5))
+                    <li class="sidebar-list-item">
+                        <a href="${page.url}">${page.date} ${page.title}</a>
+                    </li>
+                    #end
+                </section>
+            </ul>
+        </div>
+    </section>
+    <!--Newest End-->
 </div>

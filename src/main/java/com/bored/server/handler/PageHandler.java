@@ -19,15 +19,14 @@ public class PageHandler extends AbstractHandler {
         String uri = request.getRequestURI();
         var env = Bored.of().getEnv();
         var site = env.getSiteConfig();
-        var pages = env.getPageMap();
-        if (pages.containsKey(uri)) {
+        var pageContainer = env.getPageContainer();
+        if (pageContainer.contains(uri)) {
             response.setStatus(HttpServletResponse.SC_OK);
-            var page = pages.get(uri);
-            var template = page.getType() + "/" + page.getLayout() + "." + site.getLayoutSuffix();
+            var page = pageContainer.get(uri);
             Map<String, Object> context = new HashMap<>() {{
                 put("page", page);
             }};
-            var content = env.getJetTemplateHelper().parse(template, context);
+            var content = env.getJetTemplateHelper().parse(page.getTemplatePath(), context);
             ServletUtil.write(response, content, "text/html;charset=utf-8");
             baseRequest.setHandled(true);
         }

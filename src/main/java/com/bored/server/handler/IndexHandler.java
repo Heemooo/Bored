@@ -22,7 +22,7 @@ public class IndexHandler extends AbstractHandler {
         var env = Bored.of().getEnv();
         var isIndex = false;
         if (env.getSiteConfig().getEnableHtmlSuffix()) {
-            isIndex = uri.equals("/index." + env.getSiteConfig().getLayoutSuffix()) || uri.equals("/");
+            isIndex = uri.equals("/") || uri.equals("/index.html");
         } else {
             isIndex = uri.equals("/") || uri.equals("/index");
         }
@@ -30,7 +30,7 @@ public class IndexHandler extends AbstractHandler {
             var template = "index.html";
             var context = new HashMap<String, Object>() {{
                 put("site", env.getSiteConfig());
-                put("pages", env.getPageList());
+                put("pages", env.getPageContainer().list());
                 put("tags", env.getTags());
                 put("categories", env.getCategories());
                 var pagination = new Pagination();

@@ -15,8 +15,6 @@ public class Site {
 
     private String theme = "default";
 
-    private String layoutSuffix = "html";
-
     private Boolean enableHtmlSuffix = true;
 
     private Boolean disableTags = false;
@@ -31,7 +29,7 @@ public class Site {
 
     private Map<String, Object> params;
 
-    public String getLayoutSuffix() {
-        return enableHtmlSuffix ? layoutSuffix : StrUtil.EMPTY;
+    public String getURLSuffix() {
+        return enableHtmlSuffix ? ".html" : StrUtil.EMPTY;
     }
 }

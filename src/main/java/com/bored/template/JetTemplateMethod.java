@@ -51,9 +51,7 @@ public class JetTemplateMethod {
         if (Objects.nonNull(pagination.getCurrent())){
 
         }
+        return null;
     }
 
-    public static void main(String[] args) {
-        System.out.println(DateUtil.monthEnum(DateUtil.parseDate("2019-01-02")));
-    }
 }
