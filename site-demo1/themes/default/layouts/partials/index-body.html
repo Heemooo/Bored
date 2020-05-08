@@ -42,8 +42,7 @@
         </div>
         <div class="sidebar-list">
             <ul class="sidebar-list-body sidebar-list-items">
-                #for (Map.Entry entry:categories)
-                #set(Category category=entry.value)
+                #for (Category category:categories)
                 <li class="sidebar-list-item">
                     <a href="${category.url}">${category.name} (${category.pages.size()})</a>
                 </li>
@@ -60,8 +59,7 @@
         </span>
         </div>
         <div class="tags">
-            #for (Map.Entry entry:tags)
-            #set(Tag tag=entry.value)
+            #for (Tag tag:tags)
             <a href="${tag.url}">${tag.name}</a>
             #end
         </div>

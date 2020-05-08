@@ -30,12 +30,12 @@ public class IndexHandler extends AbstractHandler {
             var template = "index.html";
             var context = new HashMap<String, Object>() {{
                 put("site", env.getSiteConfig());
+                put("tags", env.getTagContainer().list());
                 put("pages", env.getPageContainer().list());
-                put("tags", env.getTags());
-                put("categories", env.getCategories());
+                put("categories", env.getCategoryContainer().list());
                 var pagination = new Pagination();
                 pagination.setTemplatePath(template);
-                pagination.setUri(uri);
+                pagination.setUri("index");
                 put("pagination", pagination);
             }};
             var content = env.getJetTemplateHelper().parse(template, context);

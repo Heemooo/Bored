@@ -1,15 +1,13 @@
 package com.bored.model;
 
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 标签
  */
-@Data
 public class Tag {
+
     /**
      * 标签名
      */
@@ -23,4 +21,28 @@ public class Tag {
      */
     private List<Page> pages = new ArrayList<>();
 
+    public Tag(String name, String url) {
+        this.name = name;
+        this.url = url;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public List<Page> getPages() {
+        return pages;
+    }
 }

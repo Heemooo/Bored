@@ -1,6 +1,8 @@
 package com.bored.model;
 
+import com.bored.container.CategoryContainer;
 import com.bored.container.PageContainer;
+import com.bored.container.TagContainer;
 import com.bored.template.JetTemplateHelper;
 import lombok.Data;
 
@@ -52,15 +54,15 @@ public class Environment {
      */
     private PageContainer pageContainer;
     /**
+     * tag容器
+     */
+    private TagContainer tagContainer;
+    /**
+     * category容器
+     */
+    private CategoryContainer categoryContainer;
+    /**
      * 静态资源列表
      */
     private Map<String, String> staticResources = new HashMap<>();
-    /**
-     * tag列表
-     */
-    private Map<String, Tag> tags = new HashMap<>();
-    /**
-     * 分类列表
-     */
-    private Map<String, Category> categories = new HashMap<>();
 }

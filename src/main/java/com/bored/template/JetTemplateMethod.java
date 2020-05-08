@@ -22,7 +22,6 @@ public class JetTemplateMethod {
      * @return 最新的文章
      */
     public static List<Page> top(List<Page> pages, int number) {
-        Console.log(number);
         return pages.subList(0, number);
     }
 
@@ -48,7 +47,8 @@ public class JetTemplateMethod {
     }
 
     public static Pagination start(Pagination pagination) {
-        if (Objects.nonNull(pagination.getCurrent())){
+        if (pagination.getUri().equals("index"))
+        if (Objects.nonNull(pagination.getCurrent())) {
 
         }
         return null;
