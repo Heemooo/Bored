@@ -24,6 +24,7 @@ public class CompleteEnvironment extends Environment {
         this.setPagePath(PathUtil.convertCorrectPath(String.format("%s/content", this.getRoot())));
         this.setThemePath(PathUtil.convertCorrectPath(String.format("%s/themes/%s", this.getRoot(), site.getTheme())));
         this.setLayoutPath(PathUtil.convertCorrectPath(String.format("%s/layouts", this.getThemePath())));
+        this.setOutputPath(PathUtil.convertCorrectPath(String.format("%s/public", this.getRoot())));
         this.setJetTemplateHelper(new JetTemplateHelper(this.getLayoutPath()));
         jetTemplateConfig(site);
 

@@ -3,6 +3,9 @@ package com.bored.server.container;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
+import com.bored.core.Context;
+import com.bored.core.HTML;
+import com.bored.core.Page;
 import com.bored.model.Environment;
 import com.bored.model.PageFile;
 import com.bored.util.PathUtil;
@@ -15,38 +18,49 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class PageContainer extends AbstractContainer<PageFile> {
+public class PageContainer extends AbstractContainer<HTML> {
 
     private String pagePath;
 
+    private Environment env;
+
+    /**
+     * list
+     */
+    private final List<Page> data = new ArrayList<>();
+
     @Override
     public void init() {
-        Environment env = Bored.of().getEnv();
+        this.env = Bored.of().getEnv();
         this.pagePath = env.getPagePath();
-        this.list().addAll(loadPages());
+        this.data.addAll(loadPages());
     }
 
 
-    public List<PageFile> loadPages() {
+    public List<Page> loadPages() {
         var files = FileUtil.loopFiles(pagePath);
-        List<PageFile> pageFiles = new ArrayList<>();
+        List<Page> pages = new ArrayList<>();
         for (File file : files) {
             var pageFile = parse(file);
             var page = pageFile.toPage();
-
-            if (!page.getFrontMatter().isDraft()) {
-                pageFiles.add(page);
-            }
-            if (StrUtil.isNotBlank(page.getPermLink())) {
-                this.add(page.getPermLink(), page);
-            }
-            log.info("Mapping page {}", page.getPermLink());
-            if (!page.getPermLink().equals(page.getUrl())) {
-                this.add(page.getUrl(), page);
-                log.info("Mapping page {}", page.getUrl());
-            }
+            Context context = new Context();
+            context.setTime(page.getDate());
+            context.setTitle(page.getTitle());
+            context.setUrl(page.getPermLink());
+            context.setType(pageFile.getFrontMatter().getType());
+            context.setLayout(pageFile.getFrontMatter().getLayout());
+            HTML html = new HTML();
+            var fullFilePath = String.format("%s/%s/%s", env.getOutputPath(), context.getType(), pageFile.getFileName());
+            html.setFullFilePath(fullFilePath);
+            html.setContext(context);
+            html.setUrl(context.getUrl());
+            html.setContent(page.getContent());
+            html.setContentType("text/html;charset=utf-8");
+            this.add(html.getUrl(), html);
+            pages.add(page);
+            log.info("Mapping page {}", html.getUrl());
         }
-        List<PageFile> sorts = pageFiles.stream().sorted(Comparator.comparing(PageFile::getDate).reversed()).collect(Collectors.toList());
+        List<Page> sorts = pages.stream().sorted(Comparator.comparing(Page::getDate).reversed()).collect(Collectors.toList());
         for (int i = 0, len = sorts.size(); i < len; i++) {
             if (i < (len - 1)) sorts.get(i).setNext(sorts.get(i + 1));
             if (i > 0) sorts.get(i).setPrev(sorts.get(i - 1));

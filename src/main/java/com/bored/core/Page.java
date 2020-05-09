@@ -1,7 +1,5 @@
 package com.bored.core;
 
-import com.bored.model.Category;
-import com.bored.model.Tag;
 import lombok.Data;
 
 import java.util.List;

@@ -38,6 +38,10 @@ public class Environment {
      */
     private String frontMatterPath;
     /**
+     * 文件输出目录
+     */
+    private String outputPath;
+    /**
      * 网站配置
      */
     private Site siteConfig;

@@ -4,17 +4,31 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Setter
 public class HTML {
+    @Setter
+    @Getter
     private String url;
+
+    @Setter
+    @Getter
     private String fullFilePath;
-    private Context context;
+
+    @Setter
+    @Getter
     private String content;
+
+    private Context context;
+
+    @Setter
+    @Getter
+    private String contentType;
+
     private Map<String, Object> ctx = new HashMap<>();
 
     public void setContext(Context context) {
@@ -22,17 +36,17 @@ public class HTML {
         ctx.put("this", context);
     }
 
-    private HTML add(String key, Object object) {
+    public HTML add(String key, Object object) {
         ctx.put(key, object);
         return this;
     }
 
-    private String content() {
+    public String content() {
         content = Bored.of().getEnv().getJetTemplateHelper().parse(context.getTemplatePath(), ctx);
         return content;
     }
 
-    private void out() {
+    public void out() {
         if(StrUtil.isEmpty(content)){
             content = this.content();
         }

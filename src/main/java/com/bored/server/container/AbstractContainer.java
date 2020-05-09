@@ -11,10 +11,6 @@ public abstract class AbstractContainer<T> implements Container<T> {
      * urlMapping
      */
     private final Map<String, T> URLMapping = new HashMap<>();
-    /**
-     * list
-     */
-    private final List<T> data = new ArrayList<>();
 
     public AbstractContainer() {
         init();
@@ -37,6 +33,6 @@ public abstract class AbstractContainer<T> implements Container<T> {
 
     @Override
     public List<T> list() {
-        return this.data;
+        return null;
     }
 }

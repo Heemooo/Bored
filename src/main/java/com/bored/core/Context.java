@@ -10,6 +10,7 @@ import java.util.Date;
  */
 @Data
 public class Context {
+
     /**
      * 当前页面标题
      */
@@ -27,9 +28,9 @@ public class Context {
      */
     private String layout;
     /**
-     * 最近创建文章时间
+     * 创建文章时间
      */
-    private Date time;
+    private String time;
 
     public String getTemplatePath() {
         return getType() + "/" + getLayout() + ".html";
