@@ -13,12 +13,11 @@ import java.util.Map;
 @Data
 public class FrontMatter {
     public String title = StrUtil.EMPTY;
-    public String createTime;
     public String date;
-    public Boolean draft = Boolean.TRUE;
+    public boolean draft;
     private String url = StrUtil.EMPTY;
-    private String type;
-    private String layout;
+    private String type = "base";
+    private String layout = "page";
     private List<String> tags;
     private List<String> categories;
     private String description;

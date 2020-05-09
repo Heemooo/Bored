@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.model.Environment;
 import com.bored.model.PageFile;
-import com.bored.core.parse.PageParse;
+import com.bored.util.PathUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -26,19 +26,22 @@ public class PageContainer extends AbstractContainer<PageFile> {
         this.list().addAll(loadPages());
     }
 
+
     public List<PageFile> loadPages() {
         var files = FileUtil.loopFiles(pagePath);
         List<PageFile> pageFiles = new ArrayList<>();
         for (File file : files) {
-            var page = PageParse.parse(file);
-            if (!page.isDraft()) {
+            var pageFile = parse(file);
+            var page = pageFile.toPage();
+
+            if (!page.getFrontMatter().isDraft()) {
                 pageFiles.add(page);
             }
             if (StrUtil.isNotBlank(page.getPermLink())) {
                 this.add(page.getPermLink(), page);
             }
             log.info("Mapping page {}", page.getPermLink());
-            if (!page.getPermLink().equals(page.getUrl())){
+            if (!page.getPermLink().equals(page.getUrl())) {
                 this.add(page.getUrl(), page);
                 log.info("Mapping page {}", page.getUrl());
             }
@@ -50,4 +53,16 @@ public class PageContainer extends AbstractContainer<PageFile> {
         }
         return sorts;
     }
+
+    public PageFile parse(File file) {
+        var site = Bored.of().getEnv().getSiteConfig();
+        var pagePath = Bored.of().getEnv().getPagePath();
+        var filePath = file.getPath();
+        var pageFile = new PageFile(file);
+        var permLink = StrUtil.removePrefix(filePath, pagePath);
+        permLink = PathUtil.convertCorrectUrl(StrUtil.removeSuffix(permLink, ".md") + site.getURLSuffix());
+        pageFile.setPermLink(permLink);
+        return pageFile;
+    }
+
 }
