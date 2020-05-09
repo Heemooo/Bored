@@ -1,4 +1,4 @@
-package com.bored.command;
+package com.bored.core.command;
 
 
 import cn.hutool.core.util.StrUtil;

@@ -1,4 +1,4 @@
-package com.bored.parse;
+package com.bored.core.parse;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.file.FileReader;

@@ -1,4 +1,4 @@
-package com.bored.container;
+package com.bored.server.container;
 
 import java.util.ArrayList;
 import java.util.HashMap;

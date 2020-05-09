@@ -1,11 +1,11 @@
-package com.bored.container;
+package com.bored.server.container;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.model.Environment;
 import com.bored.model.Page;
-import com.bored.parse.PageParse;
+import com.bored.core.parse.PageParse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;

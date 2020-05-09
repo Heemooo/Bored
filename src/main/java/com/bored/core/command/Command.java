@@ -1,4 +1,4 @@
-package com.bored.command;
+package com.bored.core.command;
 
 import cn.hutool.core.lang.Console;
 import lombok.extern.slf4j.Slf4j;

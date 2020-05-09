@@ -1,4 +1,4 @@
-package com.bored.container;
+package com.bored.server.container;
 
 import cn.hutool.core.collection.CollUtil;
 import com.bored.Bored;

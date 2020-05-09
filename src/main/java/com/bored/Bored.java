@@ -1,6 +1,6 @@
 package com.bored;
 
-import com.bored.command.CommandExecute;
+import com.bored.core.command.CommandExecute;
 import com.bored.model.Environment;
 import lombok.Getter;
 import lombok.Setter;

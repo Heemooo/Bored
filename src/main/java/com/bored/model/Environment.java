@@ -1,8 +1,8 @@
 package com.bored.model;
 
-import com.bored.container.CategoryContainer;
-import com.bored.container.PageContainer;
-import com.bored.container.TagContainer;
+import com.bored.server.container.CategoryContainer;
+import com.bored.server.container.PageContainer;
+import com.bored.server.container.TagContainer;
 import com.bored.template.JetTemplateHelper;
 import lombok.Data;
 
