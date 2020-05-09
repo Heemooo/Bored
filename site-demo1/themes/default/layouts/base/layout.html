@@ -1,18 +1,19 @@
 <!DOCTYPE HTML>
 <html lang="zh_cn">
 <head>
-    ${head}
+    #tag layout_block_default("head")
+    #call head(site.title)
+    #end
 </head>
 <body id="blog">
-#include("/partials/nav.html")
-#tag layout_block_default("head")
-#call head()
-#end
+#call nav()
 
 #tag layout_block_default("header")
 #call header()
 #end
+
 ${main}
+
 #tag layout_block_default("footer")
 #call footer()
 #end

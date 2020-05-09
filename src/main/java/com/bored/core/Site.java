@@ -1,6 +1,7 @@
-package com.bored.model;
+package com.bored.core;
 
 import cn.hutool.core.util.StrUtil;
+import com.bored.model.Menu;
 import lombok.Data;
 
 import java.util.List;

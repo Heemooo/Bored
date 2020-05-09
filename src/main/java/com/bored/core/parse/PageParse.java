@@ -8,6 +8,7 @@ import com.bored.model.Page;
 import com.bored.util.PathUtil;
 import com.bored.util.TomlUtil;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
+import com.youbenzi.mdtool.tool.MDTool;
 
 import java.io.File;
 import java.util.List;
@@ -22,7 +23,7 @@ public class PageParse {
         var fileReader = new FileReader(file);
         var headerAndContent = parseLine(fileReader.readLines());
         var page = TomlUtil.tomlToObj(headerAndContent[0], Page.class);
-        page.setContent(headerAndContent[1]);
+        page.setContent(MDTool.markdown2Html(headerAndContent[1]));
         if (Objects.isNull(page.getDate())) {
             page.setDate(DateUtil.now());
         }

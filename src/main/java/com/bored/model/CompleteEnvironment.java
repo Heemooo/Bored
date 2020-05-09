@@ -2,6 +2,7 @@ package com.bored.model;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Console;
+import com.bored.core.Site;
 import com.bored.template.JetTemplateHelper;
 import com.bored.util.PathUtil;
 import com.bored.util.TomlUtil;

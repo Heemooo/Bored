@@ -1,14 +1,7 @@
-#tag layout_block("head")
-#call head()
-#end
-
 #tag layout_block("header")
-#call header()
+#call little_header('page')
 #end
 
-#tag layout_block("footer")
-#call footer()
-#end
 
 #tag layout_block("main")
 <!-- content start -->
@@ -17,7 +10,7 @@
         <div class="am-u-lg-12 am-u-sm-12">
             <article class="am-article blog-article-p article-trigger">
                 <div id="post-content" class="am-article-bd">
-                    {{page.content}}
+                    ${page.content}
                 </div>
             </article>
             <div id="directory-content" class="directory-content">

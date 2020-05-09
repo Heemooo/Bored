@@ -1,5 +1,6 @@
 package com.bored.model;
 
+import com.bored.core.Site;
 import com.bored.server.container.CategoryContainer;
 import com.bored.server.container.PageContainer;
 import com.bored.server.container.TagContainer;
