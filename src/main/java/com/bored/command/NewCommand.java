@@ -71,7 +71,7 @@ public class NewCommand extends Command {
             printlnError("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
         }
-        ClassPathResource resource = new ClassPathResource("demo/site-template.zip");
+        ClassPathResource resource = new ClassPathResource("template/site-template.zip");
         ZipUtil.unzip(resource.getPath(), site);
         println("Created site {}.", siteName);
     }
@@ -84,7 +84,7 @@ public class NewCommand extends Command {
             printlnError("'{}' 已存在，请删除，或更换主题名 ", name);
             return;
         }
-        ClassPathResource resource = new ClassPathResource("demo/theme-template.zip");
+        ClassPathResource resource = new ClassPathResource("template/theme-template.zip");
         ZipUtil.unzip(resource.getPath(), themePath);
     }
 
