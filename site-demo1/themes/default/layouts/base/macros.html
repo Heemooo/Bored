@@ -33,31 +33,28 @@
     </div>
 </header>
 #end
-#macro little_header()
+#macro little_header(String type)
 <header class="intro-header" style="background-image: url('/static/images/snowgitlabk.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
-                    {{ if eq .Data.Plural "tags" }}
+                    #if(type == 'tag')
                     <div class="archive-title tag">
-                        <h2 class="archive-name">{{ i18n "tag" }}{{ .Title }}</h2>
+                        <h2 class="archive-name">标签</h2>
                     </div>
-                    {{ else if eq .Data.Plural "categories" }}
+                    #elseif(type == 'category')
                     <div class="archive-title category">
-                        <h2 class="archive-name">{{ i18n "category" }}{{ .Title }}</h2>
+                        <h2 class="archive-name">分类</h2>
                     </div>
-                    {{ else if eq .Data.Singular "author" }}
-                    {{- $author := (index (.Site.Data.authors | default dict) .Title) -}}
-                    {{- $author_lang := (index ($author | default dict) .Site.Language.Lang) -}}
-                    {{- $author_name := $author_lang.name.display | default $author.name.display | default .Title -}}
+                    #elseif(type == 'archive')
+                    <h1>归档</h1>
+                    #else
                     <div class="archive-title author">
-                        <h2 class="archive-name">{{ i18n "author_item" }}{{ $author_name }}</h2>
+                        <h2 class="archive-name">${site.params.author}</h2>
                     </div>
-                    {{else}}
-                    <h1>{{.Data.Plural}}{{.Title}}</h1>
-
-                    {{ end }}
+                    <h1>${page.title}</h1>
+                    #end
                     <span class="meta">@{{$.Site.Title}} &nbsp;{{dateFormat (.Site.Params.dateFormatToUse) .Date}}</span>
                     <div class="tags post-tags">
                         {{ with .Params.tags -}}
