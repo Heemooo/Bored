@@ -31,5 +31,7 @@ public class Context {
      */
     private Date time;
 
-
+    public String getTemplatePath() {
+        return getType() + "/" + getLayout() + ".html";
+    }
 }

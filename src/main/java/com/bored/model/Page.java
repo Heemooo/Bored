@@ -13,7 +13,7 @@ public class Page {
 
     private boolean draft;
 
-    private String type = "base";
+    private String type = "post";
 
     private String layout = "page";
 
@@ -39,8 +39,6 @@ public class Page {
      */
     private Page prev;
 
-    public String getTemplatePath() {
-        return getType() + "/" + getLayout() + ".html";
-    }
+
 }
 
