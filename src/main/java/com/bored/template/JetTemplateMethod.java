@@ -2,16 +2,9 @@ package com.bored.template;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Console;
-import com.bored.Bored;
 import com.bored.model.Page;
-import com.bored.model.Pagination;
-import com.bored.util.PageUtil;
-import com.bored.util.PaginationUtil;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class JetTemplateMethod {
@@ -31,8 +24,8 @@ public class JetTemplateMethod {
      * @param type  {year,month}
      * @return 分组集合
      */
-    public static Map<String, List<Page>> groupBy(List<Page> pages, String type) {
-        return pages.stream().collect(Collectors.groupingBy(page -> {
+    public static List<Map.Entry<String, List<Page>>> groupBy(List<Page> pages, String type) {
+        Map<String, List<Page>> map = pages.stream().collect(Collectors.groupingBy(page -> {
             var date = page.getDate();
             var year = DateUtil.year(DateUtil.parseDate(date));
             if ("year".equals(type.trim())) {
@@ -44,14 +37,59 @@ public class JetTemplateMethod {
             }
             return year + "";
         }));
+        List<Map.Entry<String, List<Page>>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByKey());
+        Collections.reverse(list);
+        return list;
     }
 
-    public static Pagination start(Pagination pagination) {
-        if (pagination.getUri().equals("index"))
-        if (Objects.nonNull(pagination.getCurrent())) {
-
+    /**
+     * 根据map的key排序
+     * @param map    待排序的map
+     * @param isDesc 是否降序，true：降序，false：升序
+     * @return 排序好的map
+     * @author zero 2019/04/08
+     */
+    private static <K extends Comparable<? super K>, V> Map<K, V> sortByKey(Map<K, V> map, boolean isDesc) {
+        Map<K, V> result = new HashMap<>();
+        if (isDesc) {
+            map.entrySet().stream().sorted(Map.Entry.<K, V>comparingByKey().reversed())
+                    .forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
+        } else {
+            map.entrySet().stream().sorted(Map.Entry.comparingByKey())
+                    .forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
         }
-        return null;
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("2015-06-10", 3);
+        map.put("2015-06-09", 2);
+        map.put("2015-06-08", 1);
+        map.put("2015-06-11", 4);
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByKey());
+        System.out.println(list.toString());
+    }
+
+    /**
+     * 根据map的value排序
+     * @param map    待排序的map
+     * @param isDesc 是否降序，true：降序，false：升序
+     * @return 排序好的map
+     * @author zero 2019/04/08
+     */
+    private static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map, boolean isDesc) {
+        Map<K, V> result = new HashMap<>();
+        if (isDesc) {
+            map.entrySet().stream().sorted(Map.Entry.<K, V>comparingByValue().reversed())
+                    .forEach(e -> result.put(e.getKey(), e.getValue()));
+        } else {
+            map.entrySet().stream().sorted(Map.Entry.<K, V>comparingByValue())
+                    .forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
+        }
+        return result;
     }
 
 }

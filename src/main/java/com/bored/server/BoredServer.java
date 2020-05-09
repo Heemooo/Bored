@@ -31,6 +31,7 @@ public class BoredServer {
         Server server = new Server(port);
         HandlerList handlers = new HandlerList();
         handlers.addHandler(new IndexHandler());
+        handlers.addHandler(new ArchiveHandler());
         handlers.addHandler(new PageHandler());
         handlers.addHandler(new StaticHandler());
         handlers.addHandler(new NotFoundHandler());

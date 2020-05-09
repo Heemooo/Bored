@@ -1,0 +1,29 @@
+#tag layout_block("header")
+#call little_header('archive')
+#end
+
+#tag layout_block("main")
+<div class="container-fluid archive-page clearfix">
+    <div class="categorys-item">
+        #for(Map.Entry entry:pages.groupBy('month'))
+        <div class="categorys-title">${entry.key}</div>
+        #for(Page page:entry.value)
+        <div class="post-list-item">
+            <div class="post-list-item-container">
+                <div class="item-label">
+                    <div class="item-title">
+                        <a href="${page.permLink}">${page.title}</a>
+                    </div>
+                    <div class="item-meta clearfix">
+                        <div class="item-meta-date">${page.date}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        #end
+        #end
+    </div>
+</div>
+#end
+
+#include ("/base/layout.html")

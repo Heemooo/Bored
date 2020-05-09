@@ -5,8 +5,16 @@
 </head>
 <body id="blog">
 #include("/partials/nav.html")
-${header}
+#tag layout_block_default("head")
+#call head()
+#end
+
+#tag layout_block_default("header")
+#call header()
+#end
 ${main}
-${footer}
+#tag layout_block_default("footer")
+#call footer()
+#end
 </body>
 </html>
