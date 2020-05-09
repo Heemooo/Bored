@@ -1,6 +1,6 @@
 title= "${title}"      #文章标题
 #创建时间,格式化为yyyy-MM-dd
-createTime = "${createTime?date('yyyy-MM-dd')}"
+createTime = "${date?date('yyyy-MM-dd')}"
 draft= true           #是否为草稿
 
 #type  ="post"        #模板路径
