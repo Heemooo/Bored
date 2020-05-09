@@ -15,10 +15,10 @@ public class CategoryContainer extends AbstractContainer<Category> {
                 categories.forEach(categoryName -> {
                     var url = String.format("/category/%s%s", categoryName, Bored.of().getEnv().getSiteConfig().getURLSuffix());
                     if (contains(url)) {
-                        get(url).getPages().add(page);
+                        get(url).getPageFiles().add(page);
                     } else {
                         Category category = new Category(categoryName, url);
-                        category.getPages().add(page);
+                        category.getPageFiles().add(page);
                         add(url, category);
                         list().add(category);
                     }

@@ -1,7 +1,7 @@
 package com.bored.util;
 
 import com.bored.Bored;
-import com.bored.model.Page;
+import com.bored.model.PageFile;
 import com.bored.model.Pagination;
 import jetbrick.util.annotation.NotNull;
 
@@ -53,7 +53,7 @@ public class PaginationUtil {
      * @param pageSize 每页多少条数据
      * @return 单页数据
      */
-    public static List<Page> startPage(@NotNull List<Page> list, Integer pageNum, Integer pageSize) {
+    public static List<PageFile> startPage(@NotNull List<PageFile> list, Integer pageNum, Integer pageSize) {
         //记录总数
         int count = list.size();
         //页数
@@ -75,7 +75,7 @@ public class PaginationUtil {
         return list.subList(fromIndex, toIndex);
     }
 
-    public static Integer getPageCount(List<Page> list, Integer pageSize) {
+    public static Integer getPageCount(List<PageFile> list, Integer pageSize) {
         //记录总数
         Integer count = list.size();
         //页数

@@ -1,8 +1,7 @@
 package com.bored.template;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.lang.Console;
-import com.bored.model.Page;
+import com.bored.model.PageFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -10,22 +9,22 @@ import java.util.stream.Collectors;
 public class JetTemplateMethod {
     /**
      * 取最新的number条
-     * @param pages  文章列表
+     * @param pageFiles  文章列表
      * @param number 数量
      * @return 最新的文章
      */
-    public static List<Page> top(List<Page> pages, int number) {
-        return pages.subList(0, number);
+    public static List<PageFile> top(List<PageFile> pageFiles, int number) {
+        return pageFiles.subList(0, number);
     }
 
     /**
      * 对页面列表进行分组，目前包含按年分组和按月分组
-     * @param pages 页面列表
+     * @param pageFiles 页面列表
      * @param type  {year,month}
      * @return 分组集合
      */
-    public static List<Map.Entry<String, List<Page>>> groupBy(List<Page> pages, String type) {
-        Map<String, List<Page>> map = pages.stream().collect(Collectors.groupingBy(page -> {
+    public static List<Map.Entry<String, List<PageFile>>> groupBy(List<PageFile> pageFiles, String type) {
+        Map<String, List<PageFile>> map = pageFiles.stream().collect(Collectors.groupingBy(page -> {
             var date = page.getDate();
             var year = DateUtil.year(DateUtil.parseDate(date));
             if ("year".equals(type.trim())) {
@@ -37,7 +36,7 @@ public class JetTemplateMethod {
             }
             return year + "";
         }));
-        List<Map.Entry<String, List<Page>>> list = new ArrayList<>(map.entrySet());
+        List<Map.Entry<String, List<PageFile>>> list = new ArrayList<>(map.entrySet());
         list.sort(Map.Entry.comparingByKey());
         Collections.reverse(list);
         return list;

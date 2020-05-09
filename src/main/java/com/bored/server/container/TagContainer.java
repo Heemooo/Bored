@@ -15,10 +15,10 @@ public class TagContainer extends AbstractContainer<Tag> {
                 tags.forEach(tagName -> {
                     var url = String.format("/tag/%s%s", tagName, Bored.of().getEnv().getSiteConfig().getURLSuffix());
                     if (contains(url)) {
-                        get(url).getPages().add(page);
+                        get(url).getPageFiles().add(page);
                     } else {
                         Tag tag = new Tag(tagName, url);
-                        tag.getPages().add(page);
+                        tag.getPageFiles().add(page);
                         add(url, tag);
                         list().add(tag);
                     }

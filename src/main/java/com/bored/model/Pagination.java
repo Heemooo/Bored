@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class Pagination {
 
-    private List<Page> data;
+    private List<PageFile> data;
 
     private Boolean hasPrev;
 

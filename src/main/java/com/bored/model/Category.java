@@ -1,7 +1,5 @@
 package com.bored.model;
 
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,7 @@ public class Category {
     /**
      * 拥有该分类的文章
      */
-    private List<Page> pages = new ArrayList<>();
+    private List<PageFile> pageFiles = new ArrayList<>();
 
     public Category(String name, String url) {
         this.name = name;
@@ -43,7 +41,7 @@ public class Category {
         this.url = url;
     }
 
-    public List<Page> getPages() {
-        return pages;
+    public List<PageFile> getPageFiles() {
+        return pageFiles;
     }
 }

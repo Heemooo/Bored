@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Page {
+public class PageFile {
 
     private String title;
 
@@ -33,11 +33,11 @@ public class Page {
     /**
      * 下一篇
      */
-    private Page next;
+    private PageFile next;
     /**
      * 上一篇
      */
-    private Page prev;
+    private PageFile prev;
 
 
 }

@@ -44,7 +44,7 @@
             <ul class="sidebar-list-body sidebar-list-items">
                 #for (Category category:categories)
                 <li class="sidebar-list-item">
-                    <a href="${category.url}">${category.name} (${category.pages.size()})</a>
+                    <a href="${category.url}">${category.name} (${category.pageFiles.size()})</a>
                 </li>
                 #end
             </ul>
@@ -75,7 +75,7 @@
         <div class="sidebar-list" style="width:400px;">
             <ul class="sidebar-list-body sidebar-list-items">
                 <section id="archive" class="archive">
-                    #for(Page page:pages.top(5))
+                    #for(Page page:pageFiles.top(5))
                     <li class="sidebar-list-item">
                         <a href="${page.url}">${page.date} ${page.title}</a>
                     </li>

@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.model.Page;
+import com.bored.model.PageFile;
 import com.bored.util.PathUtil;
 import com.bored.util.TomlUtil;
 import com.github.houbb.markdown.toc.core.impl.AtxMarkdownToc;
@@ -16,13 +16,13 @@ import java.util.Objects;
 
 public class PageParse {
 
-    public static Page parse(File file) {
+    public static PageFile parse(File file) {
         var site = Bored.of().getEnv().getSiteConfig();
         var pagePath = Bored.of().getEnv().getPagePath();
         var filePath = file.getPath();
         var fileReader = new FileReader(file);
         var headerAndContent = parseLine(fileReader.readLines());
-        var page = TomlUtil.tomlToObj(headerAndContent[0], Page.class);
+        var page = TomlUtil.tomlToObj(headerAndContent[0], PageFile.class);
         page.setContent(MDTool.markdown2Html(headerAndContent[1]));
         if (Objects.isNull(page.getDate())) {
             page.setDate(DateUtil.now());

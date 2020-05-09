@@ -19,7 +19,7 @@ public class Tag {
     /**
      * 拥有该标签的文章
      */
-    private List<Page> pages = new ArrayList<>();
+    private List<PageFile> pageFiles = new ArrayList<>();
 
     public Tag(String name, String url) {
         this.name = name;
@@ -42,7 +42,7 @@ public class Tag {
         this.url = url;
     }
 
-    public List<Page> getPages() {
-        return pages;
+    public List<PageFile> getPageFiles() {
+        return pageFiles;
     }
 }
