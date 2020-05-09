@@ -30,7 +30,6 @@ public class BoredServer {
 
         Server server = new Server(port);
         HandlerList handlers = new HandlerList();
-        handlers.addHandler(new DbHandler());
         handlers.addHandler(new IndexHandler());
         handlers.addHandler(new PageHandler());
         handlers.addHandler(new StaticHandler());
