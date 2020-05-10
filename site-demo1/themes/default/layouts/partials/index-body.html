@@ -42,9 +42,9 @@
         </div>
         <div class="sidebar-list">
             <ul class="sidebar-list-body sidebar-list-items">
-                #for (Category category:categories)
+                #for (Label category:categories())
                 <li class="sidebar-list-item">
-                    <a href="${category.url}">${category.name} (${category.pageFiles.size()})</a>
+                    <a href="${category.url}">${category.name} (${category.pages.size()})</a>
                 </li>
                 #end
             </ul>
@@ -59,7 +59,7 @@
         </span>
         </div>
         <div class="tags">
-            #for (Tag tag:tags)
+            #for (Label tag:tags())
             <a href="${tag.url}">${tag.name}</a>
             #end
         </div>
@@ -75,9 +75,9 @@
         <div class="sidebar-list" style="width:400px;">
             <ul class="sidebar-list-body sidebar-list-items">
                 <section id="archive" class="archive">
-                    #for(Page page:pageFiles.top(5))
+                    #for(Page page:pages.top(5))
                     <li class="sidebar-list-item">
-                        <a href="${page.url}">${page.date} ${page.title}</a>
+                        <a href="${page.permLink}">${page.date} ${page.title}</a>
                     </li>
                     #end
                 </section>

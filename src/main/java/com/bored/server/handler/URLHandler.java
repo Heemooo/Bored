@@ -17,6 +17,9 @@ public class URLHandler extends AbstractHandler {
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         var env = Bored.env();
         var pageContainer = env.getUrls();
+        if (target.equals("/")) {
+            target = "index" + Bored.env().getSiteConfig().getURLSuffix();
+        }
         if (pageContainer.containsKey(target)) {
             response.setStatus(HttpServletResponse.SC_OK);
             var html = pageContainer.get(target);

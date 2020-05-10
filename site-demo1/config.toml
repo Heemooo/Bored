@@ -18,13 +18,23 @@ frontMatterSeparator = "+++"  #前辅文分隔符，默认为"---"
 [[menus.main]]            
   name = "首页"
   weight = 10
-  identifier = "home"
+  id = "home"
   url = "/"
 [[menus.main]]
   name = "归档"
   weight = 20
-  identifier = "archives"
-  url = "/post.html"
+  id = "archives/posts"
+  url = "/archive/posts.html"
+[[menus.main]]
+  name = "分类"
+  weight = 20
+  id = "categories"
+  url = "/categories.html"
+[[menus.main]]
+  name = "标签"
+  weight = 20
+  id = "tags"
+  url = "/tags.html"
 
   
 [params]                      #额外配置

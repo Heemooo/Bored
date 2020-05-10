@@ -22,6 +22,7 @@ public class Loader {
         loadTags(false);
         loadTags(true);
         loadArchive();
+        loadIndex();
     }
 
     public static void loadPages() {
@@ -153,9 +154,36 @@ public class Loader {
         context.setType("post");
         context.setLayout("archive");
         var uri = "/archive/posts" + Bored.env().getSiteConfig().getURLSuffix();
+        context.setUrl(uri);
         URL url = new URL(uri, Bored.env().getOutputPath() + "/archive/posts.html", context);
         url.add("pages", Bored.env().getPages());
         Bored.env().getUrls().put(uri, url);
         log.info("Mapping archive {}",uri);
     }
+
+    public static void loadIndex(){
+        Context context = new Context();
+        context.setTitle("首页");
+        context.setLayout("index");
+        var uri = "index" + Bored.env().getSiteConfig().getURLSuffix();
+        context.setUrl(uri);
+        URL url = new URL(uri, Bored.env().getOutputPath() + "/index.html", context);
+        url.add("pages", Bored.env().getPages());
+        Bored.env().getUrls().put(uri, url);
+        log.info("Mapping archive {}",uri);
+    }
+
+    public static void loadList(){
+        Context context = new Context();
+        context.setTitle("文章列表");
+        context.setType("post");
+        context.setLayout("list");
+        var uri = "posts" + Bored.env().getSiteConfig().getURLSuffix();
+        context.setUrl(uri);
+        URL url = new URL(uri, Bored.env().getOutputPath() + "/posts.html", context);
+        url.add("pages", Bored.env().getPages());
+        Bored.env().getUrls().put(uri, url);
+        log.info("Mapping archive {}",uri);
+    }
+
 }

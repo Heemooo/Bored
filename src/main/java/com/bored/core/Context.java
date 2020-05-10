@@ -3,6 +3,7 @@ package com.bored.core;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 当前页面的上下文对象
@@ -33,6 +34,9 @@ public class Context {
     private String time;
 
     public String getTemplatePath() {
+        if(Objects.isNull(getType())){
+            return getLayout() + ".html";
+        }
         return getType() + "/" + getLayout() + ".html";
     }
 }

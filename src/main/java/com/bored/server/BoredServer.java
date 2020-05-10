@@ -19,7 +19,6 @@ public class BoredServer {
 
         Server server = new Server(port);
         HandlerList handlers = new HandlerList();
-        handlers.addHandler(new IndexHandler());
         handlers.addHandler(new URLHandler());
         handlers.addHandler(new NotFoundHandler());
         server.setStopTimeout(300000);
