@@ -1,12 +1,10 @@
 <!--Body Start-->
 <div class="am-u-lg-8 am-u-sm-12">
-    {{/* (index .Site.Paginate) */}}
-    {{ $paginator := .Paginate (where .Site.RegularPages "Section" "post") }}
-    {{ range $paginator.Pages }}
-    {{ .Render "summary" }}
-    {{ end }}
+    #for(Page page:pagination.data)
+    #call summary(page)
+    #end
     <!-- pagination -->
-    {{ partial "pagination.html" . }}
+    #call pagination(pagination)
 </div>
 <!--Body End-->
 <div class="am-u-lg-4 am-u-sm-10 am-u-lg-offset-0 am-u-sm-offset-0 sidebar-container">

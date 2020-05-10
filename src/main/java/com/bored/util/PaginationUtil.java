@@ -5,21 +5,21 @@ import com.bored.core.Page;
 import com.bored.model.Pagination;
 import jetbrick.util.annotation.NotNull;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PaginationUtil {
-    public static Map<String, Pagination> loadPagination(String templatePath) {
-        var paginationMap = new HashMap<String, Pagination>();
+    public static List<Pagination> loadPagination(String templatePath) {
+        var paginations = new ArrayList<Pagination>();
         var env = Bored.env();
         var pageSize = env.getSiteConfig().getPageSize();
-        /*int pageCount = getPageCount(pages, pageSize);
+        int pageCount = getPageCount(env.getPages(), pageSize);
         for (int i = 1; i <= pageCount; i++) {
             var pagina = new Pagination();
+            pagina.setUri(getPaginationUrl(i));
             pagina.setCurrent(i);
             pagina.setPageCount(pageCount);
-            pagina.setData(startPage(pages, i, pageSize));
+            pagina.setData(startPage(env.getPages(), i, pageSize));
             if (i == 1) {
                 pagina.setHasPrev(false);
                 pagina.setHasNext(true);
@@ -34,15 +34,14 @@ public class PaginationUtil {
                 pagina.setPrev(getPaginationUrl(i - 1));
                 pagina.setNext(getPaginationUrl(i + 1));
             }
-            var url = getPaginationUrl(i);
             pagina.setTemplatePath(templatePath);
-            paginationMap.put(url, pagina);
-        }*/
-        return paginationMap;
+            paginations.add(pagina);
+        }
+        return paginations;
     }
 
     private static String getPaginationUrl(int pageSize) {
-        return "/pages/" + pageSize + "." + Bored.env().getSiteConfig().getURLSuffix();
+        return "/pages/" + pageSize + Bored.env().getSiteConfig().getURLSuffix();
     }
 
     /**
@@ -52,7 +51,7 @@ public class PaginationUtil {
      * @param pageSize 每页多少条数据
      * @return 单页数据
      */
-    public static List<Page> startPage(@NotNull List<Page> list, Integer pageNum, Integer pageSize) {
+    private static List<Page> startPage(@NotNull List<Page> list, Integer pageNum, Integer pageSize) {
         //记录总数
         int count = list.size();
         //页数
@@ -74,7 +73,7 @@ public class PaginationUtil {
         return list.subList(fromIndex, toIndex);
     }
 
-    public static Integer getPageCount(List<Page> list, Integer pageSize) {
+    private static Integer getPageCount(List<Page> list, Integer pageSize) {
         //记录总数
         Integer count = list.size();
         //页数

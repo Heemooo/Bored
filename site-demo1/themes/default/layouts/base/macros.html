@@ -186,3 +186,20 @@ $('.headBand').headBand({
 </article>
 
 #end
+
+#macro pagination(Pagination pagination)
+<nav class="pagination">
+    <ul class="am-pagination">
+        #if(pagination.hasPrev)
+        <li class="am-pagination-prev">
+            <a class="prev" href="${pagination.prev}">&laquo; Prev</a>
+        </li>
+        #end
+        #if(pagination.hasNext)
+        <li class="am-pagination-next">
+            <a class="next" href="${pagination.next}">Next &raquo;</a>
+        </li>
+        #end
+    </ul>
+</nav>
+#end

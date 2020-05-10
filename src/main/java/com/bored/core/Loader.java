@@ -6,6 +6,8 @@ import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.model.Label;
 import com.bored.model.PageFile;
+import com.bored.model.Pagination;
+import com.bored.util.PaginationUtil;
 import com.bored.util.PathUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +24,7 @@ public class Loader {
         loadTags(false);
         loadTags(true);
         loadArchive();
-        loadIndex();
+        loadList();
     }
 
     public static void loadPages() {
@@ -161,14 +163,15 @@ public class Loader {
         log.info("Mapping archive {}",uri);
     }
 
-    public static void loadIndex(){
+    public static void loadIndex(Pagination pagination){
         Context context = new Context();
         context.setTitle("首页");
         context.setLayout("index");
-        var uri = "index" + Bored.env().getSiteConfig().getURLSuffix();
+        var uri = "/index" + Bored.env().getSiteConfig().getURLSuffix();
         context.setUrl(uri);
         URL url = new URL(uri, Bored.env().getOutputPath() + "/index.html", context);
         url.add("pages", Bored.env().getPages());
+        url.add("pagination", pagination);
         Bored.env().getUrls().put(uri, url);
         log.info("Mapping archive {}",uri);
     }
@@ -178,12 +181,27 @@ public class Loader {
         context.setTitle("文章列表");
         context.setType("post");
         context.setLayout("list");
-        var uri = "posts" + Bored.env().getSiteConfig().getURLSuffix();
+        var uri = "/posts" + Bored.env().getSiteConfig().getURLSuffix();
         context.setUrl(uri);
         URL url = new URL(uri, Bored.env().getOutputPath() + "/posts.html", context);
+        List<Pagination> paginationMap = PaginationUtil.loadPagination(context.getTemplatePath());
         url.add("pages", Bored.env().getPages());
+        url.add("pagination", paginationMap.get(0));
         Bored.env().getUrls().put(uri, url);
         log.info("Mapping archive {}",uri);
+        paginationMap.forEach(pagination -> {
+            Context ctx = new Context();
+            ctx.setTitle("文章列表");
+            ctx.setType("post");
+            ctx.setLayout("list");
+            ctx.setUrl(pagination.getUri());
+            URL page = new URL(pagination.getUri(), Bored.env().getOutputPath() + "/posts.html", ctx);
+            page.add("pages", Bored.env().getPages());
+            page.add("pagination", pagination);
+            Bored.env().getUrls().put(pagination.getUri(), page);
+            log.info("Mapping archive {}",pagination.getUri());
+        });
+        loadIndex(paginationMap.get(0));
     }
 
 }

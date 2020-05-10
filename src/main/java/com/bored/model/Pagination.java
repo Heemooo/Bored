@@ -1,5 +1,6 @@
 package com.bored.model;
 
+import com.bored.core.Page;
 import lombok.Data;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 @Data
 public class Pagination {
 
-    private List<PageFile> data;
+    private List<Page> data;
 
     private Boolean hasPrev;
 
