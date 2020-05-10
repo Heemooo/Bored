@@ -23,7 +23,7 @@ public class URL {
     public URL(String uri, String fullFilePath, Context context) {
         this.uri = uri;
         this.fullFilePath = fullFilePath;
-        this.context = context;
+        this.setContext(context);
     }
 
     @Setter
@@ -53,7 +53,7 @@ public class URL {
 
     public void setContext(Context context) {
         this.context = context;
-        ctx.put("this", context);
+        ctx.put("ctx", context);
     }
 
     public URL add(String key, Object object) {

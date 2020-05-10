@@ -1,8 +1,7 @@
 package com.bored.template;
 
 import com.bored.Bored;
-import com.bored.model.Category;
-import com.bored.model.Tag;
+import com.bored.model.Label;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -18,8 +17,8 @@ public class JetTemplateFunction {
         return url.get();
     }
 
-    public static Tag tag(String tagName) {
-        AtomicReference<Tag> target = new AtomicReference<>();
+    public static Label tag(String tagName) {
+        AtomicReference<Label> target = new AtomicReference<>();
         Bored.env().getTags().parallelStream().forEach(tag->{
             if (tag.getName().equals(tagName)) {
                 target.set(tag);
@@ -28,7 +27,7 @@ public class JetTemplateFunction {
         return target.get();
     }
 
-    public static Category category(String categoryName) {
+    public static Label category(String categoryName) {
         return null;
     }
 }

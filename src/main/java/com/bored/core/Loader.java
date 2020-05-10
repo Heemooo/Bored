@@ -5,7 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.model.PageFile;
-import com.bored.model.Tag;
+import com.bored.model.Label;
 import com.bored.util.PathUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +19,8 @@ public class Loader {
     public static void start(){
         loadStatics();
         loadPages();
-        loadTags();
+        loadTags(false);
+        loadTags(true);
     }
 
     public static void loadPages() {
@@ -94,18 +95,22 @@ public class Loader {
         return contentType;
     }
 
-    private static void loadTags(){
+    private static void loadTags(boolean isCategory){
+        var name = isCategory ? "category" : "tag";
+        var names = isCategory ? "categories" : "tags";
+        var title = isCategory ? "分类" : "标签";
+        var titles = isCategory ? "分类:Categories" : "标签:Tags";
         var pages = Bored.env().getPages();
-        Map<String, Tag> map = new HashMap<>();
+        Map<String, Label> map = new HashMap<>();
         pages.forEach(page -> {
-            var tags = page.getTags();
+            var tags = isCategory?page.getCategories():page.getTags();
             if (CollUtil.isNotEmpty(tags)) {
                 tags.forEach(tagName -> {
-                    var uri = String.format("/tag/%s%s", tagName, Bored.env().getSiteConfig().getURLSuffix());
+                    var uri ="/"+name+"/"+tagName+Bored.env().getSiteConfig().getURLSuffix();
                     if (map.containsKey(uri)) {
                         map.get(uri).getPages().add(page);
                     } else {
-                        Tag tag = new Tag(tagName, uri);
+                        Label tag = new Label(tagName, uri);
                         tag.getPages().add(page);
                         map.put(uri, tag);
                     }
@@ -114,26 +119,30 @@ public class Loader {
         });
         map.forEach((uri,tag)->{
             Context context = new Context();
-            context.setTitle("分类:" + tag.getName());
+            context.setTitle(title+":" + tag.getName());
             context.setType("base");
-            context.setLayout("tag");
+            context.setLayout(name);
             context.setUrl(uri);
-            URL url = new URL(uri,Bored.env().getOutputPath() + "/tag/"+tag.getName()+".html",context);
-            url.add("tag", tag);
+            URL url = new URL(uri,Bored.env().getOutputPath() + "/"+name+"/"+tag.getName()+".html",context);
+            url.add(name, tag);
             Bored.env().getUrls().put(uri, url);
-            log.info("Mapping tag {}", uri);
+            log.info("Mapping {} {}",name, uri);
         });
         Context context = new Context();
-        context.setTitle("分类:Tags");
+        context.setTitle(titles);
         context.setType("base");
-        context.setLayout("tags");
-        var uri = "/tags" + Bored.env().getSiteConfig().getURLSuffix();
+        context.setLayout(names);
+        var uri = "/"+names + Bored.env().getSiteConfig().getURLSuffix();
         context.setUrl(uri);
-        URL url = new URL(uri, Bored.env().getOutputPath() + "/tags.html", context);
-        List<Tag> tags = new ArrayList<>(map.values());
-        url.add("tags", tags);
-        Bored.env().setTags(tags);
+        URL url = new URL(uri, Bored.env().getOutputPath() + "/"+names+".html", context);
+        List<Label> tags = new ArrayList<>(map.values());
+        url.add(name, tags);
+        if (isCategory) {
+            Bored.env().setCategories(tags);
+        } else {
+            Bored.env().setTags(tags);
+        }
         Bored.env().getUrls().put(uri, url);
-        log.info("Mapping tag {}", uri);
+        log.info("Mapping {} {}",names, uri);
     }
 }

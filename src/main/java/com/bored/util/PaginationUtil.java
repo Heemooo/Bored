@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class PaginationUtil {
     public static Map<String, Pagination> loadPagination(String templatePath) {
-        var pages = Bored.env().getPageContainer().list();
         var paginationMap = new HashMap<String, Pagination>();
         var env = Bored.env();
         var pageSize = env.getSiteConfig().getPageSize();

@@ -10,7 +10,7 @@ import java.util.List;
  * 标签
  */
 @Data
-public class Tag {
+public class Label {
 
     /**
      * 标签名
@@ -25,7 +25,7 @@ public class Tag {
      */
     private List<Page> pages = new ArrayList<>();
 
-    public Tag(String name, String url) {
+    public Label(String name, String url) {
         this.name = name;
         this.url = url;
     }

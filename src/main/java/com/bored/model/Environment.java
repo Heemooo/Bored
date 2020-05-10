@@ -3,9 +3,6 @@ package com.bored.model;
 import com.bored.core.Page;
 import com.bored.core.Site;
 import com.bored.core.URL;
-import com.bored.server.container.CategoryContainer;
-import com.bored.server.container.PageContainer;
-import com.bored.server.container.TagContainer;
 import com.bored.template.JetTemplateHelper;
 import lombok.Data;
 
@@ -62,18 +59,6 @@ public class Environment {
     private String lineSeparator = System.getProperty("line.separator");
 
     /**
-     * page容器
-     */
-    private PageContainer pageContainer;
-    /**
-     * tag容器
-     */
-    private TagContainer tagContainer;
-    /**
-     * category容器
-     */
-    private CategoryContainer categoryContainer;
-    /**
      * 静态资源列表
      */
     private Map<String, URL> urls = new HashMap<>();
@@ -84,9 +69,9 @@ public class Environment {
     /**
      * 标签列表
      */
-    private List<Tag> tags;
+    private List<Label> tags;
     /**
      * 分类列表
      */
-    private List<Category> categories;
+    private List<Label> categories;
 }

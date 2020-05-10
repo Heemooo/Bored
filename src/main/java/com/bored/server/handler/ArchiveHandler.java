@@ -26,9 +26,6 @@ public class ArchiveHandler extends AbstractHandler {
             var template = "/base/archive.html";
             var context = new HashMap<String, Object>() {{
                 put("site", env.getSiteConfig());
-                put("tags", env.getTagContainer().list());
-                put("pages", env.getPageContainer().list());
-                put("categories", env.getCategoryContainer().list());
             }};
             var content = env.getJetTemplateHelper().parse(template, context);
             ServletUtil.write(response, content, "text/html;charset=utf-8");
