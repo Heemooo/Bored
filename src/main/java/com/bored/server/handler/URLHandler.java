@@ -8,19 +8,24 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 @Slf4j
-public class PageHandler extends AbstractHandler {
+public class URLHandler extends AbstractHandler {
 
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         String uri = request.getRequestURI();
         var env = Bored.of().getEnv();
-        var pageContainer = env.getPageContainer();
-        if (pageContainer.contains(uri)) {
+        var pageContainer = env.getUrls();
+        if (pageContainer.containsKey(uri)) {
             response.setStatus(HttpServletResponse.SC_OK);
             var html = pageContainer.get(uri);
-            ServletUtil.write(response, (String) html.content(), html.getContentType());
+            if (Objects.isNull(html.content())) {
+                ServletUtil.write(response, html.getInputStream(), html.getContentType());
+            } else {
+                ServletUtil.write(response, html.content(), html.getContentType());
+            }
             baseRequest.setHandled(true);
         }
     }

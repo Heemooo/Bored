@@ -1,5 +1,6 @@
 package com.bored.model;
 
+import com.bored.core.Page;
 import com.bored.core.Site;
 import com.bored.core.URL;
 import com.bored.server.container.CategoryContainer;
@@ -9,6 +10,7 @@ import com.bored.template.JetTemplateHelper;
 import lombok.Data;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -74,5 +76,9 @@ public class Environment {
     /**
      * 静态资源列表
      */
-    private Map<String, URL> staticResources = new HashMap<>();
+    private Map<String, URL> urls = new HashMap<>();
+    /**
+     * 文章列表
+     */
+    private List<Page> pages;
 }
