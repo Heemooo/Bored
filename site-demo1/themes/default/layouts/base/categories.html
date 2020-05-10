@@ -1,1 +1,49 @@
-${ctx}
+#tag layout_block("header")
+#call little_header('category')
+#end
+
+#tag layout_block("main")
+<div class="container-fluid archive-page clearfix">
+    <div class="categorys-item">
+        #for(Label category:categories)
+        <section id="archive" class="archive">
+            <div class="categorys-title"> ${category.name}</div>
+            <div class="post-lists">
+                <div class="post-lists-body">
+                    #set(int len=category.pages.size())
+                    #for(Page page:category.pages)
+                    <div class="post-list-item">
+                        <div class="post-list-item-container">
+                            <div class="item-label">
+                                <div class="item-title">
+                                    <a href="${page.permLink}">${page.title}</a>
+                                </div>
+                                <div class="item-meta clearfix">
+                                    <div class="item-meta-date">${page.date}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    #break(for.index==5)
+                    #end
+
+                    #if(len>5)
+                    <div class="post-list-item">
+                        <div class="post-list-item-container">
+                            <div class="item-label">
+                                <div class="item-title">
+                                    <a href="${category.url}">查看更多>>></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    #end
+                </div>
+            </div>
+        </section>
+        #end
+    </div>
+</div>
+#end
+
+#include ("/base/layout.html")

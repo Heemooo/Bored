@@ -42,33 +42,27 @@
                 <div class="post-heading">
                     #if(type == 'tag')
                     <div class="archive-title tag">
-                        <h2 class="archive-name">标签</h2>
+                        <h2 class="archive-name">${ctx.title}</h2>
                     </div>
                     #elseif(type == 'category')
                     <div class="archive-title category">
-                        <h2 class="archive-name">分类</h2>
+                        <h2 class="archive-name">${ctx.title}</h2>
                     </div>
                     #elseif(type == 'archive')
                     <h1>归档</h1>
                     #else
-                    <div class="archive-title author">
-                        <h2 class="archive-name">${site.params.author}</h2>
-                    </div>
                     <h1>${page.title}</h1>
                     #end
-                    <span class="meta">@${site.params.author} &nbsp;${page.date}</span>
-                   <!-- <div class="tags post-tags">
-                        {{ with .Params.tags -}}
+                    <span class="meta">@${site.params.author} &nbsp;${ctx.time}</span>
+                    <div class="tags post-tags">
                         <div class="post-tags">
-                            {{ range . }}
-                            {{- $name := . -}}
-                            {{- with $.Site.GetPage "taxonomy" (printf "tags/%s" $name) | default ($.Site.GetPage "taxonomy" (printf "tags/%s" ($name | urlize))) -}}
-                            <a href="{{ .Permalink }}">{{ $name }}</a>
-                            {{ end -}}
-                            {{ end }}
+                            #if(page!=null&&page.tags.size()>0)
+                                #for(String tagName : page.tags)
+                                <a href="${tagUrl(tagName)}">${tagName}</a>
+                                #end
+                            #end
                         </div>
-                        {{- end }}
-                    </div>-->
+                    </div>
                 </div>
             </div>
         </div>
@@ -157,4 +151,48 @@ $('.headBand').headBand({
         </div>
     </div>
 </nav>
+#end
+
+#macro summary(Page page)
+<article class="am-g blog-entry-article">
+    <div class="am-u-lg-6 am-u-lg-12 am-u-sm-12 blog-entry-text post-preview">
+        <div class="topic-header">
+            <div class="pull-left">
+                <div class="blog-flex-center">
+                    <div class="blog-flex0">
+                        <img src="/static/images/logo.png" alt="" class="link avatar avatar-image">
+                    </div>
+                    <div class="author-lockup blog-flex1">
+                        <a class="link" href="${page.permLink}">${page.title}</a>
+                        <span class="in">in</span>
+                        <span class="category-name">
+                            #define(List labels)
+                            #if(ctx.layout == 'tag')
+                            #set(labels = page.tags)
+                            #else
+                            #set(labels = page.categories)
+                            #end
+                            #for(String name:labels)
+                            #if(ctx.layout == 'tag')
+                                <a href="${tagUrl(name)}">${name}</a>
+                            #else
+                                <a href="${categoryUrl(name)}">${name}</a>
+                            #end
+                            #end
+                            </String></span>
+                    </div>
+                </div>
+            </div>
+            <span class="pull-right time pc_time">${page.date}</span>
+        </div>
+        <h1 class="post-index-title"><a target="_blank" itemtype="url" href="${page.permLink}">${page.title}</a></h1>
+        <div class="post-content-preview">
+            ${page.description}
+        </div>
+        <div class="clearfix topic-footer">
+            <span class="pull-left time mobile_time">${page.date}</span>
+        </div>
+    </div>
+</article>
+
 #end

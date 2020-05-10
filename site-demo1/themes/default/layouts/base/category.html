@@ -1,3 +1,17 @@
-${category.name}
-${category.url}
-${category.pages}
+#tag layout_block("header")
+#call little_header('category')
+#end
+
+
+#tag layout_block("main")
+<div class="container-fluid archive-page clearfix">
+    <div class="categorys-item">
+        #for(Page page:category.pages)
+            #call summary(page)
+        #end
+    </div>
+</div>
+#end
+
+
+#include ("/base/layout.html")

@@ -5,7 +5,7 @@
 #tag layout_block("main")
 <div class="container-fluid archive-page clearfix">
     <div class="categorys-item">
-        #for(Map.Entry entry:pageFiles.groupBy('month'))
+        #for(Map.Entry entry:pages.groupBy('month'))
         <div class="categorys-title">${entry.key}</div>
         #for(Page page:entry.value)
         <div class="post-list-item">

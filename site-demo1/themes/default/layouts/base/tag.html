@@ -1,3 +1,17 @@
-${tag.name}
-${tag.url}
-${tag.pages}
+#tag layout_block("header")
+#call little_header('tag')
+#end
+
+
+#tag layout_block("main")
+<div class="container-fluid archive-page clearfix">
+    <div class="categorys-item">
+        #for(Page page:tag.pages)
+        #call summary(page)
+        #end
+    </div>
+</div>
+#end
+
+
+#include ("/base/layout.html")

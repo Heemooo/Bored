@@ -27,7 +27,23 @@ public class JetTemplateFunction {
         return target.get();
     }
 
+    public static String categoryUrl(String categoryName){
+        AtomicReference<String> url = new AtomicReference<>();
+        Bored.env().getCategories().parallelStream().forEach(tag->{
+            if (tag.getName().equals(categoryName)) {
+                url.set(tag.getUrl());
+            }
+        });
+        return url.get();
+    }
+
     public static Label category(String categoryName) {
-        return null;
+        AtomicReference<Label> target = new AtomicReference<>();
+        Bored.env().getCategories().parallelStream().forEach(tag->{
+            if (tag.getName().equals(categoryName)) {
+                target.set(tag);
+            }
+        });
+        return target.get();
     }
 }

@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.model.PageFile;
 import com.bored.model.Label;
+import com.bored.model.PageFile;
 import com.bored.util.PathUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +21,7 @@ public class Loader {
         loadPages();
         loadTags(false);
         loadTags(true);
+        loadArchive();
     }
 
     public static void loadPages() {
@@ -136,7 +137,7 @@ public class Loader {
         context.setUrl(uri);
         URL url = new URL(uri, Bored.env().getOutputPath() + "/"+names+".html", context);
         List<Label> tags = new ArrayList<>(map.values());
-        url.add(name, tags);
+        url.add(names, tags);
         if (isCategory) {
             Bored.env().setCategories(tags);
         } else {
@@ -144,5 +145,17 @@ public class Loader {
         }
         Bored.env().getUrls().put(uri, url);
         log.info("Mapping {} {}",names, uri);
+    }
+
+    private static void loadArchive(){
+        Context context = new Context();
+        context.setTitle("归档:Posts");
+        context.setType("post");
+        context.setLayout("archive");
+        var uri = "/archive/posts" + Bored.env().getSiteConfig().getURLSuffix();
+        URL url = new URL(uri, Bored.env().getOutputPath() + "/archive/posts.html", context);
+        url.add("pages", Bored.env().getPages());
+        Bored.env().getUrls().put(uri, url);
+        log.info("Mapping archive {}",uri);
     }
 }

@@ -1,1 +1,20 @@
-tags
+#tag layout_block("header")
+#call little_header('tag')
+#end
+
+
+#tag layout_block("main")
+<div class="tag-cloud" style="padding: 5px 15px">
+    <div class="tag-cloud-title">
+        共计${tags.size()}个标签
+    </div>
+    <div class="tag-cloud-tags">
+        #for(Label tag:tags)
+        <a href="${tag.url}" style="font-size:${tag.pages.size()}rem;">${tag.name}</a>
+        #end
+    </div>
+</div>
+#end
+
+
+#include ("/base/layout.html")
