@@ -65,7 +65,7 @@ public class NewCommand extends Command {
 
     private void site(String siteName) {
         var env = new Environment();
-        Bored.setEnv(env);
+        Bored.env(env);
         String site = PathUtil.convertCorrectPath(env.getRoot() + "/" + siteName);
         if (FileUtil.exist(site)) {
             printlnError("'{}' 已存在，请删除，或更换网站名 ", siteName);
@@ -78,7 +78,7 @@ public class NewCommand extends Command {
 
     private void theme(String name) {
         var env = new CompleteEnvironment();
-        Bored.setEnv(env);
+        Bored.env(env);
         String themePath = PathUtil.convertCorrectPath(env.getRoot() + "/themes/" + name);
         if (FileUtil.exist(themePath)) {
             printlnError("'{}' 已存在，请删除，或更换主题名 ", name);
@@ -90,7 +90,7 @@ public class NewCommand extends Command {
 
     private void page(String name) {
         var env = new CompleteEnvironment();
-        Bored.setEnv(env);
+        Bored.env(env);
         if (name.contains(".md") == Boolean.FALSE) {
             name = name + ".md";
         }

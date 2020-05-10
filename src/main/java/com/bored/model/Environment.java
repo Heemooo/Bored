@@ -81,4 +81,12 @@ public class Environment {
      * 文章列表
      */
     private List<Page> pages;
+    /**
+     * 标签列表
+     */
+    private List<Tag> tags;
+    /**
+     * 分类列表
+     */
+    private List<Category> categories;
 }

@@ -1,33 +1,20 @@
 package com.bored.server;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.core.Context;
 import com.bored.core.Loader;
-import com.bored.core.Page;
-import com.bored.core.URL;
 import com.bored.model.CompleteEnvironment;
-import com.bored.model.PageFile;
 import com.bored.server.handler.*;
-import com.bored.util.PathUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class BoredServer {
 
     @SneakyThrows
     public static void start(int port) {
-        Bored.setEnv(new CompleteEnvironment());
+        Bored.env(new CompleteEnvironment());
         Loader.start();
 
         Server server = new Server(port);

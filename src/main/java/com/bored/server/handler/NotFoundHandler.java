@@ -14,11 +14,11 @@ import java.util.HashMap;
 public class NotFoundHandler extends AbstractHandler {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
-        var env = Bored.of().env();
+        var env = Bored.env();
         var site = env.getSiteConfig();
         var template = "404.html";
         var content = "404 not found";
-        //var content = Bored.of().getTemplateWriter1().addModel("site", site).parseTemplate(path, template);
+        //var content = Bored.getTemplateWriter1().addModel("site", site).parseTemplate(path, template);
         var jetTemplateHelper = env.getJetTemplateHelper();
         if (jetTemplateHelper.checkTemplate(template)) {
             content = jetTemplateHelper.parse(template, new HashMap<>());

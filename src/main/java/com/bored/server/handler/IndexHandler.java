@@ -19,7 +19,7 @@ public class IndexHandler extends AbstractHandler {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         var uri = request.getRequestURI();
-        var env = Bored.of().env();
+        var env = Bored.env();
         var isIndex = false;
         if (env.getSiteConfig().getEnableHtmlSuffix()) {
             isIndex = uri.equals("/") || uri.equals("/index.html");

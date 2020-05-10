@@ -1,16 +1,16 @@
 package com.bored.core;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.model.PageFile;
+import com.bored.model.Tag;
 import com.bored.util.PathUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -19,6 +19,7 @@ public class Loader {
     public static void start(){
         loadStatics();
         loadPages();
+        loadTags();
     }
 
     public static void loadPages() {
@@ -91,5 +92,48 @@ public class Loader {
             return "application/octet-stream";
         }
         return contentType;
+    }
+
+    private static void loadTags(){
+        var pages = Bored.env().getPages();
+        Map<String, Tag> map = new HashMap<>();
+        pages.forEach(page -> {
+            var tags = page.getTags();
+            if (CollUtil.isNotEmpty(tags)) {
+                tags.forEach(tagName -> {
+                    var uri = String.format("/tag/%s%s", tagName, Bored.env().getSiteConfig().getURLSuffix());
+                    if (map.containsKey(uri)) {
+                        map.get(uri).getPages().add(page);
+                    } else {
+                        Tag tag = new Tag(tagName, uri);
+                        tag.getPages().add(page);
+                        map.put(uri, tag);
+                    }
+                });
+            }
+        });
+        map.forEach((uri,tag)->{
+            Context context = new Context();
+            context.setTitle("分类:" + tag.getName());
+            context.setType("base");
+            context.setLayout("tag");
+            context.setUrl(uri);
+            URL url = new URL(uri,Bored.env().getOutputPath() + "/tag/"+tag.getName()+".html",context);
+            url.add("tag", tag);
+            Bored.env().getUrls().put(uri, url);
+            log.info("Mapping tag {}", uri);
+        });
+        Context context = new Context();
+        context.setTitle("分类:Tags");
+        context.setType("base");
+        context.setLayout("tags");
+        var uri = "/tags" + Bored.env().getSiteConfig().getURLSuffix();
+        context.setUrl(uri);
+        URL url = new URL(uri, Bored.env().getOutputPath() + "/tags.html", context);
+        List<Tag> tags = new ArrayList<>(map.values());
+        url.add("tags", tags);
+        Bored.env().setTags(tags);
+        Bored.env().getUrls().put(uri, url);
+        log.info("Mapping tag {}", uri);
     }
 }

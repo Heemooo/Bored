@@ -44,7 +44,7 @@ public class PageFile {
     private List<String> tags;
 
     private String[] parseLine(List<String> lines) {
-        var site = Bored.of().env().getSiteConfig();
+        var site = Bored.env().getSiteConfig();
         var count = 0;
         var header = new StringBuilder();
         var content = new StringBuilder();

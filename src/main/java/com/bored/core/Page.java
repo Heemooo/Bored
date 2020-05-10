@@ -43,4 +43,16 @@ public class Page {
      */
     private Page prev;
 
+    @Override
+    public String toString() {
+        return "Page{" +
+                "title='" + title + '\'' +
+                ", date='" + date + '\'' +
+                ", permLink='" + permLink + '\'' +
+                ", description='" + description + '\'' +
+                ", content='" + content + '\'' +
+                ", categories=" + categories +
+                ", tags=" + tags +
+                '}';
+    }
 }

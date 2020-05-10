@@ -1,11 +1,15 @@
 package com.bored.model;
 
+import com.bored.core.Page;
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 标签
  */
+@Data
 public class Tag {
 
     /**
@@ -19,30 +23,11 @@ public class Tag {
     /**
      * 拥有该标签的文章
      */
-    private List<PageFile> pageFiles = new ArrayList<>();
+    private List<Page> pages = new ArrayList<>();
 
     public Tag(String name, String url) {
         this.name = name;
         this.url = url;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public List<PageFile> getPageFiles() {
-        return pageFiles;
-    }
 }

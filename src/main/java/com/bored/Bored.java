@@ -21,7 +21,7 @@ public final class Bored {
         return BoredHolder.INSTANCE;
     }
 
-    public static void setEnv(Environment env) {
+    public static void env(Environment env) {
         Bored.of().env = env;
     }
 

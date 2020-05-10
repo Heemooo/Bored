@@ -5,6 +5,7 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
+import com.bored.util.PathUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,16 @@ import java.util.Objects;
 
 
 public class URL {
+
+    public URL() {
+    }
+
+    public URL(String uri, String fullFilePath, Context context) {
+        this.uri = uri;
+        this.fullFilePath = fullFilePath;
+        this.context = context;
+    }
+
     @Setter
     @Getter
     private String uri;
@@ -52,11 +63,12 @@ public class URL {
 
     public String content() {
         if (Objects.isNull(context)) return null;
-        else return Bored.of().env().getJetTemplateHelper().parse(context.getTemplatePath(), this.getCtx());
+        else return Bored.env().getJetTemplateHelper().parse(context.getTemplatePath(), this.getCtx());
     }
 
     public void out() {
         var content = content();
+        this.fullFilePath = PathUtil.convertCorrectPath(this.fullFilePath);
         if (StrUtil.isEmpty(content)) {
             FileUtil.writeBytes(new FileReader(this.filePath).readBytes(), this.fullFilePath);
         } else {
