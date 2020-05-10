@@ -52,7 +52,7 @@ public class URL {
 
     public String content() {
         if (Objects.isNull(context)) return null;
-        else return Bored.of().getEnv().getJetTemplateHelper().parse(context.getTemplatePath(), this.getCtx());
+        else return Bored.of().env().getJetTemplateHelper().parse(context.getTemplatePath(), this.getCtx());
     }
 
     public void out() {

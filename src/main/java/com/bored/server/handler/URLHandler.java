@@ -16,7 +16,7 @@ public class URLHandler extends AbstractHandler {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         String uri = request.getRequestURI();
-        var env = Bored.of().getEnv();
+        var env = Bored.env();
         var pageContainer = env.getUrls();
         if (pageContainer.containsKey(uri)) {
             response.setStatus(HttpServletResponse.SC_OK);

@@ -26,7 +26,7 @@ public class BoredServer {
 
     @SneakyThrows
     public static void start(int port) {
-        Bored.of().setEnv(new CompleteEnvironment());
+        Bored.setEnv(new CompleteEnvironment());
         loadStatics();
         loadPages();
 
@@ -35,7 +35,6 @@ public class BoredServer {
         handlers.addHandler(new IndexHandler());
         handlers.addHandler(new ArchiveHandler());
         handlers.addHandler(new URLHandler());
-        handlers.addHandler(new StaticHandler());
         handlers.addHandler(new NotFoundHandler());
         server.setStopTimeout(300000);
         //设置handler
@@ -48,7 +47,7 @@ public class BoredServer {
     }
 
     public static void loadPages() {
-        var env = Bored.of().getEnv();
+        var env = Bored.env();
         var files = FileUtil.loopFiles(env.getPagePath());
         List<Page> pages = new ArrayList<>();
         for (File file : files) {
@@ -78,8 +77,8 @@ public class BoredServer {
     }
 
     public static PageFile parse(File file) {
-        var site = Bored.of().getEnv().getSiteConfig();
-        var pagePath = Bored.of().getEnv().getPagePath();
+        var site = Bored.env().getSiteConfig();
+        var pagePath = Bored.env().getPagePath();
         var filePath = file.getPath();
         var pageFile = new PageFile(file);
         var permLink = StrUtil.removePrefix(filePath, pagePath);
@@ -89,8 +88,8 @@ public class BoredServer {
     }
 
     private static void loadStatics() {
-        var root = PathUtil.convertCorrectPath(Bored.of().getEnv().getThemePath());
-        var path = PathUtil.convertCorrectPath(Bored.of().getEnv().getStaticPath());
+        var root = PathUtil.convertCorrectPath(Bored.env().getThemePath());
+        var path = PathUtil.convertCorrectPath(Bored.env().getStaticPath());
         var files = FileUtil.loopFiles(path);
         for (File file : files) {
             var uri = PathUtil.convertCorrectUrl(StrUtil.removePrefix(file.getPath(), root));
@@ -99,8 +98,8 @@ public class BoredServer {
             url.setUri(uri);
             url.setContentType(contentType(file.getName(), file.getPath()));
             url.setContext(null);
-            url.setFullFilePath(Bored.of().getEnv().getOutputStaticPath());
-            Bored.of().getEnv().getUrls().put(uri, url);
+            url.setFullFilePath(Bored.env().getOutputStaticPath());
+            Bored.env().getUrls().put(uri, url);
             log.info("Mapping static resource {}", uri);
         }
     }

@@ -2,7 +2,6 @@ package com.bored.server.handler;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.bored.Bored;
-import com.bored.model.Pagination;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
@@ -16,7 +15,7 @@ public class ArchiveHandler extends AbstractHandler {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         var uri = request.getRequestURI();
-        var env = Bored.of().getEnv();
+        var env = Bored.env();
         var isArchive = false;
         if (env.getSiteConfig().getEnableHtmlSuffix()) {
             isArchive = uri.equals("/archive.html");

@@ -11,7 +11,6 @@ import com.youbenzi.mdtool.tool.MDTool;
 import lombok.Data;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +44,7 @@ public class PageFile {
     private List<String> tags;
 
     private String[] parseLine(List<String> lines) {
-        var site = Bored.of().getEnv().getSiteConfig();
+        var site = Bored.of().env().getSiteConfig();
         var count = 0;
         var header = new StringBuilder();
         var content = new StringBuilder();

@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class NotFoundHandler extends AbstractHandler {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
-        var env = Bored.of().getEnv();
+        var env = Bored.of().env();
         var site = env.getSiteConfig();
         var template = "404.html";
         var content = "404 not found";

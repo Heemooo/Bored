@@ -2,7 +2,6 @@ package com.bored.util;
 
 import com.bored.Bored;
 import com.bored.core.Page;
-import com.bored.model.PageFile;
 import com.bored.model.Pagination;
 import jetbrick.util.annotation.NotNull;
 
@@ -12,9 +11,9 @@ import java.util.Map;
 
 public class PaginationUtil {
     public static Map<String, Pagination> loadPagination(String templatePath) {
-        var pages = Bored.of().getEnv().getPageContainer().list();
+        var pages = Bored.of().env().getPageContainer().list();
         var paginationMap = new HashMap<String, Pagination>();
-        var env = Bored.of().getEnv();
+        var env = Bored.of().env();
         var pageSize = env.getSiteConfig().getPageSize();
         /*int pageCount = getPageCount(pages, pageSize);
         for (int i = 1; i <= pageCount; i++) {
@@ -44,7 +43,7 @@ public class PaginationUtil {
     }
 
     private static String getPaginationUrl(int pageSize) {
-        return "/pages/" + pageSize + "." + Bored.of().getEnv().getSiteConfig().getURLSuffix();
+        return "/pages/" + pageSize + "." + Bored.of().env().getSiteConfig().getURLSuffix();
     }
 
     /**
