@@ -1,6 +1,7 @@
 package com.bored.model;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
@@ -10,7 +11,9 @@ import com.youbenzi.mdtool.tool.MDTool;
 import lombok.Data;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class PageFile {
@@ -18,14 +21,14 @@ public class PageFile {
     public PageFile(File file) {
         this.file = file;
         this.fileName = file.getName();
-        this.fullFilePath = StrUtil.removeSuffix(file.getPath(), ".md");
+        this.htmlFileName = StrUtil.removeSuffix(file.getName(), ".md")+".html";
         var fileReader = new FileReader(file);
         var headerAndContent = parseLine(fileReader.readLines());
         this.frontMatter = TomlUtil.tomlToObj(headerAndContent[0], FrontMatter.class);
         this.content = headerAndContent[1];
     }
 
-    private String fullFilePath;
+    private String htmlFileName;
 
     private String fileName;
 
@@ -70,6 +73,9 @@ public class PageFile {
             page.setPermLink(this.getFrontMatter().getUrl());
         } else {
             page.setPermLink(this.getPermLink());
+        }
+        if (Objects.isNull(page.getDate())) {
+            page.setDate(DateUtil.now());
         }
         page.setContent(MDTool.markdown2Html(this.content));
         return page;

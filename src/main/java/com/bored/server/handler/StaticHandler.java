@@ -1,18 +1,15 @@
 package com.bored.server.handler;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.file.FileReader;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.bored.Bored;
+import com.bored.core.URL;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.util.Objects;
 
 @Slf4j
 public class StaticHandler extends AbstractHandler {
@@ -22,20 +19,10 @@ public class StaticHandler extends AbstractHandler {
         response.setStatus(HttpServletResponse.SC_OK);
         var statics = Bored.of().getEnv().getStaticResources();
         if (statics.containsKey(uri)) {
-            String contentType = "application/octet-stream";
-            String filePath = statics.get(uri);
-            if (uri.endsWith("css")) {
-                contentType = "text/css; charset=utf-8";
-            } else if (uri.endsWith("js")) {
-                contentType = "application/javascript; charset=utf-8";
-            } else if (uri.contains("images")) {
-                contentType = FileUtil.getMimeType(filePath);
+            URL url = statics.get(uri);
+            if(Objects.isNull(url.content())){
+                ServletUtil.write(response, url.getInputStream(), url.getContentType());
             }
-            var reader = new FileReader(filePath);
-            var bytes = reader.readBytes();
-
-            ;
-            ServletUtil.write(response,new ByteArrayInputStream(bytes), contentType);
             baseRequest.setHandled(true);
         }
     }

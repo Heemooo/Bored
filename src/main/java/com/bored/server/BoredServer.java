@@ -3,10 +3,11 @@ package com.bored.server;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
+import com.bored.core.URL;
+import com.bored.model.CompleteEnvironment;
 import com.bored.server.container.CategoryContainer;
 import com.bored.server.container.PageContainer;
 import com.bored.server.container.TagContainer;
-import com.bored.model.CompleteEnvironment;
 import com.bored.server.handler.*;
 import com.bored.util.PathUtil;
 import lombok.SneakyThrows;
@@ -50,9 +51,29 @@ public class BoredServer {
         var path = PathUtil.convertCorrectPath(Bored.of().getEnv().getStaticPath());
         var files = FileUtil.loopFiles(path);
         for (File file : files) {
-            var url = PathUtil.convertCorrectUrl(StrUtil.removePrefix(file.getPath(), root));
-            Bored.of().getEnv().getStaticResources().put(url, file.getPath());
-            log.info("Mapping static resource {}", url);
+            var uri = PathUtil.convertCorrectUrl(StrUtil.removePrefix(file.getPath(), root));
+            URL url = new URL();
+            url.setFilePath(file.getPath());
+            url.setUri(uri);
+            url.setContentType(contentType(file.getName(), file.getPath()));
+            url.setContext(null);
+            url.setFullFilePath(Bored.of().getEnv().getOutputStaticPath());
+            Bored.of().getEnv().getStaticResources().put(uri, url);
+            log.info("Mapping static resource {}", uri);
         }
+    }
+
+    private static String contentType(String fileName, String filePath) {
+        if (StrUtil.endWith(fileName, ".css")) {
+            return "text/css; charset=utf-8";
+        }
+        if (StrUtil.endWith(fileName, ".js")) {
+            return "application/javascript; charset=utf-8";
+        }
+        String contentType = FileUtil.getMimeType(filePath);
+        if (StrUtil.isEmpty(contentType)) {
+            return "application/octet-stream";
+        }
+        return contentType;
     }
 }

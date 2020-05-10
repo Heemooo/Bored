@@ -20,7 +20,7 @@ public class PageHandler extends AbstractHandler {
         if (pageContainer.contains(uri)) {
             response.setStatus(HttpServletResponse.SC_OK);
             var html = pageContainer.get(uri);
-            ServletUtil.write(response, html.content(), html.getContentType());
+            ServletUtil.write(response, (String) html.content(), html.getContentType());
             baseRequest.setHandled(true);
         }
     }

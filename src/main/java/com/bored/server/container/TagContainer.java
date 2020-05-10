@@ -8,7 +8,7 @@ public class TagContainer extends AbstractContainer<Tag> {
 
     @Override
     public void init() {
-        var pages = Bored.of().getEnv().getPageContainer().list();
+  /*      var pages = Bored.of().getEnv().getPageContainer().list();
         pages.forEach(page -> {
             var tags = page.getTags();
             if (CollUtil.isNotEmpty(tags)) {
@@ -24,6 +24,6 @@ public class TagContainer extends AbstractContainer<Tag> {
                     }
                 });
             }
-        });
+        });*/
     }
 }

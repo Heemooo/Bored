@@ -8,7 +8,7 @@ public class CategoryContainer extends AbstractContainer<Category> {
 
     @Override
     public void init() {
-        var pages = Bored.of().getEnv().getPageContainer().list();
+      /*  var pages = Bored.of().getEnv().getPageContainer().list();
         pages.forEach(page -> {
             var categories = page.getCategories();
             if (CollUtil.isNotEmpty(categories)) {
@@ -25,6 +25,6 @@ public class CategoryContainer extends AbstractContainer<Category> {
                 });
 
             }
-        });
+        });*/
     }
 }

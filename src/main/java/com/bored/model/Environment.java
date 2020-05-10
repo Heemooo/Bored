@@ -1,6 +1,7 @@
 package com.bored.model;
 
 import com.bored.core.Site;
+import com.bored.core.URL;
 import com.bored.server.container.CategoryContainer;
 import com.bored.server.container.PageContainer;
 import com.bored.server.container.TagContainer;
@@ -42,6 +43,10 @@ public class Environment {
      */
     private String outputPath;
     /**
+     * 静态文件输出目录
+     */
+    private String outputStaticPath;
+    /**
      * 网站配置
      */
     private Site siteConfig;
@@ -69,5 +74,5 @@ public class Environment {
     /**
      * 静态资源列表
      */
-    private Map<String, String> staticResources = new HashMap<>();
+    private Map<String, URL> staticResources = new HashMap<>();
 }

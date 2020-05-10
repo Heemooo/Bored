@@ -1,6 +1,7 @@
 package com.bored.template;
 
 import cn.hutool.core.date.DateUtil;
+import com.bored.core.Page;
 import com.bored.model.PageFile;
 
 import java.util.*;
@@ -23,8 +24,8 @@ public class JetTemplateMethod {
      * @param type  {year,month}
      * @return 分组集合
      */
-    public static List<Map.Entry<String, List<PageFile>>> groupBy(List<PageFile> pageFiles, String type) {
-        Map<String, List<PageFile>> map = pageFiles.stream().collect(Collectors.groupingBy(page -> {
+    public static List<Map.Entry<String, List<Page>>> groupBy(List<Page> pageFiles, String type) {
+        Map<String, List<Page>> map = pageFiles.stream().collect(Collectors.groupingBy(page -> {
             var date = page.getDate();
             var year = DateUtil.year(DateUtil.parseDate(date));
             if ("year".equals(type.trim())) {
@@ -36,7 +37,7 @@ public class JetTemplateMethod {
             }
             return year + "";
         }));
-        List<Map.Entry<String, List<PageFile>>> list = new ArrayList<>(map.entrySet());
+        List<Map.Entry<String, List<Page>>> list = new ArrayList<>(map.entrySet());
         list.sort(Map.Entry.comparingByKey());
         Collections.reverse(list);
         return list;

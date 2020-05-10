@@ -115,7 +115,7 @@ public class NewCommand extends Command {
             templateContent.append(env.getSiteConfig().getFrontMatterSeparator());
             var frontMatter = new FrontMatter();
             frontMatter.setTitle(StrUtil.removeSuffix(page.getName(), ".md"));
-            frontMatter.setCreateTime(DateUtil.now());
+            frontMatter.setDate(DateUtil.now());
 
             String content = env.getJetTemplateHelper().parseSource(templateContent.toString(), frontMatter.toMap());
             @Cleanup FileWriter writer = new FileWriter(filePath);
