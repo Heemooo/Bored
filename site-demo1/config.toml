@@ -6,6 +6,7 @@ title = "管他谁谁谁"
 #theme= ""                    #默认使用default
 #enableHtmlSuffix = false     #关闭html后缀，默认开启
 frontMatterSeparator = "+++"  #前辅文分隔符，默认为"---"
+pageSize = 5
 
 [URLMapping]
   name="home"
@@ -32,9 +33,14 @@ frontMatterSeparator = "+++"  #前辅文分隔符，默认为"---"
   url = "/categories.html"
 [[menus.main]]
   name = "标签"
-  weight = 20
+  weight = 30
   id = "tags"
   url = "/tags.html"
+[[menus.main]]
+  name = "关于"
+  weight = 40
+  id = "about"
+  url = "/about.html"
 
   
 [params]                      #额外配置

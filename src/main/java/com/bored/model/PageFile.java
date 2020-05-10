@@ -11,6 +11,7 @@ import com.youbenzi.mdtool.tool.MDTool;
 import lombok.Data;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -76,7 +77,17 @@ public class PageFile {
         if (Objects.isNull(page.getDate())) {
             page.setDate(DateUtil.now());
         }
+        if(StrUtil.isEmpty(page.getDescription())||page.getDescription().length()>200){
+            var str = StrUtil.split(this.content.replaceAll("[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]+", ""), 200);
+            page.setDescription(str[0]);
+        }
         page.setContent(MDTool.markdown2Html(this.content));
+        if(Objects.isNull(page.getCategories())){
+            page.setCategories(new ArrayList<>());
+        }
+        if(Objects.isNull(page.getTags())){
+            page.setTags(new ArrayList<>());
+        }
         return page;
     }
 }
