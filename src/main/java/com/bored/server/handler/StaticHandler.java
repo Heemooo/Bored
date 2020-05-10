@@ -10,6 +10,9 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 @Slf4j
 public class StaticHandler extends AbstractHandler {
@@ -29,7 +32,10 @@ public class StaticHandler extends AbstractHandler {
                 contentType = FileUtil.getMimeType(filePath);
             }
             var reader = new FileReader(filePath);
-            ServletUtil.write(response, reader.getInputStream(), contentType);
+            var bytes = reader.readBytes();
+
+            ;
+            ServletUtil.write(response,new ByteArrayInputStream(bytes), contentType);
             baseRequest.setHandled(true);
         }
     }

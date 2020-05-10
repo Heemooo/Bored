@@ -3,22 +3,18 @@ package com.bored.server.container;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.core.Context;
-import com.bored.core.HTML;
-import com.bored.core.Page;
+import com.bored.core.*;
 import com.bored.model.Environment;
 import com.bored.model.PageFile;
 import com.bored.util.PathUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class PageContainer extends AbstractContainer<HTML> {
+public class PageContainer extends AbstractContainer<URL> {
 
     private String pagePath;
 
@@ -49,16 +45,16 @@ public class PageContainer extends AbstractContainer<HTML> {
             context.setUrl(page.getPermLink());
             context.setType(pageFile.getFrontMatter().getType());
             context.setLayout(pageFile.getFrontMatter().getLayout());
-            HTML html = new HTML();
+            URL URL = new SimpleURL();
             var fullFilePath = String.format("%s/%s/%s", env.getOutputPath(), context.getType(), pageFile.getFileName());
-            html.setFullFilePath(fullFilePath);
-            html.setContext(context);
-            html.setUrl(context.getUrl());
-            html.setContent(page.getContent());
-            html.setContentType("text/html;charset=utf-8");
-            this.add(html.getUrl(), html);
+            URL.setFullFilePath(fullFilePath);
+            URL.setContext(context);
+            URL.setUrl(context.getUrl());
+            URL.setContent(page.getContent());
+            URL.setContentType("text/html;charset=utf-8");
+            this.add(URL.getUrl(), URL);
             pages.add(page);
-            log.info("Mapping page {}", html.getUrl());
+            log.info("Mapping page {}", URL.getUrl());
         }
         List<Page> sorts = pages.stream().sorted(Comparator.comparing(Page::getDate).reversed()).collect(Collectors.toList());
         for (int i = 0, len = sorts.size(); i < len; i++) {
