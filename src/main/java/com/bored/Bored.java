@@ -31,8 +31,7 @@ public final class Bored {
 
 
     public static void main(String[] commands) {
-        String[] args = {"server", "port", "8080"};
-        CommandExecute.start(args);
+        CommandExecute.start(commands);
     }
 
 }

@@ -13,11 +13,7 @@
         <toml4j.version>0.7.2</toml4j.version>
         <lombok.version>1.16.22</lombok.version>
         <cn.hutool.version>5.2.4</cn.hutool.version>
-        <jcommander.version>1.78</jcommander.version>
-        <commons-cli.version>1.4</commons-cli.version>
-        <sqlite-jdbc.version>3.30.1</sqlite-jdbc.version>
         <slf4j-log4j12.version>1.7.2</slf4j-log4j12.version>
-        <org.freemarker.version>2.3.30</org.freemarker.version>
     </properties>
     <dependencies>
         <dependency>
@@ -41,11 +37,6 @@
             <version>${slf4j-log4j12.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>${org.freemarker.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.moandjiezana.toml</groupId>
             <artifactId>toml4j</artifactId>
             <version>${toml4j.version}</version>
@@ -60,11 +51,11 @@
             <artifactId>MDTool</artifactId>
             <version>1.2.4</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.atlassian.commonmark</groupId>
             <artifactId>commonmark</artifactId>
             <version>0.14.0</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.github.subchen</groupId>
             <artifactId>jetbrick-template</artifactId>
@@ -80,22 +71,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.44</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.schoolwow</groupId>
-            <artifactId>QuickDAO</artifactId>
-            <version>3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -124,6 +99,32 @@
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!--这里要替换成jar包main方法所在类 -->
+                            <mainClass>com.bored.Bored</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path>.</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
+                        <phase>package</phase> <!-- 指定在打包节点执行jar包合并操作 -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
