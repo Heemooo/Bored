@@ -16,6 +16,7 @@ import lombok.Cleanup;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Deque;
 import java.util.List;
 
@@ -71,6 +72,7 @@ public class NewCommand extends Command {
             printlnError("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
         }
+        InputStream inputStream=this.getClass().getResourceAsStream("template/site-template.zip");
         ClassPathResource resource = new ClassPathResource("template/site-template.zip");
         ZipUtil.unzip(resource.getPath(), site);
         println("Created site {}.", siteName);
