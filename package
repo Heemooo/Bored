@@ -1,0 +1,2 @@
+java -jar -verbose Bored.jar >> test.txt
+jlink.exe  --module-path jmods --add-modules java.base,java.desktop --output minijre
