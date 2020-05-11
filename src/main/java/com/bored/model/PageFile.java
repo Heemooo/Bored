@@ -7,6 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.core.Page;
 import com.bored.util.MarkdownUtil;
+import com.bored.util.PathUtil;
 import com.bored.util.TomlUtil;
 import lombok.Data;
 
@@ -26,6 +27,8 @@ public class PageFile {
         var headerAndContent = parseLine(fileReader.readLines());
         this.frontMatter = TomlUtil.tomlToObj(headerAndContent[0], FrontMatter.class);
         this.content = headerAndContent[1];
+        var permLink = StrUtil.removePrefix(file.getPath(), Bored.env().getPagePath());
+        this.permLink = PathUtil.convertCorrectUrl(StrUtil.removeSuffix(permLink, ".md") + Bored.env().getSiteConfig().getURLSuffix());
     }
 
     private String htmlFileName;

@@ -35,7 +35,7 @@ public class Loader {
         var files = FileUtil.loopFiles(env.getPagePath());
         List<Page> pages = new ArrayList<>();
         for (File file : files) {
-            var pageFile = parse(file);
+            var pageFile = new PageFile(file);
             var page = pageFile.toPage();
             var context = Context.builder()
                     .time(page.getDate()).title(page.getTitle()).url(page.getPermLink()).type(pageFile.getFrontMatter().getType())
@@ -55,17 +55,6 @@ public class Loader {
             if (i < (len - 1)) env.getPages().get(i).setNext(env.getPages().get(i + 1));
             if (i > 0) env.getPages().get(i).setPrev(env.getPages().get(i - 1));
         }
-    }
-
-    private static PageFile parse(File file) {
-        var site = Bored.env().getSiteConfig();
-        var pagePath = Bored.env().getPagePath();
-        var filePath = file.getPath();
-        var pageFile = new PageFile(file);
-        var permLink = StrUtil.removePrefix(filePath, pagePath);
-        permLink = PathUtil.convertCorrectUrl(StrUtil.removeSuffix(permLink, ".md") + site.getURLSuffix());
-        pageFile.setPermLink(permLink);
-        return pageFile;
     }
 
     private static void loadStatics() {
