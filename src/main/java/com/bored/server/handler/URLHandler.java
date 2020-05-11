@@ -2,6 +2,7 @@ package com.bored.server.handler;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.bored.Bored;
+import com.bored.core.Container;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -16,13 +17,12 @@ public class URLHandler extends AbstractHandler {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         var env = Bored.env();
-        var pageContainer = env.getUrls();
         if (target.equals("/")) {
             target = "/index" + Bored.env().getSiteConfig().getURLSuffix();
         }
-        if (pageContainer.containsKey(target)) {
+        if (Container.contains(target)) {
             response.setStatus(HttpServletResponse.SC_OK);
-            var html = pageContainer.get(target);
+            var html = Container.get(target);
             if (Objects.isNull(html.content())) {
                 ServletUtil.write(response, html.getInputStream(), html.contentType());
             } else {

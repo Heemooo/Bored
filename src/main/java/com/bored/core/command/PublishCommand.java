@@ -1,8 +1,8 @@
 package com.bored.core.command;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.Console;
 import com.bored.Bored;
+import com.bored.core.Container;
 import com.bored.core.Loader;
 import com.bored.core.URL;
 import com.bored.model.CompleteEnvironment;
@@ -12,7 +12,7 @@ import java.util.Deque;
 public class PublishCommand extends Command {
     @Override
     public String getOptionSyntax() {
-         return "[<command>]";
+        return "[<command>]";
     }
 
     @Override
@@ -37,9 +37,6 @@ public class PublishCommand extends Command {
         Bored.env(new CompleteEnvironment());
         Loader.start();
         FileUtil.del(Bored.env().getOutputPath());
-        Bored.env().getUrls().values().parallelStream().forEach(url -> {
-            Console.log(url);
-            url.out();
-        });
+        Container.list().parallelStream().forEach(URL::out);
     }
 }

@@ -46,11 +46,28 @@
             <artifactId>markdown-toc</artifactId>
             <version>1.0.5</version>
         </dependency>
+        <!--markdown to html-->
         <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark</artifactId>
+            <version>0.34.48</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-util</artifactId>
+            <version>0.34.48</version>
+        </dependency>
+        <!--表格渲染插件-->
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-ext-tables</artifactId>
+            <version>0.34.48</version>
+        </dependency>
+<!--        <dependency>
             <groupId>com.youbenzi</groupId>
             <artifactId>MDTool</artifactId>
             <version>1.2.4</version>
-        </dependency>
+        </dependency>-->
 <!--        <dependency>
             <groupId>com.atlassian.commonmark</groupId>
             <artifactId>commonmark</artifactId>

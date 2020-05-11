@@ -6,8 +6,8 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.core.Page;
+import com.bored.util.MarkdownUtil;
 import com.bored.util.TomlUtil;
-import com.youbenzi.mdtool.tool.MDTool;
 import lombok.Data;
 
 import java.io.File;
@@ -21,7 +21,7 @@ public class PageFile {
     public PageFile(File file) {
         this.file = file;
         this.fileName = file.getName();
-        this.htmlFileName = StrUtil.removeSuffix(file.getName(), ".md")+".html";
+        this.htmlFileName = StrUtil.removeSuffix(file.getName(), ".md") + ".html";
         var fileReader = new FileReader(file);
         var headerAndContent = parseLine(fileReader.readLines());
         this.frontMatter = TomlUtil.tomlToObj(headerAndContent[0], FrontMatter.class);
@@ -77,15 +77,15 @@ public class PageFile {
         if (Objects.isNull(page.getDate())) {
             page.setDate(DateUtil.now());
         }
-        if(StrUtil.isEmpty(page.getDescription())||page.getDescription().length()>200){
+        if (StrUtil.isEmpty(page.getDescription()) || page.getDescription().length() > 200) {
             var str = StrUtil.split(this.content.replaceAll("[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]+", ""), 200);
             page.setDescription(str[0]);
         }
-        page.setContent(MDTool.markdown2Html(this.content));
-        if(Objects.isNull(page.getCategories())){
+        page.setContent(MarkdownUtil.markdown2Html(this.content));
+        if (Objects.isNull(page.getCategories())) {
             page.setCategories(new ArrayList<>());
         }
-        if(Objects.isNull(page.getTags())){
+        if (Objects.isNull(page.getTags())) {
             page.setTags(new ArrayList<>());
         }
         return page;
