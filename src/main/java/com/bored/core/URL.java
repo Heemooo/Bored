@@ -6,6 +6,7 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.util.PathUtil;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,37 +15,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-
+@Builder
 public class URL {
 
-    public URL() {
-    }
+    public final String uri;
 
-    public URL(String uri, String fullFilePath, Context context) {
-        this.uri = uri;
-        this.fullFilePath = fullFilePath;
-        this.setContext(context);
-    }
-
-    @Setter
-    @Getter
-    private String uri;
-
-    @Setter
     private String fullFilePath;
 
-    @Setter
-    private String filePath;
+    private final String filePath;
 
-    @Getter
     private Context context;
 
-    @Setter
-    @Getter
-    private String contentType = "text/html;charset=utf-8";
+    public final String contentType;
 
-    @Getter
-    private Map<String, Object> ctx = new HashMap<>();
+    private final Map<String, Object> ctx = new HashMap<>();
 
     public BufferedInputStream getInputStream() {
         if (StrUtil.isEmpty(filePath)) return null;
@@ -63,7 +47,7 @@ public class URL {
 
     public String content() {
         if (Objects.isNull(context)) return null;
-        else return Bored.env().getJetTemplateHelper().parse(context.getTemplatePath(), this.getCtx());
+        else return Bored.env().getJetTemplateHelper().parse(context.getTemplatePath(), this.ctx);
     }
 
     public void out() {
