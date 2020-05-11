@@ -109,6 +109,7 @@ public class NewCommand extends Command {
             StringBuilder templateContent = new StringBuilder(env.getSiteConfig().getFrontMatterSeparator());
             templateContent.append(env.getLineSeparator());
             archetypeContents.forEach(line -> {
+                /*忽略注释行*/
                 if (!line.startsWith("#") && !line.isBlank()) {
                     templateContent.append(line);
                     templateContent.append(env.getLineSeparator());
