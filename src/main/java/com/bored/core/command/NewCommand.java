@@ -3,7 +3,7 @@ package com.bored.core.command;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
-import cn.hutool.core.io.resource.ClassPathResource;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.bored.Bored;
@@ -12,6 +12,8 @@ import com.bored.model.Environment;
 import com.bored.model.FrontMatter;
 import com.bored.util.PathUtil;
 import lombok.Cleanup;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -20,6 +22,7 @@ import java.io.InputStream;
 import java.util.Deque;
 import java.util.List;
 
+@Slf4j
 public class NewCommand extends Command {
     @Override
     public String getOptionSyntax() {
@@ -67,27 +70,31 @@ public class NewCommand extends Command {
     private void site(String siteName) {
         var env = new Environment();
         Bored.env(env);
-        String site = PathUtil.convertCorrectPath(env.getRoot() + "/" + siteName);
-        if (FileUtil.exist(site)) {
+        String sitePath = PathUtil.convertCorrectPath(env.getRoot() + "/" + siteName);
+        if (FileUtil.exist(sitePath)) {
             printlnError("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
         }
-        InputStream inputStream=this.getClass().getResourceAsStream("template/site-template.zip");
-        ClassPathResource resource = new ClassPathResource("template/site-template.zip");
-        ZipUtil.unzip(resource.getPath(), site);
+        create("template/site-template.zip", new File(sitePath));
         println("Created site {}.", siteName);
     }
 
-    private void theme(String name) {
+    private void theme(String themeName) {
         var env = new CompleteEnvironment();
         Bored.env(env);
-        String themePath = PathUtil.convertCorrectPath(env.getRoot() + "/themes/" + name);
+        String themePath = PathUtil.convertCorrectPath(env.getRoot() + "/themes/" + themeName);
         if (FileUtil.exist(themePath)) {
-            printlnError("'{}' 已存在，请删除，或更换主题名 ", name);
+            printlnError("'{}' 已存在，请删除，或更换主题名 ", themeName);
             return;
         }
-        ClassPathResource resource = new ClassPathResource("template/theme-template.zip");
-        ZipUtil.unzip(resource.getPath(), themePath);
+        create("template/theme-template.zip", new File(themePath));
+        println("Created theme {}.", themeName);
+    }
+
+    @SneakyThrows
+    private void create(String fileName, File file) {
+        @Cleanup InputStream inputStream = NewCommand.class.getClassLoader().getResourceAsStream(fileName);
+        ZipUtil.unzip(inputStream, file, CharsetUtil.CHARSET_UTF_8);
     }
 
     private void page(String name) {

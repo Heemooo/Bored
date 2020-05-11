@@ -10,8 +10,6 @@ import java.util.Map;
 @Data
 public class Site {
 
-    private String title;
-
     private String baseURL;
 
     private String theme = "default";
