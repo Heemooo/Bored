@@ -41,7 +41,7 @@ public class PaginationUtil {
     }
 
     private static String getPaginationUrl(int pageSize) {
-        return "/pages/" + pageSize + Bored.env().getSiteConfig().getURLSuffix();
+        return "/page/" + pageSize + Bored.env().getSiteConfig().getURLSuffix();
     }
 
     /**
@@ -57,9 +57,9 @@ public class PaginationUtil {
         //页数
         Integer pageCount = getPageCount(list, pageSize);
         //开始索引
-        int fromIndex = 0;
+        int fromIndex;
         //结束索引
-        int toIndex = 0;
+        int toIndex;
         if (pageNum > pageCount) {
             pageNum = pageCount;
         }
@@ -77,7 +77,7 @@ public class PaginationUtil {
         //记录总数
         Integer count = list.size();
         //页数
-        int pageCount = 0;
+        int pageCount;
         if (count % pageSize == 0) {
             pageCount = count / pageSize;
         } else {

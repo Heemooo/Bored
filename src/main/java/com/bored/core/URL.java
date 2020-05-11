@@ -24,7 +24,7 @@ public class URL {
 
     private final String filePath;
 
-    private Context context;
+    private final Context context;
 
     private final String contentType;
 
@@ -39,19 +39,18 @@ public class URL {
         return new FileReader(filePath).getInputStream();
     }
 
-    public void setContext(Context context) {
-        this.context = context;
-        ctx.put("ctx", context);
-    }
-
     public URL add(String key, Object object) {
         ctx.put(key, object);
         return this;
     }
 
     public String content() {
-        if (Objects.isNull(context)) return null;
-        else return Bored.env().getJetTemplateHelper().parse(context.getTemplatePath(), this.ctx);
+        if (Objects.isNull(context)) {
+            return null;
+        } else {
+            this.ctx.put("ctx", this.context);
+            return Bored.env().getJetTemplateHelper().parse(context.getTemplatePath(), this.ctx);
+        }
     }
 
     public void out() {
@@ -62,5 +61,16 @@ public class URL {
         } else {
             FileUtil.writeBytes(content.getBytes(CharsetUtil.CHARSET_UTF_8), this.fullFilePath);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "URL{" +
+                "uri='" + uri + '\'' +
+                ", fullFilePath='" + fullFilePath + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", context=" + context +
+                ", contentType='" + contentType + '\'' +
+                '}';
     }
 }

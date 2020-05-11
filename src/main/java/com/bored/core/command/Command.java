@@ -12,7 +12,7 @@ public abstract class Command {
     private final static List<Command> COMMANDS = createCommand();
 
     private static List<Command> createCommand() {
-        return List.of(new NewCommand(), new ServerCommand(), new VersionCommand(), new HelpCommand());
+        return List.of(new NewCommand(), new ServerCommand(), new VersionCommand(), new HelpCommand(), new PublishCommand());
     }
 
     public static List<Command> getCommands() {

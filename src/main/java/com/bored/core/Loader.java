@@ -27,9 +27,10 @@ public class Loader {
         loadTags(true);
         loadArchive();
         loadList();
+        load404();
     }
 
-    public static void loadPages() {
+    private static void loadPages() {
         var env = Bored.env();
         var files = FileUtil.loopFiles(env.getPagePath());
         List<Page> pages = new ArrayList<>();
@@ -56,7 +57,7 @@ public class Loader {
         }
     }
 
-    public static PageFile parse(File file) {
+    private static PageFile parse(File file) {
         var site = Bored.env().getSiteConfig();
         var pagePath = Bored.env().getPagePath();
         var filePath = file.getPath();
@@ -73,9 +74,9 @@ public class Loader {
         var files = FileUtil.loopFiles(path);
         for (File file : files) {
             var uri = PathUtil.convertCorrectUrl(StrUtil.removePrefix(file.getPath(), root));
-            //TODO 输出完整路径 有问题
+            var fullFilePath = Bored.env().getOutputPath() + uri;
             var url = URL.builder().filePath(file.getPath()).uri(uri).contentType(contentType(file.getName(), file.getPath()))
-                    .context(null).fullFilePath(Bored.env().getOutputPath() + "").build();
+                    .context(null).fullFilePath(fullFilePath).build();
             Bored.env().getUrls().put(uri, url);
             log.info("Mapping static resource {}", uri);
         }
@@ -152,7 +153,7 @@ public class Loader {
         log.info("Mapping archive {}", uri);
     }
 
-    public static void loadIndex(Pagination pagination) {
+    private static void loadIndex(Pagination pagination) {
         var uri = "/index" + Bored.env().getSiteConfig().getURLSuffix();
         var context = Context.builder().title("首页").layout("index").url(uri).build();
         var url = URL.builder().uri(uri).context(context).fullFilePath(Bored.env().getOutputPath() + "/index.html").contentType(TEXT_HTML).build()
@@ -162,25 +163,26 @@ public class Loader {
         log.info("Mapping archive {}", uri);
     }
 
-    public static void loadList() {
-        var uri = "/posts" + Bored.env().getSiteConfig().getURLSuffix();
-        var context = Context.builder().title("文章列表").type("post").layout("index").url(uri).build();
-        var paginationMap = PaginationUtil.loadPagination(context.getTemplatePath());
-        var url = URL.builder().uri(uri).context(context).fullFilePath(Bored.env().getOutputPath() + "/posts.html").contentType(TEXT_HTML).build()
-                .add("pages", Bored.env().getPages())
-                .add("pagination", paginationMap.get(0));
-        Bored.env().getUrls().put(uri, url);
-        log.info("Mapping archive {}", uri);
+    private static void loadList() {
+        var paginationMap = PaginationUtil.loadPagination("post/list.html");
         paginationMap.forEach(pagination -> {
             var ctx = Context.builder().title("文章列表").type("post").layout("list").url(pagination.getUri()).build();
             var page = URL.builder().uri(pagination.getUri()).context(ctx).contentType(TEXT_HTML)
-                    .fullFilePath(Bored.env().getOutputPath() + "/posts.html").build()
+                    .fullFilePath(Bored.env().getOutputPath() + "/page/" + pagination.getCurrent() + ".html").build()
                     .add("pages", Bored.env().getPages())
                     .add("pagination", pagination);
             Bored.env().getUrls().put(pagination.getUri(), page);
             log.info("Mapping archive {}", pagination.getUri());
         });
         loadIndex(paginationMap.get(0));
+    }
+
+    private static void load404() {
+        var uri = "/404" + Bored.env().getSiteConfig().getURLSuffix();
+        var context = Context.builder().title("404").layout("404").url(uri).build();
+        var url = URL.builder().uri(uri).context(context).fullFilePath(Bored.env().getOutputPath() + "/404.html").contentType(TEXT_HTML).build();
+        Bored.env().getUrls().put(uri, url);
+        log.info("Mapping 404 {}", uri);
     }
 
 }
