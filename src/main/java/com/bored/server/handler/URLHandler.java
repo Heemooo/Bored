@@ -24,9 +24,9 @@ public class URLHandler extends AbstractHandler {
             response.setStatus(HttpServletResponse.SC_OK);
             var html = pageContainer.get(target);
             if (Objects.isNull(html.content())) {
-                ServletUtil.write(response, html.getInputStream(), html.getContentType());
+                ServletUtil.write(response, html.getInputStream(), html.contentType());
             } else {
-                ServletUtil.write(response, html.content(), html.getContentType());
+                ServletUtil.write(response, html.content(), html.contentType());
             }
             baseRequest.setHandled(true);
         }

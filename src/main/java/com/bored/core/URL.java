@@ -26,9 +26,13 @@ public class URL {
 
     private Context context;
 
-    public final String contentType;
+    private final String contentType;
 
     private final Map<String, Object> ctx = new HashMap<>();
+
+    public String contentType(){
+        return contentType;
+    }
 
     public BufferedInputStream getInputStream() {
         if (StrUtil.isEmpty(filePath)) return null;
