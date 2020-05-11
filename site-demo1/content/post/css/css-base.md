@@ -16,7 +16,7 @@ categories = [
 在开发过程中很常见的前端需求是实现一个左右布局，左边宽度固定，右边根据左边的宽度自适应屏幕填充满剩余的屏幕
 ### 法一
 左侧 DIV 设置 float 属性为 left，右侧 DIV 设置 margin-left 属性等于或大于左侧 DIV 宽度
-```
+```html
 <div style="float: left;width: 50%;text-align: center;"></div>
 <div style="position: relative;margin-left: 50%;text-align: center;"></div>
 ```
@@ -25,7 +25,7 @@ categories = [
 <div style="float: left;width: 50%;text-align: center;height:50px;background:lightgreen;"></div>
 <div style="position: relative;margin-left: 50%;text-align: center;height:50px;background:lightgray;"></div>
 
-```
+```html
 <div style="float: left;width: 50%;text-align: center;height:50px;background:lightgreen;"></div>
 <div style="position: relative;margin-left: 50%;text-align: center;height:50px;background:lightgray;"></div>
 ```
@@ -49,22 +49,21 @@ $(window).width()也是获得浏览器宽度的方法，但它跟window.innerWid
 此时可以使用overflow属性，overflow 属性规定当内容溢出元素框时发生的事情。只需要给父元素设置overflow属性
 
 可能的值| 描述
----|---
+------- | -------
 visible |	默认值。内容不会被修剪，会呈现在元素框之外。
 hidden |内容会被修剪，并且其余内容是不可见的。
 scroll |	内容会被修剪，但是浏览器会显示滚动条以便查看其余的内容。
 auto |	如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。
 inherit |	规定应该从父元素继承 overflow 属性的值。
-
-具体设置如下:
-```
+具体设置如下
+```css
 overflow: hidden;
 ```
 ## 实现绝对定位元素水平垂直居中的两种方法
 平时,用的方法即第一种方法是设置left,top值均为50%,同时margin-left设置为绝对定位元素width的一半取负,margin-top设为其height的一半取负。
 例如，绝对定位元素的width:100px;height:100px;
 代码如下:
-```
+```css
 position:absolute;
 left:50%;
 top:50%;
@@ -74,13 +73,14 @@ margin-top:-50px;
 这是比较常用的一个方法，今天介绍一个巧妙的方法，是利用了绝对定位元素的自动伸缩的特性实现的。
 
 代码如下：
-```
+```css
 position:absolute;
 left: 0;
 right: 0;
 top: 0;
 bottom: 0;
 margin:auto;
+
 ```
 上面就是第二种方法：设置margin:auto;设置left和right的值相等,top和bottom的值相等,
 注意：left和right的值不能超过其相对元素width减去它自身width的一半,否则绝对定位元素会优先取left值进行定位(前提是文档流是从左向右),但是top和bottom的值却没有这个限制。
