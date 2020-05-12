@@ -1,18 +1,21 @@
 package com.bored.core;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.model.Label;
+import com.bored.model.Category;
 import com.bored.model.PageFile;
 import com.bored.model.Pagination;
+import com.bored.model.Tag;
 import com.bored.util.PaginationUtil;
 import com.bored.util.PathUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -25,6 +28,7 @@ public class Loader {
     }
 
     private static class StaticLoader {
+
         private PageLoader statics() {
             var root = PathUtil.convertCorrectPath(Bored.env().getThemePath());
             var path = PathUtil.convertCorrectPath(Bored.env().getStaticPath());
@@ -79,14 +83,64 @@ public class Loader {
 
     private static class TagLoader {
         private CategoryLoader tags() {
-            loadTags(false);
+            List<Tag> tagList = new ArrayList<>();
+            Bored.env().getPages().parallelStream().forEach(page -> Optional.of(page.getTags()).ifPresent(strings -> strings.parallelStream().forEach(tagName -> {
+                var uri = "/tag/" + tagName + Bored.env().getSiteConfig().getURLSuffix();
+                var tag = new Tag(uri, tagName);
+                tag.getPages().add(page);
+                tagList.add(tag);
+            })));
+            List<Tag> tags = new ArrayList<>();
+            tagList.stream().collect(Collectors.groupingBy(Tag::getUrl)).forEach((url, list) -> list.stream().reduce((t1, t2) -> {
+                t1.getPages().addAll(t2.getPages());
+                return t1;
+            }).ifPresent(tags::add));
+            tags.parallelStream().forEach(tag -> {
+                var url = tag.toURL();
+                Container.put(url.uri, url);
+                log.info("Mapping tag {} {}", tag.getName(), url.uri);
+            });
+            var uri = "/tags" + Bored.env().getSiteConfig().getURLSuffix();
+            var context = Context.builder().title("标签列表").type("base").layout("tags").url(uri).build();
+            var url = URL.builder().uri(uri)
+                    .fullFilePath(Bored.env().getOutputPath() + "/tags.html")
+                    .context(context)
+                    .contentType(TEXT_HTML).build().add("tags", tags);
+            Bored.env().setTags(tags);
+            Container.put(uri, url);
+            log.info("Mapping tags {}", uri);
             return new CategoryLoader();
         }
     }
 
     private static class CategoryLoader {
         private ArchiveLoader categories() {
-            loadTags(true);
+            List<Category> categoryList = new ArrayList<>();
+            Bored.env().getPages().parallelStream().forEach(page -> Optional.of(page.getCategories()).ifPresent(strings -> strings.parallelStream().forEach(categoryName -> {
+                var uri = "/tag/" + categoryName + Bored.env().getSiteConfig().getURLSuffix();
+                var tag = new Category(uri, categoryName);
+                tag.getPages().add(page);
+                categoryList.add(tag);
+            })));
+            List<Category> categories = new ArrayList<>();
+            categoryList.stream().collect(Collectors.groupingBy(Category::getUrl)).forEach((url, list) -> list.stream().reduce((t1, t2) -> {
+                t1.getPages().addAll(t2.getPages());
+                return t1;
+            }).ifPresent(categories::add));
+            categories.parallelStream().forEach(tag -> {
+                var url = tag.toURL();
+                Container.put(url.uri, url);
+                log.info("Mapping category {} {}", tag.getName(), url.uri);
+            });
+            var uri = "/categories" + Bored.env().getSiteConfig().getURLSuffix();
+            var context = Context.builder().title("分类列表").type("base").layout("categories").url(uri).build();
+            var url = URL.builder().uri(uri)
+                    .fullFilePath(Bored.env().getOutputPath() + "/categories.html")
+                    .context(context)
+                    .contentType(TEXT_HTML).build().add("categories", categories);
+            Bored.env().setCategories(categories);
+            Container.put(uri, url);
+            log.info("Mapping categories {}", uri);
             return new ArchiveLoader();
         }
     }
@@ -139,53 +193,4 @@ public class Loader {
             log.info("Mapping 404 {}", uri);
         }
     }
-
-    private static void loadTags(boolean isCategory) {
-        var name = isCategory ? "category" : "tag";
-        var names = isCategory ? "categories" : "tags";
-        var title = isCategory ? "分类" : "标签";
-        var titles = isCategory ? "分类:Categories" : "标签:Tags";
-        var pages = Bored.env().getPages();
-        Map<String, Label> map = new HashMap<>();
-        pages.forEach(page -> {
-            var tags = isCategory ? page.getCategories() : page.getTags();
-            if (CollUtil.isNotEmpty(tags)) {
-                tags.forEach(tagName -> {
-                    var uri = "/" + name + "/" + tagName + Bored.env().getSiteConfig().getURLSuffix();
-                    if (map.containsKey(uri)) {
-                        map.get(uri).getPages().add(page);
-                    } else {
-                        Label tag = new Label(tagName, uri);
-                        tag.getPages().add(page);
-                        map.put(uri, tag);
-                    }
-                });
-            }
-        });
-        map.forEach((uri, tag) -> {
-            var context = Context.builder().title(title + ":" + tag.getName()).type("base").layout(name).url(uri).build();
-            var url = URL.builder().uri(uri)
-                    .fullFilePath(Bored.env().getOutputPath() + "/" + name + "/" + tag.getName() + ".html")
-                    .context(context)
-                    .contentType(TEXT_HTML).build()
-                    .add(name, tag);
-            Container.put(uri, url);
-            log.info("Mapping {} {}", name, uri);
-        });
-        var uri = "/" + names + Bored.env().getSiteConfig().getURLSuffix();
-        List<Label> tags = new ArrayList<>(map.values());
-        var context = Context.builder().title(titles).type("base").layout(names).url(uri).build();
-        var url = URL.builder().uri(uri)
-                .fullFilePath(Bored.env().getOutputPath() + "/" + names + ".html")
-                .context(context)
-                .contentType(TEXT_HTML).build().add(names, tags);
-        if (isCategory) {
-            Bored.env().setCategories(tags);
-        } else {
-            Bored.env().setTags(tags);
-        }
-        Container.put(uri, url);
-        log.info("Mapping {} {}", names, uri);
-    }
-
 }

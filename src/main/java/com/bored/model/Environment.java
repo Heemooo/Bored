@@ -66,9 +66,9 @@ public class Environment {
     /**
      * 标签列表
      */
-    private List<Label> tags;
+    private List<Tag> tags;
     /**
      * 分类列表
      */
-    private List<Label> categories;
+    private List<Category> categories;
 }
