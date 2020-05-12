@@ -19,7 +19,7 @@ public class ConfigListener extends FileAlterationListenerAdaptor {
         log.info("{} is changed", file.getPath());
         Site site = null;
         try {
-            site = TomlUtil.loadTomlFile(file.getPath(), Site.class);
+            site = Site.load(file.getPath());
         } catch (Exception e) {
             log.error(e.getMessage());
         }

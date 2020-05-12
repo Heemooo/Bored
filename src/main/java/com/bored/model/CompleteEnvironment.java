@@ -5,7 +5,6 @@ import cn.hutool.core.lang.Console;
 import com.bored.core.Site;
 import com.bored.template.JetTemplateHelper;
 import com.bored.util.PathUtil;
-import com.bored.util.TomlUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,15 +18,19 @@ public class CompleteEnvironment extends Environment {
             System.exit(0);
         }
         this.setSiteConfigPath(siteConfigPath);
-        var site = TomlUtil.loadTomlFile(siteConfigPath, Site.class);
-        this.setSiteConfig(site);
+        try {
+            var site = Site.load(siteConfigPath);
+            this.setSiteConfig(site);
+        } catch (Exception e) {
+            System.exit(0);
+        }
         this.setPagePath(PathUtil.convertCorrectPath(String.format("%s/content", this.getRoot())));
-        this.setThemePath(PathUtil.convertCorrectPath(String.format("%s/themes/%s", this.getRoot(), site.getTheme())));
+        this.setThemePath(PathUtil.convertCorrectPath(String.format("%s/themes/%s", this.getRoot(), this.getSiteConfig().getTheme())));
         this.setLayoutPath(PathUtil.convertCorrectPath(String.format("%s/layouts", this.getThemePath())));
         this.setOutputPath(PathUtil.convertCorrectPath(String.format("%s/public", this.getRoot())));
         this.setOutputStaticPath(PathUtil.convertCorrectPath(String.format("%s/static", this.getOutputPath())));
         this.setJetTemplateHelper(new JetTemplateHelper(this.getLayoutPath()));
-        jetTemplateConfig(site);
+        jetTemplateConfig(this.getSiteConfig());
 
         this.setFrontMatterPath(PathUtil.convertCorrectPath(String.format("%s/front.matter.toml", this.getThemePath())));
         this.setStaticPath(PathUtil.convertCorrectPath(String.format("%s/static", this.getThemePath())));

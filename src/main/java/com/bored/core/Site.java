@@ -1,11 +1,13 @@
 package com.bored.core;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.model.Menu;
+import com.bored.util.TomlUtil;
 import lombok.Data;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 public class Site {
@@ -32,5 +34,20 @@ public class Site {
 
     public String getURLSuffix() {
         return enableHtmlSuffix ? ".html" : StrUtil.EMPTY;
+    }
+
+    public static Site load(String siteConfigPath) {
+        var optionalSite = Optional.of(TomlUtil.loadTomlFile(siteConfigPath, Site.class));
+        optionalSite.ifPresent(site -> {
+            if (CollUtil.isNotEmpty(site.menus)) {
+                Map<String, List<Menu>> menuMap = new HashMap<>();
+                site.menus.forEach((name, menus) -> {
+                    menus = menus.stream().sorted(Comparator.comparing(Menu::getWeight)).collect(Collectors.toList());
+                    menuMap.put(name, menus);
+                });
+                site.setMenus(menuMap);
+            }
+        });
+        return optionalSite.get();
     }
 }

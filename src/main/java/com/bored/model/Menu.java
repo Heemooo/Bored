@@ -9,5 +9,5 @@ public class Menu {
     private String id;
     private String name;
     private String url;
-    private Integer weight;
+    private int weight;
 }
