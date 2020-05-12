@@ -32,7 +32,7 @@ public class Context {
     /**
      * 创建文章时间
      */
-    public final String time;
+    public final Date time;
 
     public String getTemplatePath() {
         if(Objects.isNull(type)){

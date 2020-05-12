@@ -79,7 +79,7 @@ public class PageFile {
             page.setPermLink(this.getPermLink());
         }
         if (Objects.isNull(page.getDate())) {
-            page.setDate(DateUtil.now());
+            page.setDate(DateUtil.date());
         }
         if (StrUtil.isEmpty(page.getDescription()) || page.getDescription().length() > 200) {
             var str = StrUtil.split(this.content.replaceAll("[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]+", ""), 200);
