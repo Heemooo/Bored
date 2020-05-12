@@ -69,7 +69,10 @@ public class Loader {
                 var page = pageFile.toPage();
                 var url = pageFile.pageToURL(page);
                 Container.put(url.uri, url);
-                pages.add(page);
+                /*不加载根目录下的md文件到list列表中*/
+                if (StrUtil.count(url.uri, "/") > 1) {
+                    pages.add(page);
+                }
                 log.info("Mapping page {}", url.uri);
             }
             env.setPages(pages.stream().sorted(Comparator.comparing(Page::getDate).reversed()).collect(Collectors.toList()));
@@ -86,7 +89,7 @@ public class Loader {
             List<Tag> tagList = new ArrayList<>();
             Bored.env().getPages().parallelStream().forEach(page -> Optional.of(page.getTags()).ifPresent(strings -> strings.parallelStream().forEach(tagName -> {
                 var uri = "/tag/" + tagName + Bored.env().getSiteConfig().getURLSuffix();
-                var tag = new Tag(tagName,uri);
+                var tag = new Tag(tagName, uri);
                 tag.getPages().add(page);
                 tagList.add(tag);
             })));
@@ -118,7 +121,7 @@ public class Loader {
             List<Category> categoryList = new ArrayList<>();
             Bored.env().getPages().parallelStream().forEach(page -> Optional.of(page.getCategories()).ifPresent(strings -> strings.parallelStream().forEach(categoryName -> {
                 var uri = "/tag/" + categoryName + Bored.env().getSiteConfig().getURLSuffix();
-                var tag = new Category(categoryName,uri);
+                var tag = new Category(categoryName, uri);
                 tag.getPages().add(page);
                 categoryList.add(tag);
             })));
