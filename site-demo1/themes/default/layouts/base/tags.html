@@ -9,7 +9,7 @@
         共计${tags.size()}个标签
     </div>
     <div class="tag-cloud-tags">
-        #for(Label tag:tags)
+        #for(Tag tag:tags)
         <a href="${tag.url}" style="font-size:${tag.pages.size()}rem;">${tag.name}</a>
         #end
     </div>

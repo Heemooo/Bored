@@ -86,7 +86,7 @@ public class Loader {
             List<Tag> tagList = new ArrayList<>();
             Bored.env().getPages().parallelStream().forEach(page -> Optional.of(page.getTags()).ifPresent(strings -> strings.parallelStream().forEach(tagName -> {
                 var uri = "/tag/" + tagName + Bored.env().getSiteConfig().getURLSuffix();
-                var tag = new Tag(uri, tagName);
+                var tag = new Tag(tagName,uri);
                 tag.getPages().add(page);
                 tagList.add(tag);
             })));
@@ -118,7 +118,7 @@ public class Loader {
             List<Category> categoryList = new ArrayList<>();
             Bored.env().getPages().parallelStream().forEach(page -> Optional.of(page.getCategories()).ifPresent(strings -> strings.parallelStream().forEach(categoryName -> {
                 var uri = "/tag/" + categoryName + Bored.env().getSiteConfig().getURLSuffix();
-                var tag = new Category(uri, categoryName);
+                var tag = new Category(categoryName,uri);
                 tag.getPages().add(page);
                 categoryList.add(tag);
             })));

@@ -17,7 +17,7 @@
         </div>
         <div class="sidebar-list">
             <ul class="sidebar-list-body sidebar-list-items">
-                #for (Label category:categories())
+                #for (Category category:categories())
                 <li class="sidebar-list-item">
                     <a href="${category.url}">${category.name} (${category.pages.size()})</a>
                 </li>
@@ -34,7 +34,7 @@
         </span>
         </div>
         <div class="tags">
-            #for (Label tag:tags())
+            #for (Tag tag:tags())
             <a href="${tag.url}">${tag.name}</a>
             #end
         </div>
