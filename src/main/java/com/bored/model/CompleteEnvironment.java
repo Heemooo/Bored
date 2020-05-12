@@ -18,9 +18,9 @@ public class CompleteEnvironment extends Environment {
             Console.log("Error:Maybe should create new site or change directory to the site path.");
             System.exit(0);
         }
+        this.setSiteConfigPath(siteConfigPath);
         var site = TomlUtil.loadTomlFile(siteConfigPath, Site.class);
         this.setSiteConfig(site);
-        log.debug(site.toString());
         this.setPagePath(PathUtil.convertCorrectPath(String.format("%s/content", this.getRoot())));
         this.setThemePath(PathUtil.convertCorrectPath(String.format("%s/themes/%s", this.getRoot(), site.getTheme())));
         this.setLayoutPath(PathUtil.convertCorrectPath(String.format("%s/layouts", this.getThemePath())));

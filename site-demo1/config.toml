@@ -7,7 +7,6 @@ title = "管他谁谁谁"
 #enableHtmlSuffix = false     #关闭html后缀，默认开启
 frontMatterSeparator = "+++"  #前辅文分隔符，默认为"---"
 pageSize = 5
-
 [URLMapping]
   name="home"
   #type="layouts"             #默认配置模板路径为主题下layouts，不配置此项则在根目录查找index.ftl

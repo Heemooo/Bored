@@ -2,8 +2,8 @@ package com.bored.server;
 
 import com.bored.Bored;
 import com.bored.core.Loader;
-import com.bored.listen.PageFilter;
-import com.bored.listen.PageListener;
+import com.bored.listen.ConfigFilter;
+import com.bored.listen.ConfigListener;
 import com.bored.model.CompleteEnvironment;
 import com.bored.server.handler.NotFoundHandler;
 import com.bored.server.handler.URLHandler;
@@ -41,16 +41,22 @@ public class BoredServer {
     }
 
     private static void startListener() {
-        FileAlterationMonitor monitor = new FileAlterationMonitor(1000L);// 每隔1000毫秒扫描一次
-        FileFilter filter = FileFilterUtils.and(new PageFilter());
-        FileAlterationObserver observer = new FileAlterationObserver(Bored.env().getPagePath(), filter);
-        observer.addListener(new PageListener());
+        //每隔1000毫秒扫描一次
+        FileAlterationMonitor monitor = new FileAlterationMonitor(1000L);
+        FileFilter filter = FileFilterUtils.and(new ConfigFilter());
+        FileAlterationObserver observer = new FileAlterationObserver(Bored.env().getRoot(), filter);
+        observer.addListener(new ConfigListener());
         monitor.addObserver(observer);
         try {
             monitor.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        Bored.env(new CompleteEnvironment());
+        startListener();
     }
 
 }

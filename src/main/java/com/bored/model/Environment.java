@@ -1,15 +1,11 @@
 package com.bored.model;
 
-import com.bored.core.Container;
 import com.bored.core.Page;
 import com.bored.core.Site;
-import com.bored.core.URL;
 import com.bored.template.JetTemplateHelper;
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class Environment {
@@ -46,6 +42,10 @@ public class Environment {
      * 静态文件输出目录
      */
     private String outputStaticPath;
+    /**
+     * 配置路径
+     */
+    private String siteConfigPath;
     /**
      * 网站配置
      */
