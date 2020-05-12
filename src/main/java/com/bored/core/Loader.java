@@ -37,15 +37,7 @@ public class Loader {
         for (File file : files) {
             var pageFile = new PageFile(file);
             var page = pageFile.toPage();
-            var context = Context.builder()
-                    .time(page.getDate()).title(page.getTitle()).url(page.getPermLink()).type(pageFile.getFrontMatter().getType())
-                    .layout(pageFile.getFrontMatter().getLayout()).build();
-            var url = URL.builder()
-                    .fullFilePath(String.format("%s/%s/%s", env.getOutputPath(), context.type, pageFile.getHtmlFileName()))
-                    .uri(context.url)
-                    .context(context)
-                    .contentType(TEXT_HTML)
-                    .build().add("page", page);
+            var url = pageFile.pageToURL(page);
             Container.put(url.uri, url);
             pages.add(page);
             log.info("Mapping page {}", url.uri);

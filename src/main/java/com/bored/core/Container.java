@@ -26,6 +26,11 @@ public class Container {
         }
     }
 
+    public static void delete(String uri){
+        URL url = URL_LIST.get(uri);
+        URL_LIST.remove(uri);
+    }
+
     public static List<URL> list(){
         return new ArrayList<>(URL_LIST.values());
     }

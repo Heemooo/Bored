@@ -5,7 +5,9 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
+import com.bored.core.Context;
 import com.bored.core.Page;
+import com.bored.core.URL;
 import com.bored.util.MarkdownUtil;
 import com.bored.util.PathUtil;
 import com.bored.util.TomlUtil;
@@ -68,7 +70,6 @@ public class PageFile {
         headerAndContent[1] = content.toString();
         return headerAndContent;
     }
-
     public Page toPage() {
         var page = new Page();
         BeanUtil.copyProperties(this.getFrontMatter(), page);
@@ -93,5 +94,18 @@ public class PageFile {
         }
         return page;
     }
+
+    public URL pageToURL(Page page) {
+        var context = Context.builder()
+                .time(page.getDate()).title(page.getTitle()).url(page.getPermLink()).type(this.getFrontMatter().getType())
+                .layout(this.getFrontMatter().getLayout()).build();
+        return URL.builder()
+                .fullFilePath(String.format("%s/%s/%s", Bored.env().getOutputPath(), context.type, this.getHtmlFileName()))
+                .uri(context.url)
+                .context(context)
+                .contentType("text/html;charset=utf-8")
+                .build().add("page", page);
+    }
+
 }
 
