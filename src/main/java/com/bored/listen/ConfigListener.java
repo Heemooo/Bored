@@ -1,6 +1,5 @@
 package com.bored.listen;
 
-import cn.hutool.core.lang.Console;
 import com.bored.Bored;
 import com.bored.core.Site;
 import com.bored.util.TomlUtil;
