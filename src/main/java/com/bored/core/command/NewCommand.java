@@ -7,9 +7,9 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.bored.Bored;
-import com.bored.core.Paths;
-import com.bored.core.Site;
-import com.bored.model.FrontMatter;
+import com.bored.util.Paths;
+import com.bored.model.Site;
+import com.bored.core.FrontMatter;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -90,6 +90,7 @@ public class NewCommand extends Command {
     @SneakyThrows
     private void create(String fileName, File file) {
         @Cleanup InputStream inputStream = NewCommand.class.getClassLoader().getResourceAsStream(fileName);
+        assert inputStream != null;
         ZipUtil.unzip(inputStream, file, CharsetUtil.CHARSET_UTF_8);
     }
 

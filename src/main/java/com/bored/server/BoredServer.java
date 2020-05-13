@@ -2,8 +2,7 @@ package com.bored.server;
 
 import com.bored.Bored;
 import com.bored.core.Loader;
-import com.bored.core.Paths;
-import com.bored.core.Site;
+import com.bored.model.Site;
 import com.bored.listen.ConfigFilter;
 import com.bored.listen.ConfigListener;
 import com.bored.server.handler.NotFoundHandler;

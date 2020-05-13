@@ -1,10 +1,10 @@
-package com.bored.core;
+package com.bored.model;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
-import com.bored.model.Menu;
+import com.bored.util.Paths;
 import com.moandjiezana.toml.Toml;
 import lombok.Data;
 

@@ -1,5 +1,5 @@
 
-package com.bored.model;
+package com.bored.core;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;

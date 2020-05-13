@@ -46,18 +46,7 @@
             <artifactId>markdown-toc</artifactId>
             <version>1.0.5</version>
         </dependency>
-        <!--markdown to html-->
-        <dependency>
-            <groupId>com.vladsch.flexmark</groupId>
-            <artifactId>flexmark</artifactId>
-            <version>0.34.48</version>
-        </dependency>
-        <dependency>
-            <groupId>com.vladsch.flexmark</groupId>
-            <artifactId>flexmark-util</artifactId>
-            <version>0.34.48</version>
-        </dependency>
-        <!--表格渲染插件-->
+        <!--markdown to html表格渲染插件-->
         <dependency>
             <groupId>com.vladsch.flexmark</groupId>
             <artifactId>flexmark-ext-tables</artifactId>
@@ -77,6 +66,12 @@
             <groupId>com.github.subchen</groupId>
             <artifactId>jetbrick-template</artifactId>
             <version>2.1.10</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>

@@ -1,4 +1,4 @@
-package com.bored.core;
+package com.bored.model;
 
 import lombok.Data;
 
@@ -20,9 +20,17 @@ public class Page {
      */
     private String type;
     /**
+     * 文章模板
+     */
+    private String layout;
+    /**
      * url
      */
     private String permLink;
+    /**
+     * 输出路径
+     */
+    private String outPutPath;
     /**
      * 描述
      */

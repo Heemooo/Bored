@@ -2,8 +2,8 @@ package com.bored.template;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
-import com.bored.core.Page;
-import com.bored.model.PageFile;
+import com.bored.model.Page;
+import com.bored.core.MDFile;
 
 import java.util.Comparator;
 import java.util.List;
@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 public class JetTemplateMethod {
     /**
      * 取最新的number条
-     * @param pageFiles 文章列表
+     * @param MDFiles 文章列表
      * @param number    数量
      * @return 最新的文章
      */
-    public static List<PageFile> top(List<PageFile> pageFiles, int number) {
-        return pageFiles.subList(0, number);
+    public static List<MDFile> top(List<MDFile> MDFiles, int number) {
+        return MDFiles.subList(0, number);
     }
 
     /**

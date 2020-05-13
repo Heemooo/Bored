@@ -2,7 +2,7 @@ package com.bored.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.core.Page;
+import com.bored.model.Page;
 import com.bored.model.Pagination;
 import jetbrick.util.annotation.NotNull;
 

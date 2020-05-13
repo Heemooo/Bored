@@ -5,6 +5,8 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
+import com.bored.model.Context;
+import com.bored.util.Paths;
 import lombok.Builder;
 
 import java.io.BufferedInputStream;
@@ -15,9 +17,9 @@ import java.util.Objects;
 @Builder
 public class URL {
 
-    public final String uri;
+    private final String uri;
 
-    private String fullFilePath;
+    private String outPutPath;
 
     private final String filePath;
 
@@ -26,6 +28,10 @@ public class URL {
     private final String contentType;
 
     private final Map<String, Object> ctx = new HashMap<>();
+
+    public String uri(){
+        return uri;
+    }
 
     public String contentType() {
         return contentType;
@@ -52,11 +58,11 @@ public class URL {
 
     public void out() {
         var content = content();
-        this.fullFilePath = Paths.convertCorrectPath(this.fullFilePath);
+        this.outPutPath = Paths.convertCorrectPath(this.outPutPath);
         if (StrUtil.isEmpty(content)) {
-            FileUtil.writeBytes(new FileReader(this.filePath).readBytes(), this.fullFilePath);
+            FileUtil.writeBytes(new FileReader(this.filePath).readBytes(), this.outPutPath);
         } else {
-            FileUtil.writeBytes(content.getBytes(CharsetUtil.CHARSET_UTF_8), this.fullFilePath);
+            FileUtil.writeBytes(content.getBytes(CharsetUtil.CHARSET_UTF_8), this.outPutPath);
         }
     }
 
@@ -64,7 +70,7 @@ public class URL {
     public String toString() {
         return "URL{" +
                 "uri='" + uri + '\'' +
-                ", fullFilePath='" + fullFilePath + '\'' +
+                ", fullFilePath='" + outPutPath + '\'' +
                 ", filePath='" + filePath + '\'' +
                 ", context=" + context +
                 ", contentType='" + contentType + '\'' +

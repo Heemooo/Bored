@@ -1,4 +1,4 @@
-package com.bored.core;
+package com.bored.model;
 
 import lombok.Builder;
 import lombok.Data;

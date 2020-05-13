@@ -1,6 +1,5 @@
 package com.bored.model;
 
-import com.bored.core.Page;
 import lombok.Data;
 
 import java.util.List;

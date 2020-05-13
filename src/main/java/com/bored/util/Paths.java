@@ -1,4 +1,4 @@
-package com.bored.core;
+package com.bored.util;
 
 import com.bored.Bored;
 

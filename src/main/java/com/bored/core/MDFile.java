@@ -1,15 +1,13 @@
-package com.bored.model;
+package com.bored.core;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.core.Context;
-import com.bored.core.Page;
-import com.bored.core.Paths;
-import com.bored.core.URL;
+import com.bored.model.Page;
 import com.bored.util.MarkdownUtil;
+import com.bored.util.Paths;
 import lombok.Data;
 
 import java.io.File;
@@ -18,9 +16,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
-public class PageFile {
+public class MDFile {
 
-    public PageFile(File file) {
+    public MDFile(File file) {
         this.file = file;
         this.fileName = file.getName();
         this.htmlFileName = StrUtil.removeSuffix(file.getName(), ".md") + ".html";
@@ -32,7 +30,8 @@ public class PageFile {
         this.permLink = Paths.toUrl(StrUtil.removeSuffix(permLink, ".md") + Bored.config().getURLSuffix());
         //获取一级目录
         var absolutePath = StrUtil.removePrefix(file.getPath(), Paths.pagePath());
-        this.type = StrUtil.split(absolutePath, "/")[1];
+        var str = StrUtil.split(Paths.toUrl(absolutePath), "/");
+        this.type = StrUtil.nullToDefault(str[1], "");
     }
 
     private String type;
@@ -99,20 +98,8 @@ public class PageFile {
         if (Objects.isNull(page.getType())) {
             page.setType(this.getType());
         }
+        page.setOutPutPath(String.format("%s/%s/%s", Paths.outputPath(), page.getType(), this.getHtmlFileName()));
         return page;
     }
-
-    public URL pageToURL(Page page) {
-        var context = Context.builder()
-                .time(page.getDate()).title(page.getTitle()).url(page.getPermLink()).type(this.getFrontMatter().getType())
-                .layout(this.getFrontMatter().getLayout()).build();
-        return URL.builder()
-                .fullFilePath(String.format("%s/%s/%s", Paths.outputPath(), context.type, this.getHtmlFileName()))
-                .uri(context.url)
-                .context(context)
-                .contentType("text/html;charset=utf-8")
-                .build().add("page", page);
-    }
-
 }
 

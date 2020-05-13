@@ -1,8 +1,6 @@
 package com.bored.model;
 
-import com.bored.core.Context;
-import com.bored.core.Page;
-import com.bored.core.Paths;
+import com.bored.util.Paths;
 import com.bored.core.URL;
 import lombok.Data;
 
@@ -32,7 +30,7 @@ public class Category {
     public URL toURL() {
         var context = Context.builder().title("分类" + this.getName()).type("base").layout("category").url(this.getUrl()).build();
         return URL.builder().uri(this.getUrl())
-                .fullFilePath(Paths.outputPath() + "/categories/" + this.getName() + ".html")
+                .outPutPath(Paths.outputPath() + "/categories/" + this.getName() + ".html")
                 .context(context)
                 .contentType("text/html;charset=utf-8").build().add("category", this);
     }

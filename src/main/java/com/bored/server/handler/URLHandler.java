@@ -2,7 +2,6 @@ package com.bored.server.handler;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.bored.Bored;
-import com.bored.core.URLS;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -19,15 +18,14 @@ public class URLHandler extends AbstractHandler {
         if (target.equals("/")) {
             target = "/index" + Bored.config().getURLSuffix();
         }
-        if (URLS.contains(target)) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            var html = URLS.get(target);
-            if (Objects.isNull(html.content())) {
-                ServletUtil.write(response, html.getInputStream(), html.contentType());
+        Bored.url(target).ifPresent(url -> {
+            if (Objects.isNull(url.content())) {
+                ServletUtil.write(response, url.getInputStream(), url.contentType());
             } else {
-                ServletUtil.write(response, html.content(), html.contentType());
+                ServletUtil.write(response, url.content(), url.contentType());
             }
+            response.setStatus(HttpServletResponse.SC_OK);
             baseRequest.setHandled(true);
-        }
+        });
     }
 }

@@ -2,7 +2,10 @@ package com.bored.core.command;
 
 import cn.hutool.core.io.FileUtil;
 import com.bored.Bored;
-import com.bored.core.*;
+import com.bored.core.Loader;
+import com.bored.util.Paths;
+import com.bored.model.Site;
+import com.bored.core.URL;
 
 import java.util.Deque;
 
@@ -34,6 +37,6 @@ public class PublishCommand extends Command {
         Bored.config(Site.instance());
         Loader.start();
         FileUtil.del(Paths.outputPath());
-        URLS.list().parallelStream().forEach(URL::out);
+        Bored.urls().parallelStream().forEach(URL::out);
     }
 }

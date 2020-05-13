@@ -5,9 +5,12 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.model.Category;
-import com.bored.model.PageFile;
+import com.bored.model.Context;
+import com.bored.model.Page;
 import com.bored.model.Tag;
+import com.bored.util.Pages;
 import com.bored.util.PaginationUtil;
+import com.bored.util.Paths;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -34,8 +37,8 @@ public class Loader {
                 var uri = Paths.toUrl(StrUtil.removePrefix(file.getPath(), Paths.themePath(Bored.config().getTheme())));
                 var fullFilePath = Paths.outputPath() + uri;
                 var url = URL.builder().filePath(file.getPath()).uri(uri).contentType(contentType(file.getName(), file.getPath()))
-                        .context(null).fullFilePath(fullFilePath).build();
-                URLS.put(uri, url);
+                        .context(null).outPutPath(fullFilePath).build();
+                Bored.url(url);
                 log.info("Mapping static resource {}", uri);
             }
             return new PageLoader();
@@ -60,16 +63,17 @@ public class Loader {
         private TagLoader pages() {
             var files = FileUtil.loopFiles(Paths.pagePath());
             for (File file : files) {
-                var pageFile = new PageFile(file);
-                var page = pageFile.toPage();
-                var url = pageFile.pageToURL(page);
-                URLS.put(url.uri, url);
+                var mdFile = new MDFile(file);
+                var page = mdFile.toPage();
                 /*不加载根目录下的md文件到list列表中*/
-                if (StrUtil.count(url.uri, "/") > 1) {
+                if (StrUtil.count(page.getPermLink(), "/") == 1) {
+                    var url = Pages.toURL(page);
+                    Bored.url(url);
+                } else {
                     Bored.page(page);
                 }
-                log.info("Mapping page {}", url.uri);
             }
+            Bored.pages().forEach(page -> Bored.url(Pages.toURL(page)));
             return new TagLoader();
         }
     }
@@ -90,17 +94,17 @@ public class Loader {
             }).ifPresent(tags::add));
             tags.parallelStream().forEach(tag -> {
                 var url = tag.toURL();
-                URLS.put(url.uri, url);
-                log.info("Mapping tag {} {}", tag.getName(), url.uri);
+                Bored.url(url);
+                log.info("Mapping tag {} {}", tag.getName(), url.uri());
             });
             var uri = "/tags" + Bored.config().getURLSuffix();
             var context = Context.builder().title("标签列表").type("base").layout("tags").url(uri).build();
             var url = URL.builder().uri(uri)
-                    .fullFilePath(Paths.outputPath() + "/tags.html")
+                    .outPutPath(Paths.outputPath() + "/tags.html")
                     .context(context)
                     .contentType(TEXT_HTML).build().add("tags", tags);
             Bored.tags().addAll(tags);
-            URLS.put(uri, url);
+            Bored.url(url);
             log.info("Mapping tags {}", uri);
             return new CategoryLoader();
         }
@@ -122,17 +126,17 @@ public class Loader {
             }).ifPresent(categories::add));
             categories.parallelStream().forEach(tag -> {
                 var url = tag.toURL();
-                URLS.put(url.uri, url);
-                log.info("Mapping category {} {}", tag.getName(), url.uri);
+                Bored.url(url);
+                log.info("Mapping category {} {}", tag.getName(), url.uri());
             });
             var uri = "/categories" + Bored.config().getURLSuffix();
             var context = Context.builder().title("分类列表").type("base").layout("categories").url(uri).build();
             var url = URL.builder().uri(uri)
-                    .fullFilePath(Paths.outputPath() + "/categories.html")
+                    .outPutPath(Paths.outputPath() + "/categories.html")
                     .context(context)
                     .contentType(TEXT_HTML).build().add("categories", categories);
             Bored.categories().addAll(categories);
-            URLS.put(uri, url);
+            Bored.url(url);
             log.info("Mapping categories {}", uri);
             return new ArchiveLoader();
         }
@@ -142,9 +146,9 @@ public class Loader {
         private ListLoader archive() {
             var uri = "/archive/posts" + Bored.config().getURLSuffix();
             var context = Context.builder().title("归档:Posts").type("post").layout("archive").url(uri).build();
-            var url = URL.builder().uri(uri).context(context).contentType(TEXT_HTML).fullFilePath(Paths.outputPath() + "/archive/posts.html").build()
+            var url = URL.builder().uri(uri).context(context).contentType(TEXT_HTML).outPutPath(Paths.outputPath() + "/archive/posts.html").build()
                     .add("pages", Bored.pages());
-            URLS.put(uri, url);
+            Bored.url(url);
             log.info("Mapping archive {}", uri);
             return new ListLoader();
         }
@@ -161,11 +165,11 @@ public class Loader {
             var paginationMap = PaginationUtil.loadPagination(pages, type);
             paginationMap.forEach(pagination -> {
                 var ctx = Context.builder().title("文章列表").type(type).layout("list").url(pagination.getUri()).build();
-                var page = URL.builder().uri(pagination.getUri()).context(ctx).contentType(TEXT_HTML)
-                        .fullFilePath(Paths.outputPath() + "/" + type + "/page/" + pagination.getCurrent() + ".html").build()
+                var url = URL.builder().uri(pagination.getUri()).context(ctx).contentType(TEXT_HTML)
+                        .outPutPath(Paths.outputPath() + "/" + type + "/page/" + pagination.getCurrent() + ".html").build()
                         .add("pages", pages)
                         .add("pagination", pagination);
-                URLS.put(pagination.getUri(), page);
+                Bored.url(url);
                 log.info("Mapping {} page {}", type, pagination.getUri());
             });
         }
@@ -177,19 +181,19 @@ public class Loader {
             var paginationList = PaginationUtil.loadPagination(pages, null);
             paginationList.forEach(pagination -> {
                 var ctx = Context.builder().title("首页-第" + pagination.getCurrent() + "页").layout("list").url(pagination.getUri()).build();
-                var page = URL.builder().uri(pagination.getUri()).context(ctx).contentType(TEXT_HTML)
-                        .fullFilePath(Paths.outputPath() + "/page/" + pagination.getCurrent() + ".html").build()
+                var url = URL.builder().uri(pagination.getUri()).context(ctx).contentType(TEXT_HTML)
+                        .outPutPath(Paths.outputPath() + "/page/" + pagination.getCurrent() + ".html").build()
                         .add("pages", pages)
                         .add("pagination", pagination);
-                URLS.put(pagination.getUri(), page);
+                Bored.url(url);
                 log.info("Mapping page {}", pagination.getUri());
             });
             var uri = "/index" + Bored.config().getURLSuffix();
             var context = Context.builder().title("首页").layout("index").url(uri).build();
-            var url = URL.builder().uri(uri).context(context).fullFilePath(Paths.outputPath() + "/index.html").contentType(TEXT_HTML).build()
+            var indexUrl = URL.builder().uri(uri).context(context).outPutPath(Paths.outputPath() + "/index.html").contentType(TEXT_HTML).build()
                     .add("pages", pages)
                     .add("pagination", CollUtil.isNotEmpty(paginationList) ? paginationList.get(0) : List.of());
-            URLS.put(uri, url);
+            Bored.url(indexUrl);
             log.info("Mapping index {}", uri);
             return new _404Loader();
         }
@@ -199,8 +203,8 @@ public class Loader {
         private void _404() {
             var uri = "/404" + Bored.config().getURLSuffix();
             var context = Context.builder().title("404").layout("404").url(uri).build();
-            var url = URL.builder().uri(uri).context(context).fullFilePath(Paths.outputPath() + "/404.html").contentType(TEXT_HTML).build();
-            URLS.put(uri, url);
+            var url = URL.builder().uri(uri).context(context).outPutPath(Paths.outputPath() + "/404.html").contentType(TEXT_HTML).build();
+            Bored.url(url);
             log.info("Mapping 404 {}", uri);
         }
     }
