@@ -5,7 +5,7 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.model.Context;
+import com.bored.core.model.Context;
 import com.bored.util.Paths;
 import lombok.Builder;
 

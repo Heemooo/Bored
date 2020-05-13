@@ -3,8 +3,8 @@ package com.bored.util;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import com.bored.core.URL;
-import com.bored.model.Context;
-import com.bored.model.Page;
+import com.bored.core.model.Context;
+import com.bored.core.model.Page;
 
 import java.util.Comparator;
 import java.util.List;

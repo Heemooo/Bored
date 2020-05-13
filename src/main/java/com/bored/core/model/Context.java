@@ -1,7 +1,6 @@
-package com.bored.model;
+package com.bored.core.model;
 
 import lombok.Builder;
-import lombok.Data;
 
 import java.util.Date;
 import java.util.Objects;

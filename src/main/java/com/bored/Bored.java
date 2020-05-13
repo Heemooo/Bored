@@ -2,11 +2,11 @@ package com.bored;
 
 import com.bored.core.*;
 import com.bored.core.command.Command;
-import com.bored.model.Category;
-import com.bored.model.Page;
-import com.bored.model.Site;
-import com.bored.model.Tag;
-import com.bored.template.JetTemplateHelper;
+import com.bored.core.model.Category;
+import com.bored.core.model.Page;
+import com.bored.core.model.Site;
+import com.bored.core.model.Tag;
+import com.bored.core.template.JetTemplateHelper;
 import com.bored.util.Pages;
 import com.bored.util.Paths;
 import lombok.extern.slf4j.Slf4j;

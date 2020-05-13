@@ -1,4 +1,4 @@
-package com.bored.model;
+package com.bored.core.model;
 
 import com.bored.util.Paths;
 import com.bored.core.URL;

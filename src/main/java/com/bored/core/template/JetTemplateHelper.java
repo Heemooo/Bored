@@ -1,4 +1,4 @@
-package com.bored.template;
+package com.bored.core.template;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.dialect.Props;

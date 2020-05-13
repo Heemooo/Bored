@@ -1,7 +1,7 @@
-package com.bored.listen;
+package com.bored.core.listen;
 
 import com.bored.Bored;
-import com.bored.model.Site;
+import com.bored.core.model.Site;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 

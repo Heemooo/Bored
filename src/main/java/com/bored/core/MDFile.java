@@ -5,13 +5,20 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.model.Page;
-import com.bored.util.MarkdownUtil;
+import com.bored.core.model.Page;
 import com.bored.util.Paths;
+import com.vladsch.flexmark.ast.Node;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.parser.ParserEmulationProfile;
+import com.vladsch.flexmark.util.options.MutableDataSet;
 import lombok.Data;
+import lombok.SneakyThrows;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -88,7 +95,7 @@ public class MDFile {
             var str = StrUtil.split(this.content.replaceAll("[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]+", ""), 200);
             page.setDescription(str[0]);
         }
-        page.setContent(MarkdownUtil.markdown2Html(this.content));
+        page.setContent(MDFile.toHTML(this.content));
         if (Objects.isNull(page.getCategories())) {
             page.setCategories(new ArrayList<>());
         }
@@ -100,6 +107,21 @@ public class MDFile {
         }
         page.setOutPutPath(String.format("%s/%s/%s", Paths.outputPath(), page.getType(), this.getHtmlFileName()));
         return page;
+    }
+
+    /**
+     * markdown文档转html内容
+     */
+    @SneakyThrows
+    public static String toHTML(String content) {
+        MutableDataSet options = new MutableDataSet();
+        //enable table parse!
+        options.setFrom(ParserEmulationProfile.MARKDOWN);
+        options.set(Parser.EXTENSIONS, Collections.singletonList(TablesExtension.create()));
+        Parser parser = Parser.builder(options).build();
+        HtmlRenderer renderer = HtmlRenderer.builder(options).build();
+        Node document = parser.parse(content);
+        return renderer.render(document);
     }
 }
 

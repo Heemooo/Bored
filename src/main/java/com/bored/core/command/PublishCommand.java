@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import com.bored.Bored;
 import com.bored.core.Loader;
 import com.bored.util.Paths;
-import com.bored.model.Site;
+import com.bored.core.model.Site;
 import com.bored.core.URL;
 
 import java.util.Deque;

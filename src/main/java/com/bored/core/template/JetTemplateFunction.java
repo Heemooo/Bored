@@ -1,8 +1,8 @@
-package com.bored.template;
+package com.bored.core.template;
 
 import com.bored.Bored;
-import com.bored.model.Category;
-import com.bored.model.Tag;
+import com.bored.core.model.Category;
+import com.bored.core.model.Tag;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;

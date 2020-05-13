@@ -1,8 +1,6 @@
-package com.bored.model;
+package com.bored.core.model;
 
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class Menu {

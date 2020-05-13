@@ -2,8 +2,8 @@ package com.bored.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.model.Page;
-import com.bored.model.Pagination;
+import com.bored.core.model.Page;
+import com.bored.core.model.Pagination;
 import jetbrick.util.annotation.NotNull;
 
 import java.util.ArrayList;

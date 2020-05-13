@@ -1,4 +1,4 @@
-package com.bored.model;
+package com.bored.core.model;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;

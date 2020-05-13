@@ -8,7 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.bored.Bored;
 import com.bored.util.Paths;
-import com.bored.model.Site;
+import com.bored.core.model.Site;
 import com.bored.core.FrontMatter;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
