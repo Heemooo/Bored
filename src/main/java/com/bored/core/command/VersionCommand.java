@@ -1,8 +1,15 @@
 package com.bored.core.command;
 
-import java.util.Deque;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.Deque;
+@Slf4j
 public class VersionCommand extends Command {
+
+    @Override
+    public String outHelp() {
+        return "  " + this.getName() + " " + this.getOptionSyntax() + " " +this.getDescription();
+    }
 
     @Override
     public String getOptionSyntax() {
@@ -11,7 +18,7 @@ public class VersionCommand extends Command {
 
     @Override
     public void displayOptionUsage() {
-        println("  <command>   Display Bored version");
+        log.info("  <command>   Display Bored version");
     }
 
     @Override
@@ -28,6 +35,6 @@ public class VersionCommand extends Command {
     public void execute(Deque<String> options) {
         ensureMaxArgumentCount(options, 0);
         ensureMinArgumentCount(options, 0);
-        println("Bored runtime version v0.1.2020.4.8");
+        log.info("Bored runtime version v0.1.2020.5.13");
     }
 }

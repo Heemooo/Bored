@@ -6,10 +6,17 @@ import com.bored.core.Loader;
 import com.bored.util.Paths;
 import com.bored.core.model.Site;
 import com.bored.core.URL;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Deque;
-
+@Slf4j
 public class PublishCommand extends Command {
+
+    @Override
+    public String outHelp() {
+        return "  " + this.getName() + " " + this.getOptionSyntax() + " " +this.getDescription();
+    }
+
     @Override
     public String getOptionSyntax() {
         return "[<command>]";
@@ -17,7 +24,7 @@ public class PublishCommand extends Command {
 
     @Override
     public void displayOptionUsage() {
-        println("  <command>   Publish site");
+        log.info("  <command>   Publish site");
     }
 
     @Override

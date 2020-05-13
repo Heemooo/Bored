@@ -20,28 +20,23 @@ public abstract class Command {
     }
 
     void displayUsage() {
-        println("Usage: Bored command " + getName() + " " + getOptionSyntax());
+        log.info("Usage: Bored command " + getName() + " " + getOptionSyntax());
         displayOptionUsage();
     }
 
     public static void displayHelp() {
-        System.out.println("Usage: Bored help <command> [<options>]");
+        log.info("Usage: Bored help <command> [<options>]");
         displayAvailableCommands();
     }
 
     static void displayAvailableCommands() {
-        System.out.println("Available commands are:");
-        System.out.println();
-        boolean first = true;
+        log.info("Available commands are:");
         for (Command c : COMMANDS) {
-            if (!first) {
-                System.out.println();
-            }
-            System.out.println("  " + c.getName() + " " + c.getOptionSyntax());
-            System.out.println("    " + c.getDescription());
-            first = false;
+            log.info(c.outHelp());
         }
     }
+
+    abstract public String outHelp();
 
     abstract public String getOptionSyntax();
 
@@ -66,17 +61,9 @@ public abstract class Command {
     }
 
     final protected void userFailed(String message) {
-        println(message);
+        log.info(message);
         displayUsage();
         throw new IllegalArgumentException(message);
-    }
-
-    final protected void println(String template, Object... value) {
-        Console.log(template, value);
-    }
-
-    final protected void printlnError(String template, Object... value) {
-        Console.log("Error:" + template, value);
     }
 
     public static Command valueOf(String commandName) {

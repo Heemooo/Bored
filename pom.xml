@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <groupId>com.bored</groupId>
     <artifactId>Bored</artifactId>
-    <version>1.0</version>
+    <version>v0.1.2020.5.13</version>
     <properties>
         <java.version>11</java.version>
         <jetty.version>9.4.27.v20200227</jetty.version>

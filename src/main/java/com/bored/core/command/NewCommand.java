@@ -23,6 +23,12 @@ import java.util.List;
 
 @Slf4j
 public class NewCommand extends Command {
+
+    @Override
+    public String outHelp() {
+        return "  " + this.getName() + "     " + this.getOptionSyntax() + " " +this.getDescription();
+    }
+
     @Override
     public String getOptionSyntax() {
         return "[site|theme|page] <name>";
@@ -30,10 +36,10 @@ public class NewCommand extends Command {
 
     @Override
     public void displayOptionUsage() {
-        println("  site  <name>   创建一个新网站");
-        println("  theme <name>   创建一个主题");
-        println("  page  <name>   创建一个页面");
-        println("  <name>  网站、主题、页面名称");
+        log.info("  site  <name>   创建一个新网站");
+        log.info("  theme <name>   创建一个主题");
+        log.info("  page  <name>   创建一个页面");
+        log.info("  <name>  网站、主题、页面名称");
     }
 
     @Override
@@ -62,29 +68,29 @@ public class NewCommand extends Command {
                 page(options.remove());
                 break;
             default:
-                printlnError("Unknown new option {}", command);
+                log.error("Unknown new option {}", command);
         }
     }
 
     private void site(String siteName) {
         String sitePath = Paths.site(siteName);
         if (FileUtil.exist(sitePath)) {
-            printlnError("'{}' 已存在，请删除，或更换网站名 ", siteName);
+            log.error("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
         }
         create("template/site-template.zip", new File(sitePath));
-        println("Created site {}.", siteName);
+        log.info("Created site {}.", siteName);
     }
 
     private void theme(String themeName) {
         Site.assertConfigExisted();
         String themePath = Paths.theme(themeName);
         if (FileUtil.exist(themePath)) {
-            printlnError("'{}' 已存在，请删除，或更换主题名 ", themeName);
+            log.error("'{}' 已存在，请删除，或更换主题名 ", themeName);
             return;
         }
         create("template/theme-template.zip", new File(themePath));
-        println("Created theme {}.", themeName);
+        log.info("Created theme {}.", themeName);
     }
 
     @SneakyThrows
@@ -102,7 +108,7 @@ public class NewCommand extends Command {
         String filePath = String.format("%s/%s", Paths.pagePath(), name);
         var page = new File(filePath);
         if (FileUtil.exist(page)) {
-            printlnError("Page {} existed!", name);
+            log.error("Page {} existed!", name);
             return;
         }
         FileUtil.touch(page);
@@ -128,7 +134,7 @@ public class NewCommand extends Command {
             writer.write(content);
             //log.info("Create file: {}", filePath);
         } catch (IOException e) {
-            printlnError("", e);
+            log.error("", e);
         }
     }
 }

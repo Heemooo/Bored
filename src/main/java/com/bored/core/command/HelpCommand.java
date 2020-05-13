@@ -1,9 +1,17 @@
 package com.bored.core.command;
 
 
-import java.util.Deque;
+import cn.hutool.core.util.StrUtil;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.Deque;
+@Slf4j
 public class HelpCommand extends Command {
+
+    @Override
+    public String outHelp() {
+        return "  " + this.getName() + "    " + this.getOptionSyntax() + " " +this.getDescription();
+    }
 
     @Override
     public String getOptionSyntax() {
@@ -12,7 +20,7 @@ public class HelpCommand extends Command {
 
     @Override
     public void displayOptionUsage() {
-        println("  <command>   The name of the command to get help for");
+        log.info("  <command>   The name of the command to get help for");
         Command.displayAvailableCommands();
     }
 

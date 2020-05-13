@@ -3,12 +3,18 @@ package com.bored.core.command;
 
 import cn.hutool.core.util.StrUtil;
 import com.bored.server.BoredServer;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 
 import java.util.Deque;
-
+@Slf4j
 public class ServerCommand extends Command {
+
+    @Override
+    public String outHelp() {
+        return "  " + this.getName() + "  " + this.getOptionSyntax() + " " +this.getDescription();
+    }
 
     @Override
     public String getOptionSyntax() {
@@ -17,8 +23,8 @@ public class ServerCommand extends Command {
 
     @Override
     public void displayOptionUsage() {
-        println("  port  <portNumber>   启动服务器并指定端口号");
-        println("  debug   启用debug模式");
+        log.info("  port  <portNumber>   启动服务器并指定端口号");
+        log.info("  debug   启用debug模式");
     }
 
     @Override
@@ -55,19 +61,19 @@ public class ServerCommand extends Command {
             case "port":
                 try {
                     if (options.isEmpty()) {
-                        printlnError("Port number must be number,but the input is empty");
+                        log.error("Port number must be number,but the input is empty");
                         nonError = false;
                         return;
                     }
                     portStr = options.remove();
                     port = Integer.parseInt(portStr);
                 } catch (Exception e) {
-                    printlnError("Port number must be number,but the input is '{}'", portStr);
+                    log.error("Port number must be number,but the input is '{}'", portStr);
                     nonError = false;
                 }
                 break;
             default:
-                printlnError("Unknown server option {}", command);
+                log.error("Unknown server option {}", command);
                 nonError = false;
         }
         if (!options.isEmpty()) {
