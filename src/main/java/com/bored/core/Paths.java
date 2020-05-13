@@ -85,4 +85,13 @@ public final class Paths {
         String separator = Matcher.quoteReplacement(File.separator);
         return path.replaceAll("/", separator);
     }
+
+    /**
+     * 路径换为url
+     * @param path 路径
+     * @return 正确的url
+     */
+    public static String toUrl(String path){
+        return path.replaceAll("\\\\", "/");
+    }
 }

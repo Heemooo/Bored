@@ -3,6 +3,7 @@ package com.bored.model;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.moandjiezana.toml.Toml;
 import lombok.Data;
 
 import java.lang.reflect.Field;
@@ -30,4 +31,11 @@ public class FrontMatter {
         }
         return params;
     }
+
+    public static FrontMatter toObject(String tomlContent){
+        var toml = new Toml();
+        toml.read(tomlContent);
+        return toml.to(FrontMatter.class);
+    }
+
 }

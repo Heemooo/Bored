@@ -8,7 +8,6 @@ import com.bored.model.Category;
 import com.bored.model.PageFile;
 import com.bored.model.Tag;
 import com.bored.util.PaginationUtil;
-import com.bored.util.PathUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -32,7 +31,7 @@ public class Loader {
             var themeName = Bored.config().getTheme();
             var files = FileUtil.loopFiles(Paths.staticPath(themeName));
             for (File file : files) {
-                var uri = PathUtil.convertCorrectUrl(StrUtil.removePrefix(file.getPath(), Paths.themePath(Bored.config().getTheme())));
+                var uri = Paths.toUrl(StrUtil.removePrefix(file.getPath(), Paths.themePath(Bored.config().getTheme())));
                 var fullFilePath = Paths.outputPath() + uri;
                 var url = URL.builder().filePath(file.getPath()).uri(uri).contentType(contentType(file.getName(), file.getPath()))
                         .context(null).fullFilePath(fullFilePath).build();

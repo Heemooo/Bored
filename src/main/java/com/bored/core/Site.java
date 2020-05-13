@@ -4,9 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
-import com.bored.Bored;
 import com.bored.model.Menu;
-import com.bored.util.TomlUtil;
+import com.moandjiezana.toml.Toml;
 import lombok.Data;
 
 import java.util.*;
@@ -59,7 +58,7 @@ public class Site {
     }
 
     private static Site load() {
-        var optionalSite = Optional.of(TomlUtil.loadTomlFile(Paths.configPath(), Site.class));
+        var optionalSite = Optional.of(loadTomlFile(Paths.configPath(), Site.class));
         optionalSite.ifPresent(site -> {
             if (CollUtil.isNotEmpty(site.menus)) {
                 Map<String, List<Menu>> menuMap = new HashMap<>();
@@ -71,5 +70,18 @@ public class Site {
             }
         });
         return optionalSite.get();
+    }
+
+    /**
+     * @param path 配置文件路径
+     * @param t    配置文件对应实体类
+     * @param <T>  配置文件泛型
+     * @return 配置文件实例
+     */
+    private static <T> T loadTomlFile(String path, Class<T> t) {
+        var toml = new Toml();
+        var root = Paths.convertCorrectPath(path);
+        toml.read(FileUtil.file(root));
+        return toml.to(t);
     }
 }

@@ -10,8 +10,6 @@ import com.bored.core.Page;
 import com.bored.core.Paths;
 import com.bored.core.URL;
 import com.bored.util.MarkdownUtil;
-import com.bored.util.PathUtil;
-import com.bored.util.TomlUtil;
 import lombok.Data;
 
 import java.io.File;
@@ -28,10 +26,10 @@ public class PageFile {
         this.htmlFileName = StrUtil.removeSuffix(file.getName(), ".md") + ".html";
         var fileReader = new FileReader(file);
         var headerAndContent = parseLine(fileReader.readLines());
-        this.frontMatter = TomlUtil.tomlToObj(headerAndContent[0], FrontMatter.class);
+        this.frontMatter = FrontMatter.toObject(headerAndContent[0]);
         this.content = headerAndContent[1];
         var permLink = StrUtil.removePrefix(file.getPath(), Paths.pagePath());
-        this.permLink = PathUtil.convertCorrectUrl(StrUtil.removeSuffix(permLink, ".md") + Bored.config().getURLSuffix());
+        this.permLink = Paths.toUrl(StrUtil.removeSuffix(permLink, ".md") + Bored.config().getURLSuffix());
         //获取一级目录
         var absolutePath = StrUtil.removePrefix(file.getPath(), Paths.pagePath());
         this.type = StrUtil.split(absolutePath, "/")[1];

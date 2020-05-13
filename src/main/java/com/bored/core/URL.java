@@ -5,10 +5,7 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
-import com.bored.util.PathUtil;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.BufferedInputStream;
 import java.util.HashMap;
@@ -30,7 +27,7 @@ public class URL {
 
     private final Map<String, Object> ctx = new HashMap<>();
 
-    public String contentType(){
+    public String contentType() {
         return contentType;
     }
 
