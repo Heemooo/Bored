@@ -23,8 +23,8 @@ public class ServerCommand extends Command {
 
     @Override
     public void displayOptionUsage() {
-        log.info("  port  <portNumber>   启动服务器并指定端口号");
-        log.info("  debug   启用debug模式");
+        log.info("  port  <portNumber>   Start the server and specify the port number");
+        log.info("  debug   Enable debug mode");
     }
 
     @Override

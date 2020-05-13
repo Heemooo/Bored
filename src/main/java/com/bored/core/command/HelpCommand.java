@@ -1,16 +1,16 @@
 package com.bored.core.command;
 
 
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Deque;
+
 @Slf4j
 public class HelpCommand extends Command {
 
     @Override
     public String outHelp() {
-        return "  " + this.getName() + "    " + this.getOptionSyntax() + " " +this.getDescription();
+        return "  " + this.getName() + "    " + this.getOptionSyntax() + " " + this.getDescription();
     }
 
     @Override

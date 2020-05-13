@@ -36,10 +36,10 @@ public class NewCommand extends Command {
 
     @Override
     public void displayOptionUsage() {
-        log.info("  site  <name>   创建一个新网站");
-        log.info("  theme <name>   创建一个主题");
-        log.info("  page  <name>   创建一个页面");
-        log.info("  <name>  网站、主题、页面名称");
+        log.info("  site  <name>   create a new site");
+        log.info("  theme <name>   create a new theme");
+        log.info("  page  <name>   create a new page");
+        log.info("  <name>  [site,theme,page] name");
     }
 
     @Override
@@ -75,22 +75,22 @@ public class NewCommand extends Command {
     private void site(String siteName) {
         String sitePath = Paths.site(siteName);
         if (FileUtil.exist(sitePath)) {
-            log.error("'{}' 已存在，请删除，或更换网站名 ", siteName);
+            log.error("'{}' name already exists, please delete, or change the site name", siteName);
             return;
         }
         create("template/site-template.zip", new File(sitePath));
-        log.info("Created site {}.", siteName);
+        log.info("Congratulations! Your new Bored site is created in {}. ", sitePath);
     }
 
     private void theme(String themeName) {
         Site.assertConfigExisted();
         String themePath = Paths.theme(themeName);
         if (FileUtil.exist(themePath)) {
-            log.error("'{}' 已存在，请删除，或更换主题名 ", themeName);
+            log.error("'{}' name already exists, please delete, or change the theme name", themeName);
             return;
         }
         create("template/theme-template.zip", new File(themePath));
-        log.info("Created theme {}.", themeName);
+        log.info("Creating theme at {}.", themePath);
     }
 
     @SneakyThrows
@@ -108,7 +108,7 @@ public class NewCommand extends Command {
         String filePath = String.format("%s/%s", Paths.pagePath(), name);
         var page = new File(filePath);
         if (FileUtil.exist(page)) {
-            log.error("Page {} existed!", name);
+            log.error("'{}' name already exists, please delete, or change the page name!", name);
             return;
         }
         FileUtil.touch(page);
@@ -132,7 +132,7 @@ public class NewCommand extends Command {
             String content = Bored.jetTemplateHelper().parseSource(templateContent.toString(), frontMatter.toMap());
             @Cleanup FileWriter writer = new FileWriter(filePath);
             writer.write(content);
-            //log.info("Create file: {}", filePath);
+            log.info("{} created", filePath);
         } catch (IOException e) {
             log.error("", e);
         }

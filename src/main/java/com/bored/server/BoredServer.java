@@ -1,10 +1,12 @@
 package com.bored.server;
 
+import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.lang.Console;
 import com.bored.Bored;
 import com.bored.core.Loader;
-import com.bored.core.model.Site;
 import com.bored.core.listen.ConfigFilter;
 import com.bored.core.listen.ConfigListener;
+import com.bored.core.model.Site;
 import com.bored.server.handler.NotFoundHandler;
 import com.bored.server.handler.URLHandler;
 import lombok.SneakyThrows;
@@ -16,6 +18,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 
 import java.io.FileFilter;
+
 
 @Slf4j
 public class BoredServer {
@@ -35,7 +38,7 @@ public class BoredServer {
         server.setHandler(handlers);
         //启动服务器
         server.start();
-        log.info("listening port {}, click http://127.0.0.1:{}", port, port);
+        log.info("Server started successfully! listening port {}, click http://127.0.0.1:{}", port, port);
         //阻塞Jetty server的线程池，直到线程池停止
         server.join();
     }
