@@ -98,7 +98,7 @@ public class NewCommand extends Command {
         if (name.contains(".md") == Boolean.FALSE) {
             name = name + ".md";
         }
-        String filePath = String.format("%s/%s", Paths.PAGE_PATH, name);
+        String filePath = String.format("%s/%s", Paths.pagePath(), name);
         var page = new File(filePath);
         if (FileUtil.exist(page)) {
             printlnError("Page {} existed!", name);
@@ -107,7 +107,7 @@ public class NewCommand extends Command {
         FileUtil.touch(page);
         try {
             var lineSeparator = System.getProperty("line.separator");
-            List<String> archetypeContents = new FileReader(Paths.FRONT_MATTER_PATH).readLines();
+            List<String> archetypeContents = new FileReader(Paths.frontMatterPath(Bored.config().getTheme())).readLines();
             StringBuilder templateContent = new StringBuilder(Bored.config().getFrontMatterSeparator());
             templateContent.append(lineSeparator);
             archetypeContents.forEach(line -> {

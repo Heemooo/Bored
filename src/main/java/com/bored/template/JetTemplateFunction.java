@@ -40,6 +40,7 @@ public class JetTemplateFunction {
      * @param tagName 标签名
      * @return 标签url
      */
+    @SuppressWarnings("unused")
     public static String tagUrl(String tagName) {
         return tag(tagName).getUrl();
     }
@@ -72,6 +73,7 @@ public class JetTemplateFunction {
      * @param categoryName 分类名
      * @return 分类url
      */
+    @SuppressWarnings("unused")
     public static String categoryUrl(String categoryName) {
         return category(categoryName).getUrl();
     }

@@ -21,6 +21,11 @@ import java.util.stream.Collectors;
 public final class Bored {
 
     /**
+     * 根路径
+     * System.getProperty("user.dir")
+     */
+    public final static String ROOT = System.getProperty("user.dir") + "/site-demo1";
+    /**
      * 网站配置
      */
     private Site config;
@@ -55,7 +60,7 @@ public final class Bored {
 
     public static void config(Site config) {
         Bored.of().config = config;
-        jetTemplateHelper(new JetTemplateHelper(Paths.LAYOUT_PATH));
+        jetTemplateHelper(new JetTemplateHelper(Paths.layoutPath(config.getTheme())));
         jetTemplateConfig(Site.class, "site", config);
     }
 
@@ -131,7 +136,7 @@ public final class Bored {
      * 获取文章合集
      * @return 文章合集
      */
-    public static Map<String,List<Page>> pageMaps(){
+    public static Map<String, List<Page>> pageMaps() {
         return Bored.of().PAGE_MAPS;
     }
 

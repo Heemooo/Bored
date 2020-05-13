@@ -30,10 +30,10 @@ public class PageFile {
         var headerAndContent = parseLine(fileReader.readLines());
         this.frontMatter = TomlUtil.tomlToObj(headerAndContent[0], FrontMatter.class);
         this.content = headerAndContent[1];
-        var permLink = StrUtil.removePrefix(file.getPath(), Paths.PAGE_PATH);
+        var permLink = StrUtil.removePrefix(file.getPath(), Paths.pagePath());
         this.permLink = PathUtil.convertCorrectUrl(StrUtil.removeSuffix(permLink, ".md") + Bored.config().getURLSuffix());
         //获取一级目录
-        var absolutePath = StrUtil.removePrefix(file.getPath(), Paths.PAGE_PATH);
+        var absolutePath = StrUtil.removePrefix(file.getPath(), Paths.pagePath());
         this.type = StrUtil.split(absolutePath, "/")[1];
     }
 
@@ -109,19 +109,11 @@ public class PageFile {
                 .time(page.getDate()).title(page.getTitle()).url(page.getPermLink()).type(this.getFrontMatter().getType())
                 .layout(this.getFrontMatter().getLayout()).build();
         return URL.builder()
-                .fullFilePath(String.format("%s/%s/%s", Paths.OUTPUT_PATH, context.type, this.getHtmlFileName()))
+                .fullFilePath(String.format("%s/%s/%s", Paths.outputPath(), context.type, this.getHtmlFileName()))
                 .uri(context.url)
                 .context(context)
                 .contentType("text/html;charset=utf-8")
                 .build().add("page", page);
-    }
-
-    public static void main(String[] args) {
-        String path = "/a/b/c/d";
-        String[] strs = StrUtil.split(path, "/");
-        for (String str : strs) {
-            System.out.println(str);
-        }
     }
 
 }

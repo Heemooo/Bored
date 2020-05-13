@@ -9,53 +9,53 @@ import java.util.regex.Matcher;
  * 包含所有路径相关的静态方法
  */
 public final class Paths {
-
-    private Paths() {
-    }
-
-    /**
-     * 根路径
-     * System.getProperty("user.dir")
-     */
-    public final static String ROOT = System.getProperty("user.dir") + "/site-demo1";
     /**
      * 主题目录
      */
-    public final static String THEME_PATH;
+    public static String themePath(String themeName) {
+        return convertCorrectPath(Bored.ROOT + "/themes/" + themeName);
+    }
+
     /**
      * 模板文件目录
      */
-    public final static String LAYOUT_PATH;
+    public static String layoutPath(String themeName) {
+        return convertCorrectPath(themePath(themeName) + "/layouts");
+    }
+
     /**
      * 静态文件目录
      */
-    public final static String STATIC_PATH;
+    public static String staticPath(String themeName) {
+        return convertCorrectPath(themePath(themeName) + "/static");
+    }
+
     /**
      * 文章目录
      */
-    public final static String PAGE_PATH;
+    public static String pagePath() {
+        return convertCorrectPath(Bored.ROOT + "/content");
+    }
+
     /**
      * 前辅文路径
      */
-    public final static String FRONT_MATTER_PATH;
+    public static String frontMatterPath(String themeName) {
+        return convertCorrectPath(themePath(themeName) + "/front.matter.toml");
+    }
+
     /**
      * 配置文件路径
      */
-    public final static String CONFIG_PATH;
+    public static String configPath() {
+        return convertCorrectPath(Bored.ROOT + "/config.toml");
+    }
+
     /**
      * 文件输出目录
      */
-    public final static String OUTPUT_PATH;
-
-    static {
-        PAGE_PATH = convertCorrectPath(ROOT + "/content");
-        CONFIG_PATH = convertCorrectPath(ROOT + "/config.toml");
-        THEME_PATH = convertCorrectPath(ROOT + "/themes/" + Bored.config().getTheme());
-        OUTPUT_PATH = convertCorrectPath(ROOT + "/public");
-        LAYOUT_PATH = convertCorrectPath(THEME_PATH + "/layouts");
-        STATIC_PATH = convertCorrectPath(THEME_PATH + "/static");
-        FRONT_MATTER_PATH = convertCorrectPath(THEME_PATH + "/front.matter.toml");
-
+    public static String outputPath() {
+        return convertCorrectPath(Bored.ROOT + "/public");
     }
 
     /**
@@ -64,7 +64,7 @@ public final class Paths {
      * @return 主题路径
      */
     public static String theme(String themeName) {
-        return convertCorrectPath(ROOT + "/themes/" + themeName);
+        return convertCorrectPath(Bored.ROOT + "/themes/" + themeName);
     }
 
     /**
@@ -73,7 +73,7 @@ public final class Paths {
      * @return 网站路径
      */
     public static String site(String siteName) {
-        return convertCorrectPath(ROOT + "/" + siteName);
+        return convertCorrectPath(Bored.ROOT + "/" + siteName);
     }
 
     /**

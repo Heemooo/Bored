@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
+import com.bored.Bored;
 import com.bored.model.Menu;
 import com.bored.util.TomlUtil;
 import lombok.Data;
@@ -50,7 +51,7 @@ public class Site {
     }
 
     public static void assertConfigExisted() {
-        if (!FileUtil.exist(Paths.CONFIG_PATH)) {
+        if (!FileUtil.exist(Paths.configPath())) {
             Console.log("Site config.toml not found.");
             Console.log("Maybe should create new site or change directory to the site path.");
             System.exit(0);
@@ -58,7 +59,7 @@ public class Site {
     }
 
     private static Site load() {
-        var optionalSite = Optional.of(TomlUtil.loadTomlFile(Paths.CONFIG_PATH, Site.class));
+        var optionalSite = Optional.of(TomlUtil.loadTomlFile(Paths.configPath(), Site.class));
         optionalSite.ifPresent(site -> {
             if (CollUtil.isNotEmpty(site.menus)) {
                 Map<String, List<Menu>> menuMap = new HashMap<>();

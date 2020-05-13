@@ -45,7 +45,7 @@ public class BoredServer {
         //每隔1000毫秒扫描一次
         FileAlterationMonitor monitor = new FileAlterationMonitor(1000L);
         FileFilter filter = FileFilterUtils.and(new ConfigFilter());
-        FileAlterationObserver observer = new FileAlterationObserver(Paths.ROOT, filter);
+        FileAlterationObserver observer = new FileAlterationObserver(Bored.ROOT, filter);
         observer.addListener(new ConfigListener());
         monitor.addObserver(observer);
         try {

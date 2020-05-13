@@ -33,7 +33,7 @@ public class PublishCommand extends Command {
         ensureMinArgumentCount(options, 0);
         Bored.config(Site.instance());
         Loader.start();
-        FileUtil.del(Paths.OUTPUT_PATH);
+        FileUtil.del(Paths.outputPath());
         URLS.list().parallelStream().forEach(URL::out);
     }
 }
