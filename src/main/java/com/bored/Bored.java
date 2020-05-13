@@ -11,9 +11,10 @@ import com.bored.template.JetTemplateHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * @author https://gitee.com/heemooo
+ * @author heemooo @see https://gitee.com/heemooo
  * @since 2020/3/27
  */
 @Slf4j
@@ -30,11 +31,11 @@ public final class Bored {
     /**
      * 标签列表
      */
-    private final Map<String, List<Tag>> TAG_MAPS = new HashMap<>();
+    private final List<Tag> TAG_LIST = new ArrayList<>();
     /**
      * 分类列表
      */
-    private final Map<String, List<Category>> CATEGORY_MAPS = new HashMap<>();
+    private final List<Category> CATEGORY_LIST = new ArrayList<>();
     /**
      * 文章列表
      * key 即文章的type
@@ -75,25 +76,19 @@ public final class Bored {
     }
 
     public static void tag(Tag tag) {
-        if (!Bored.of().TAG_MAPS.containsKey(tag.getType())) {
-            Bored.of().TAG_MAPS.put(tag.getType(), new ArrayList<>());
-        }
-        Bored.of().TAG_MAPS.get(tag.getType()).add(tag);
+        Bored.of().TAG_LIST.add(tag);
     }
 
-    public static List<Tag> tags(String type) {
-        return Bored.of().TAG_MAPS.get(type);
+    public static List<Tag> tags() {
+        return Bored.of().TAG_LIST;
     }
 
     public static void category(Category category) {
-        if (!Bored.of().CATEGORY_MAPS.containsKey(category.getType())) {
-            Bored.of().CATEGORY_MAPS.put(category.getType(), new ArrayList<>());
-        }
-        Bored.of().CATEGORY_MAPS.get(category.getType()).add(category);
+        Bored.of().CATEGORY_LIST.add(category);
     }
 
-    public static List<Category> categories(String type) {
-        return Bored.of().CATEGORY_MAPS.get(type);
+    public static List<Category> categories() {
+        return Bored.of().CATEGORY_LIST;
     }
 
     /**
@@ -121,6 +116,24 @@ public final class Bored {
         return pageList;
     }
 
+    /**
+     * 获取所有文章
+     * @return 文章列表
+     */
+    public static List<Page> pages() {
+        return Bored.of().PAGE_MAPS.values().stream().reduce(new ArrayList<>(), (t1, t2) -> {
+            t1.addAll(t2);
+            return t1;
+        }).stream().sorted(Comparator.comparing(Page::getDate).reversed()).collect(Collectors.toList());
+    }
+
+    /**
+     * 获取文章合集
+     * @return 文章合集
+     */
+    public static Map<String,List<Page>> pageMaps(){
+        return Bored.of().PAGE_MAPS;
+    }
 
     public static void main(String[] commands) {
         Deque<String> argList = new LinkedList<>(Arrays.asList(commands));

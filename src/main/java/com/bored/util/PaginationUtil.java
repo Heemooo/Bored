@@ -1,5 +1,6 @@
 package com.bored.util;
 
+import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.core.Page;
 import com.bored.model.Pagination;
@@ -9,38 +10,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaginationUtil {
-    public static List<Pagination> loadPagination(List<Page> pages, String templatePath) {
+    public static List<Pagination> loadPagination(List<Page> pages, String type) {
         var paginations = new ArrayList<Pagination>();
         var pageSize = Bored.config().getPageSize();
         int pageCount = getPageCount(pages, pageSize);
         for (int i = 1; i <= pageCount; i++) {
             var pagina = new Pagination();
-            pagina.setUri(getPaginationUrl(i));
+            pagina.setUri(getPaginationUrl(type, i));
             pagina.setCurrent(i);
             pagina.setPageCount(pageCount);
             pagina.setData(startPage(pages, i, pageSize));
             if (i == 1) {
                 pagina.setHasPrev(false);
                 pagina.setHasNext(true);
-                pagina.setNext(getPaginationUrl(i + 1));
+                pagina.setNext(getPaginationUrl(type, i + 1));
             } else if (i == pageCount) {
                 pagina.setHasPrev(true);
                 pagina.setHasNext(false);
-                pagina.setPrev(getPaginationUrl(i - 1));
+                pagina.setPrev(getPaginationUrl(type, i - 1));
             } else {
                 pagina.setHasPrev(true);
                 pagina.setHasNext(true);
-                pagina.setPrev(getPaginationUrl(i - 1));
-                pagina.setNext(getPaginationUrl(i + 1));
+                pagina.setPrev(getPaginationUrl(type, i - 1));
+                pagina.setNext(getPaginationUrl(type, i + 1));
             }
-            pagina.setTemplatePath(templatePath);
             paginations.add(pagina);
         }
         return paginations;
     }
 
-    private static String getPaginationUrl(int pageSize) {
-        return "/page/" + pageSize + Bored.config().getURLSuffix();
+    private static String getPaginationUrl(String type, int pageSize) {
+        if(StrUtil.isBlank(type)) return "/page/" + pageSize + Bored.config().getURLSuffix();
+        return "/" + type + "/page/" + pageSize + Bored.config().getURLSuffix();
     }
 
     /**

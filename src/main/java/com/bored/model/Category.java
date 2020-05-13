@@ -17,10 +17,6 @@ public class Category {
      */
     private String name;
     /**
-     * page type
-     */
-    private String type;
-    /**
      * 分类url
      */
     private String url;
@@ -37,7 +33,7 @@ public class Category {
     public URL toURL() {
         var context = Context.builder().title("分类" + this.getName()).type("base").layout("category").url(this.getUrl()).build();
         return URL.builder().uri(this.getUrl())
-                .fullFilePath(Paths.OUTPUT_PATH + "/" + this.getName() + ".html")
+                .fullFilePath(Paths.OUTPUT_PATH + "/categories/" + this.getName() + ".html")
                 .context(context)
                 .contentType("text/html;charset=utf-8").build().add("category", this);
     }

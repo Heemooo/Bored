@@ -22,8 +22,6 @@ public class Pagination {
 
     private Integer current;
 
-    private String templatePath;
-
     private String uri;
 
 }

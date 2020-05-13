@@ -17,10 +17,6 @@ public class Tag {
      */
     private String name;
     /**
-     * page type
-     */
-    private String type;
-    /**
      * 标签url
      */
     private String url;
@@ -37,7 +33,7 @@ public class Tag {
     public URL toURL() {
         var context = Context.builder().title("标签" + this.getName()).type("base").layout("tag").url(this.getUrl()).build();
         return URL.builder().uri(this.getUrl())
-                .fullFilePath(Paths.OUTPUT_PATH + "/" + this.getName() + ".html")
+                .fullFilePath(Paths.OUTPUT_PATH + "/tags/" + this.getName() + ".html")
                 .context(context)
                 .contentType("text/html;charset=utf-8").build().add("tag", this);
     }
