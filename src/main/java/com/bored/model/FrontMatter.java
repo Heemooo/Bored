@@ -16,7 +16,7 @@ public class FrontMatter {
     public String date;
     public boolean draft;
     private String url = StrUtil.EMPTY;
-    private String type = "post";
+    private String type;
     private String layout = "page";
     private List<String> tags;
     private List<String> categories;

@@ -31,7 +31,12 @@ public class PageFile {
         this.content = headerAndContent[1];
         var permLink = StrUtil.removePrefix(file.getPath(), Bored.env().getPagePath());
         this.permLink = PathUtil.convertCorrectUrl(StrUtil.removeSuffix(permLink, ".md") + Bored.env().getSiteConfig().getURLSuffix());
+        //获取一级目录
+        var absolutePath = StrUtil.removePrefix(file.getPath(), Bored.env().getPagePath());
+        this.type = StrUtil.split(absolutePath, "/")[1];
     }
+
+    private String type;
 
     private String htmlFileName;
 
@@ -70,6 +75,7 @@ public class PageFile {
         headerAndContent[1] = content.toString();
         return headerAndContent;
     }
+
     public Page toPage() {
         var page = new Page();
         BeanUtil.copyProperties(this.getFrontMatter(), page);
@@ -92,6 +98,9 @@ public class PageFile {
         if (Objects.isNull(page.getTags())) {
             page.setTags(new ArrayList<>());
         }
+        if (Objects.isNull(page.getType())) {
+            page.setType(this.getType());
+        }
         return page;
     }
 
@@ -105,6 +114,14 @@ public class PageFile {
                 .context(context)
                 .contentType("text/html;charset=utf-8")
                 .build().add("page", page);
+    }
+
+    public static void main(String[] args) {
+        String path = "/a/b/c/d";
+        String[] strs = StrUtil.split(path, "/");
+        for (String str : strs) {
+            System.out.println(str);
+        }
     }
 
 }

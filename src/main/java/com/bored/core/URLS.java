@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Container {
+public class URLS {
+
     private static final Map<String, URL> URL_LIST = new HashMap<>();
 
     public static void put(String uri, URL url) {
@@ -28,7 +29,7 @@ public class Container {
 
     public static void delete(String uri){
         URL url = URL_LIST.get(uri);
-        URL_LIST.remove(uri);
+        URL_LIST.remove(url);
     }
 
     public static List<URL> list(){

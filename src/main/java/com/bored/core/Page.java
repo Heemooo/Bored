@@ -16,6 +16,10 @@ public class Page {
      */
     private Date date;
     /**
+     * page type
+     */
+    private String type;
+    /**
      * url
      */
     private String permLink;

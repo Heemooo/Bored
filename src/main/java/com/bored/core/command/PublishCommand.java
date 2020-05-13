@@ -2,7 +2,7 @@ package com.bored.core.command;
 
 import cn.hutool.core.io.FileUtil;
 import com.bored.Bored;
-import com.bored.core.Container;
+import com.bored.core.URLS;
 import com.bored.core.Loader;
 import com.bored.core.URL;
 import com.bored.model.CompleteEnvironment;
@@ -37,6 +37,6 @@ public class PublishCommand extends Command {
         Bored.env(new CompleteEnvironment());
         Loader.start();
         FileUtil.del(Bored.env().getOutputPath());
-        Container.list().parallelStream().forEach(URL::out);
+        URLS.list().parallelStream().forEach(URL::out);
     }
 }
