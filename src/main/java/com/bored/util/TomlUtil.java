@@ -2,6 +2,7 @@ package com.bored.util;
 
 import cn.hutool.core.io.FileTypeUtil;
 import cn.hutool.core.io.FileUtil;
+import com.bored.core.Paths;
 import com.moandjiezana.toml.Toml;
 
 import java.io.File;
@@ -16,7 +17,7 @@ public final class TomlUtil {
      */
     public static <T> T loadTomlFile(String path, Class<T> t) {
         var toml = new Toml();
-        var root = PathUtil.convertCorrectPath(path);
+        var root = Paths.convertCorrectPath(path);
         toml.read(FileUtil.file(root));
         return toml.to(t);
     }
@@ -25,17 +26,6 @@ public final class TomlUtil {
         var toml = new Toml();
         toml.read(tomlString);
         return toml.to(tClass);
-    }
-
-    public static void main(String[] args) {
-        var path = System.getProperty("user.dir") + "/site-demo/themes/default/static";
-        path = PathUtil.convertCorrectPath(path);
-        var files = FileUtil.loopFiles(path);
-        for (File file : files) {
-            System.out.println(file.getPath());
-            System.out.println(FileTypeUtil.getType(file));
-            System.out.println(FileUtil.getMimeType(file.getPath()));
-        }
     }
 
 }

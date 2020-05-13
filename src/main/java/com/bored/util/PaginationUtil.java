@@ -9,17 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaginationUtil {
-    public static List<Pagination> loadPagination(String templatePath) {
+    public static List<Pagination> loadPagination(List<Page> pages, String templatePath) {
         var paginations = new ArrayList<Pagination>();
-        var env = Bored.env();
-        var pageSize = env.getSiteConfig().getPageSize();
-        int pageCount = getPageCount(env.getPages(), pageSize);
+        var pageSize = Bored.config().getPageSize();
+        int pageCount = getPageCount(pages, pageSize);
         for (int i = 1; i <= pageCount; i++) {
             var pagina = new Pagination();
             pagina.setUri(getPaginationUrl(i));
             pagina.setCurrent(i);
             pagina.setPageCount(pageCount);
-            pagina.setData(startPage(env.getPages(), i, pageSize));
+            pagina.setData(startPage(pages, i, pageSize));
             if (i == 1) {
                 pagina.setHasPrev(false);
                 pagina.setHasNext(true);
@@ -41,7 +40,7 @@ public class PaginationUtil {
     }
 
     private static String getPaginationUrl(int pageSize) {
-        return "/page/" + pageSize + Bored.env().getSiteConfig().getURLSuffix();
+        return "/page/" + pageSize + Bored.config().getURLSuffix();
     }
 
     /**

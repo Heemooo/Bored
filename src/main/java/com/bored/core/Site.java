@@ -1,6 +1,8 @@
 package com.bored.core;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
 import com.bored.model.Menu;
 import com.bored.util.TomlUtil;
@@ -36,8 +38,27 @@ public class Site {
         return enableHtmlSuffix ? ".html" : StrUtil.EMPTY;
     }
 
-    public static Site load(String siteConfigPath) {
-        var optionalSite = Optional.of(TomlUtil.loadTomlFile(siteConfigPath, Site.class));
+    public static Site instance() {
+        assertConfigExisted();
+        Site site = null;
+        try {
+            site = Site.load();
+        } catch (Exception e) {
+            System.exit(0);
+        }
+        return site;
+    }
+
+    public static void assertConfigExisted() {
+        if (!FileUtil.exist(Paths.CONFIG_PATH)) {
+            Console.log("Site config.toml not found.");
+            Console.log("Maybe should create new site or change directory to the site path.");
+            System.exit(0);
+        }
+    }
+
+    private static Site load() {
+        var optionalSite = Optional.of(TomlUtil.loadTomlFile(Paths.CONFIG_PATH, Site.class));
         optionalSite.ifPresent(site -> {
             if (CollUtil.isNotEmpty(site.menus)) {
                 Map<String, List<Menu>> menuMap = new HashMap<>();

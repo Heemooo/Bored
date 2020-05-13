@@ -7,10 +7,9 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.bored.Bored;
-import com.bored.model.CompleteEnvironment;
-import com.bored.model.Environment;
+import com.bored.core.Paths;
+import com.bored.core.Site;
 import com.bored.model.FrontMatter;
-import com.bored.util.PathUtil;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -68,9 +67,7 @@ public class NewCommand extends Command {
     }
 
     private void site(String siteName) {
-        var env = new Environment();
-        Bored.env(env);
-        String sitePath = PathUtil.convertCorrectPath(env.getRoot() + "/" + siteName);
+        String sitePath = Paths.site(siteName);
         if (FileUtil.exist(sitePath)) {
             printlnError("'{}' 已存在，请删除，或更换网站名 ", siteName);
             return;
@@ -80,9 +77,8 @@ public class NewCommand extends Command {
     }
 
     private void theme(String themeName) {
-        var env = new CompleteEnvironment();
-        Bored.env(env);
-        String themePath = PathUtil.convertCorrectPath(env.getRoot() + "/themes/" + themeName);
+        Site.assertConfigExisted();
+        String themePath = Paths.theme(themeName);
         if (FileUtil.exist(themePath)) {
             printlnError("'{}' 已存在，请删除，或更换主题名 ", themeName);
             return;
@@ -98,12 +94,11 @@ public class NewCommand extends Command {
     }
 
     private void page(String name) {
-        var env = new CompleteEnvironment();
-        Bored.env(env);
+        Bored.config(Site.instance());
         if (name.contains(".md") == Boolean.FALSE) {
             name = name + ".md";
         }
-        String filePath = String.format("%s/%s", env.getPagePath(), name);
+        String filePath = String.format("%s/%s", Paths.PAGE_PATH, name);
         var page = new File(filePath);
         if (FileUtil.exist(page)) {
             printlnError("Page {} existed!", name);
@@ -111,23 +106,23 @@ public class NewCommand extends Command {
         }
         FileUtil.touch(page);
         try {
-            String frontMatterPath = env.getFrontMatterPath();
-            List<String> archetypeContents = new FileReader(frontMatterPath).readLines();
-            StringBuilder templateContent = new StringBuilder(env.getSiteConfig().getFrontMatterSeparator());
-            templateContent.append(env.getLineSeparator());
+            var lineSeparator = System.getProperty("line.separator");
+            List<String> archetypeContents = new FileReader(Paths.FRONT_MATTER_PATH).readLines();
+            StringBuilder templateContent = new StringBuilder(Bored.config().getFrontMatterSeparator());
+            templateContent.append(lineSeparator);
             archetypeContents.forEach(line -> {
                 /*忽略注释行*/
                 if (!line.startsWith("#") && !line.isBlank()) {
                     templateContent.append(line);
-                    templateContent.append(env.getLineSeparator());
+                    templateContent.append(lineSeparator);
                 }
             });
-            templateContent.append(env.getSiteConfig().getFrontMatterSeparator());
+            templateContent.append(Bored.config().getFrontMatterSeparator());
             var frontMatter = new FrontMatter();
             frontMatter.setTitle(StrUtil.removeSuffix(page.getName(), ".md"));
             frontMatter.setDate(DateUtil.now());
 
-            String content = env.getJetTemplateHelper().parseSource(templateContent.toString(), frontMatter.toMap());
+            String content = Bored.jetTemplateHelper().parseSource(templateContent.toString(), frontMatter.toMap());
             @Cleanup FileWriter writer = new FileWriter(filePath);
             writer.write(content);
             //log.info("Create file: {}", filePath);

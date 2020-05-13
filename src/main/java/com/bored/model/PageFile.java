@@ -7,6 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.core.Context;
 import com.bored.core.Page;
+import com.bored.core.Paths;
 import com.bored.core.URL;
 import com.bored.util.MarkdownUtil;
 import com.bored.util.PathUtil;
@@ -29,10 +30,10 @@ public class PageFile {
         var headerAndContent = parseLine(fileReader.readLines());
         this.frontMatter = TomlUtil.tomlToObj(headerAndContent[0], FrontMatter.class);
         this.content = headerAndContent[1];
-        var permLink = StrUtil.removePrefix(file.getPath(), Bored.env().getPagePath());
-        this.permLink = PathUtil.convertCorrectUrl(StrUtil.removeSuffix(permLink, ".md") + Bored.env().getSiteConfig().getURLSuffix());
+        var permLink = StrUtil.removePrefix(file.getPath(), Paths.PAGE_PATH);
+        this.permLink = PathUtil.convertCorrectUrl(StrUtil.removeSuffix(permLink, ".md") + Bored.config().getURLSuffix());
         //获取一级目录
-        var absolutePath = StrUtil.removePrefix(file.getPath(), Bored.env().getPagePath());
+        var absolutePath = StrUtil.removePrefix(file.getPath(), Paths.PAGE_PATH);
         this.type = StrUtil.split(absolutePath, "/")[1];
     }
 
@@ -55,12 +56,11 @@ public class PageFile {
     private List<String> tags;
 
     private String[] parseLine(List<String> lines) {
-        var site = Bored.env().getSiteConfig();
         var count = 0;
         var header = new StringBuilder();
         var content = new StringBuilder();
         for (var line : lines) {
-            if (line.contains(site.getFrontMatterSeparator())) {
+            if (line.contains(Bored.config().getFrontMatterSeparator())) {
                 count++;
                 continue;
             }
@@ -109,7 +109,7 @@ public class PageFile {
                 .time(page.getDate()).title(page.getTitle()).url(page.getPermLink()).type(this.getFrontMatter().getType())
                 .layout(this.getFrontMatter().getLayout()).build();
         return URL.builder()
-                .fullFilePath(String.format("%s/%s/%s", Bored.env().getOutputPath(), context.type, this.getHtmlFileName()))
+                .fullFilePath(String.format("%s/%s/%s", Paths.OUTPUT_PATH, context.type, this.getHtmlFileName()))
                 .uri(context.url)
                 .context(context)
                 .contentType("text/html;charset=utf-8")

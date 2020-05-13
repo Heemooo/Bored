@@ -24,7 +24,7 @@ public abstract class Command {
         displayOptionUsage();
     }
 
-    static void displayHelp() {
+    public static void displayHelp() {
         System.out.println("Usage: Bored help <command> [<options>]");
         displayAvailableCommands();
     }
@@ -51,7 +51,7 @@ public abstract class Command {
 
     abstract public String getDescription();
 
-    abstract void execute(Deque<String> options);
+    public abstract void execute(Deque<String> options);
 
     final protected void ensureMaxArgumentCount(Deque<String> options, int maxArgumentCount) {
         if (options.size() > maxArgumentCount) {

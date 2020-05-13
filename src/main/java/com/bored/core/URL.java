@@ -49,13 +49,13 @@ public class URL {
             return null;
         } else {
             this.ctx.put("ctx", this.context);
-            return Bored.env().getJetTemplateHelper().parse(context.getTemplatePath(), this.ctx);
+            return Bored.jetTemplateHelper().parse(context.getTemplatePath(), this.ctx);
         }
     }
 
     public void out() {
         var content = content();
-        this.fullFilePath = PathUtil.convertCorrectPath(this.fullFilePath);
+        this.fullFilePath = Paths.convertCorrectPath(this.fullFilePath);
         if (StrUtil.isEmpty(content)) {
             FileUtil.writeBytes(new FileReader(this.filePath).readBytes(), this.fullFilePath);
         } else {

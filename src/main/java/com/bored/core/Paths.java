@@ -14,6 +14,11 @@ public final class Paths {
     }
 
     /**
+     * 根路径
+     * System.getProperty("user.dir")
+     */
+    public final static String ROOT = System.getProperty("user.dir") + "/site-demo1";
+    /**
      * 主题目录
      */
     public final static String THEME_PATH;
@@ -30,7 +35,7 @@ public final class Paths {
      */
     public final static String PAGE_PATH;
     /**
-     * 前
+     * 前辅文路径
      */
     public final static String FRONT_MATTER_PATH;
     /**
@@ -41,18 +46,12 @@ public final class Paths {
      * 文件输出目录
      */
     public final static String OUTPUT_PATH;
-    /**
-     * 静态文件输出目录
-     */
-    public final static String OUTPUT_STATIC_PATH;
 
     static {
-        var root = System.getProperty("user.dir");
-        PAGE_PATH = convertCorrectPath(root + "/content");
-        CONFIG_PATH = convertCorrectPath(root + "/config.toml");
-        THEME_PATH = convertCorrectPath(root + "/themes/" + Bored.env().getSiteConfig().getTheme());
-        OUTPUT_PATH = convertCorrectPath(root + "/public");
-        OUTPUT_STATIC_PATH = convertCorrectPath(root + "/public/static");
+        PAGE_PATH = convertCorrectPath(ROOT + "/content");
+        CONFIG_PATH = convertCorrectPath(ROOT + "/config.toml");
+        THEME_PATH = convertCorrectPath(ROOT + "/themes/" + Bored.config().getTheme());
+        OUTPUT_PATH = convertCorrectPath(ROOT + "/public");
         LAYOUT_PATH = convertCorrectPath(THEME_PATH + "/layouts");
         STATIC_PATH = convertCorrectPath(THEME_PATH + "/static");
         FRONT_MATTER_PATH = convertCorrectPath(THEME_PATH + "/front.matter.toml");
@@ -65,8 +64,7 @@ public final class Paths {
      * @return 主题路径
      */
     public static String theme(String themeName) {
-        var root = System.getProperty("user.dir");
-        return convertCorrectPath(root + "/themes/" + themeName);
+        return convertCorrectPath(ROOT + "/themes/" + themeName);
     }
 
     /**
@@ -75,8 +73,7 @@ public final class Paths {
      * @return 网站路径
      */
     public static String site(String siteName) {
-        var root = System.getProperty("user.dir");
-        return convertCorrectPath(root + "/" + siteName);
+        return convertCorrectPath(ROOT + "/" + siteName);
     }
 
     /**

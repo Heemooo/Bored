@@ -2,9 +2,10 @@ package com.bored.server;
 
 import com.bored.Bored;
 import com.bored.core.Loader;
+import com.bored.core.Paths;
+import com.bored.core.Site;
 import com.bored.listen.ConfigFilter;
 import com.bored.listen.ConfigListener;
-import com.bored.model.CompleteEnvironment;
 import com.bored.server.handler.NotFoundHandler;
 import com.bored.server.handler.URLHandler;
 import lombok.SneakyThrows;
@@ -22,7 +23,7 @@ public class BoredServer {
 
     @SneakyThrows
     public static void start(int port) {
-        Bored.env(new CompleteEnvironment());
+        Bored.config(Site.instance());
         Loader.start();
         startListener();
 
@@ -44,7 +45,7 @@ public class BoredServer {
         //每隔1000毫秒扫描一次
         FileAlterationMonitor monitor = new FileAlterationMonitor(1000L);
         FileFilter filter = FileFilterUtils.and(new ConfigFilter());
-        FileAlterationObserver observer = new FileAlterationObserver(Bored.env().getRoot(), filter);
+        FileAlterationObserver observer = new FileAlterationObserver(Paths.ROOT, filter);
         observer.addListener(new ConfigListener());
         monitor.addObserver(observer);
         try {
@@ -52,11 +53,6 @@ public class BoredServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        Bored.env(new CompleteEnvironment());
-        startListener();
     }
 
 }

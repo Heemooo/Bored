@@ -16,9 +16,8 @@ public class URLHandler extends AbstractHandler {
 
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
-        var env = Bored.env();
         if (target.equals("/")) {
-            target = "/index" + Bored.env().getSiteConfig().getURLSuffix();
+            target = "/index" + Bored.config().getURLSuffix();
         }
         if (URLS.contains(target)) {
             response.setStatus(HttpServletResponse.SC_OK);

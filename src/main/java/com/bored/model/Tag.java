@@ -3,6 +3,7 @@ package com.bored.model;
 import com.bored.Bored;
 import com.bored.core.Context;
 import com.bored.core.Page;
+import com.bored.core.Paths;
 import com.bored.core.URL;
 import lombok.Data;
 
@@ -15,6 +16,10 @@ public class Tag {
      * 标签名
      */
     private String name;
+    /**
+     * page type
+     */
+    private String type;
     /**
      * 标签url
      */
@@ -32,7 +37,7 @@ public class Tag {
     public URL toURL() {
         var context = Context.builder().title("标签" + this.getName()).type("base").layout("tag").url(this.getUrl()).build();
         return URL.builder().uri(this.getUrl())
-                .fullFilePath(Bored.env().getOutputPath() + "/" + this.getName() + ".html")
+                .fullFilePath(Paths.OUTPUT_PATH + "/" + this.getName() + ".html")
                 .context(context)
                 .contentType("text/html;charset=utf-8").build().add("tag", this);
     }

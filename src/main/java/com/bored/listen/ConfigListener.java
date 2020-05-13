@@ -2,7 +2,6 @@ package com.bored.listen;
 
 import com.bored.Bored;
 import com.bored.core.Site;
-import com.bored.util.TomlUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 
@@ -19,12 +18,12 @@ public class ConfigListener extends FileAlterationListenerAdaptor {
         log.info("{} is changed", file.getPath());
         Site site = null;
         try {
-            site = Site.load(file.getPath());
+            site = Site.instance();
         } catch (Exception e) {
             log.error(e.getMessage());
         }
         if (Objects.nonNull(site)) {
-            Bored.env().setSiteConfig(site);
+            Bored.config(site);
         }
         log.info("{} is reload", file.getPath());
     }

@@ -2,10 +2,7 @@ package com.bored.core.command;
 
 import cn.hutool.core.io.FileUtil;
 import com.bored.Bored;
-import com.bored.core.URLS;
-import com.bored.core.Loader;
-import com.bored.core.URL;
-import com.bored.model.CompleteEnvironment;
+import com.bored.core.*;
 
 import java.util.Deque;
 
@@ -31,12 +28,12 @@ public class PublishCommand extends Command {
     }
 
     @Override
-    void execute(Deque<String> options) {
+    public void execute(Deque<String> options) {
         ensureMaxArgumentCount(options, 0);
         ensureMinArgumentCount(options, 0);
-        Bored.env(new CompleteEnvironment());
+        Bored.config(Site.instance());
         Loader.start();
-        FileUtil.del(Bored.env().getOutputPath());
+        FileUtil.del(Paths.OUTPUT_PATH);
         URLS.list().parallelStream().forEach(URL::out);
     }
 }
