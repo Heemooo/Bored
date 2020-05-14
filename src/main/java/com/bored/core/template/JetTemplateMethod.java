@@ -1,6 +1,5 @@
 package com.bored.core.template;
 
-import com.bored.core.MDFile;
 import com.bored.core.model.Page;
 import com.bored.util.Pages;
 
@@ -10,12 +9,12 @@ import java.util.TreeMap;
 public class JetTemplateMethod {
     /**
      * 取最新的number条
-     * @param MDFiles 文章列表
-     * @param number  数量
+     * @param pages  文章列表
+     * @param number 数量
      * @return 最新的文章
      */
-    public static List<MDFile> top(List<MDFile> MDFiles, int number) {
-        return MDFiles.subList(0, number);
+    public static List<Page> top(List<Page> pages, int number) {
+        return Pages.top(pages, number);
     }
 
     /**

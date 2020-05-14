@@ -28,8 +28,6 @@ public class Site {
 
     private Boolean disableCategories = false;
 
-    private String frontMatterSeparator = "---";
-
     private Integer pageSize = 10;
 
     private Map<String, List<Menu>> menus;

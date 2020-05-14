@@ -106,7 +106,7 @@ public class NewCommand extends Command {
         if (name.contains(".md") == Boolean.FALSE) {
             name = name + ".md";
         }
-        String filePath = String.format("%s/%s", Paths.pagePath(), name);
+        String filePath = Paths.convertCorrectPath(String.format("%s/%s", Paths.pagePath(), name));
         var page = new File(filePath);
         if (FileUtil.exist(page)) {
             log.error("'{}' name already exists, please delete, or change the page name!", name);
@@ -116,19 +116,19 @@ public class NewCommand extends Command {
         try {
             var lineSeparator = System.getProperty("line.separator");
             List<String> archetypeContents = new FileReader(Paths.frontMatterPath(Bored.config().getTheme())).readLines();
-            StringBuilder templateContent = new StringBuilder(Bored.config().getFrontMatterSeparator());
-            templateContent.append(lineSeparator);
+            StringBuilder templateContent = new StringBuilder();
+            templateContent.append("[^_^]:<>(").append("---").append(")").append(lineSeparator);
             archetypeContents.forEach(line -> {
                 /*忽略注释行*/
                 if (!line.startsWith("#") && !line.isBlank()) {
-                    templateContent.append(line);
+                    templateContent.append("[^_^]:<>(").append(line).append(")");
                     templateContent.append(lineSeparator);
                 }
             });
-            templateContent.append(Bored.config().getFrontMatterSeparator());
+            templateContent.append("[^_^]:<>(").append("---").append(")").append(lineSeparator);
             var frontMatter = new FrontMatter();
             frontMatter.setTitle(StrUtil.removeSuffix(page.getName(), ".md"));
-            frontMatter.setDate(DateUtil.now());
+            frontMatter.setDate(DateUtil.date());
 
             String content = Bored.jetTemplateHelper().parseSource(templateContent.toString(), frontMatter.toMap());
             @Cleanup FileWriter writer = new FileWriter(filePath);

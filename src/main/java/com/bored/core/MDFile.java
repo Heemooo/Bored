@@ -64,12 +64,13 @@ public class MDFile {
         var header = new StringBuilder();
         var content = new StringBuilder();
         for (var line : lines) {
-            if (line.contains(Bored.config().getFrontMatterSeparator())) {
+            if (line.contains("[^_^]:<>(---)")) {
                 count++;
                 continue;
             }
             if (count < 2) {
-                header.append(line).append(System.getProperty("line.separator"));
+                String str = StrUtil.removePrefix(line, "[^_^]:<>(");
+                header.append(StrUtil.removeSuffix(str, ")")).append(System.getProperty("line.separator"));
             } else {
                 content.append(line).append(System.getProperty("line.separator"));
             }

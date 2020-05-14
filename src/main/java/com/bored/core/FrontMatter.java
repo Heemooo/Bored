@@ -7,6 +7,7 @@ import com.moandjiezana.toml.Toml;
 import lombok.Data;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Map;
 @Data
 public class FrontMatter {
     public String title = StrUtil.EMPTY;
-    public String date;
+    public Date date;
     public boolean draft;
     private String url = StrUtil.EMPTY;
     private String type;

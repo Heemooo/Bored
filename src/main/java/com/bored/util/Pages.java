@@ -33,6 +33,7 @@ public final class Pages {
      * @return 文章列表
      */
     public static List<Page> top(List<Page> pages, int number) {
+        if (pages.size() <= number) return pages;
         return pages.subList(0, number);
     }
 
@@ -58,7 +59,7 @@ public final class Pages {
      * @param page page对象
      * @return url对象
      */
-    public static URL toURL(Page page){
+    public static URL toURL(Page page) {
         var context = Context.builder()
                 .time(page.getDate()).title(page.getTitle()).url(page.getPermLink()).type(page.getType())
                 .layout(page.getLayout()).build();
