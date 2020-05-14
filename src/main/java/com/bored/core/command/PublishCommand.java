@@ -2,20 +2,24 @@ package com.bored.core.command;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Console;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.bored.Bored;
 import com.bored.core.Loader;
-import com.bored.util.Paths;
-import com.bored.core.model.Site;
 import com.bored.core.URL;
+import com.bored.core.model.Site;
+import com.bored.util.Paths;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Deque;
+
 @Slf4j
 public class PublishCommand extends Command {
 
     @Override
     public String outHelp() {
-        return "  " + this.getName() + " " + this.getOptionSyntax() + " " +this.getDescription();
+        return "  " + this.getName() + " " + this.getOptionSyntax() + " " + this.getDescription();
     }
 
     @Override
@@ -46,5 +50,13 @@ public class PublishCommand extends Command {
         Loader.start();
         FileUtil.del(Paths.outputPath());
         Bored.urls().parallelStream().forEach(URL::out);
+        JSONArray json = new JSONArray();
+        Bored.pages().forEach(page -> {
+            var map = new JSONObject();
+            map.put("permLink", page.getPermLink());
+            map.put("title", page.getTitle());
+            json.add(map);
+        });
+        FileUtil.writeBytes(json.toString().getBytes(CharsetUtil.CHARSET_UTF_8), Paths.outputPath() + "/pages.json");
     }
 }

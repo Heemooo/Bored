@@ -180,7 +180,7 @@ public class Loader {
             List<Page> pages = Bored.pages();
             var paginationList = PaginationUtil.loadPagination(pages, null);
             paginationList.forEach(pagination -> {
-                var ctx = Context.builder().title("首页-第" + pagination.getCurrent() + "页").layout("list").url(pagination.getUri()).build();
+                var ctx = Context.builder().title("首页-第" + pagination.getCurrent() + "页").layout("index").url(pagination.getUri()).build();
                 var url = URL.builder().uri(pagination.getUri()).context(ctx).contentType(TEXT_HTML)
                         .outPutPath(Paths.outputPath() + "/page/" + pagination.getCurrent() + ".html").build()
                         .add("pages", pages)

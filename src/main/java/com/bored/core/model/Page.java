@@ -32,9 +32,9 @@ public class Page {
      */
     private String outPutPath;
     /**
-     * 描述
+     * 摘要
      */
-    private String description;
+    private String summary;
     /**
      * 内容
      */
@@ -60,9 +60,12 @@ public class Page {
     public String toString() {
         return "Page{" +
                 "title='" + title + '\'' +
-                ", date='" + date + '\'' +
+                ", date=" + date +
+                ", type='" + type + '\'' +
+                ", layout='" + layout + '\'' +
                 ", permLink='" + permLink + '\'' +
-                ", description='" + description + '\'' +
+                ", outPutPath='" + outPutPath + '\'' +
+                ", summary='" + summary + '\'' +
                 ", content='" + content + '\'' +
                 ", categories=" + categories +
                 ", tags=" + tags +

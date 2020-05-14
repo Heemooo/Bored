@@ -91,9 +91,9 @@ public class MDFile {
         if (Objects.isNull(page.getDate())) {
             page.setDate(DateUtil.date());
         }
-        if (StrUtil.isEmpty(page.getDescription()) || page.getDescription().length() > 200) {
-            var str = StrUtil.split(this.content.replaceAll("[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]+", ""), 200);
-            page.setDescription(str[0]);
+        if (StrUtil.isEmpty(page.getSummary()) || page.getSummary().length() > Bored.config().getSummaryLength()) {
+            var str = StrUtil.split(this.content.replaceAll("[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]+", ""), Bored.config().getSummaryLength());
+            page.setSummary(str[0]);
         }
         page.setContent(MDFile.toHTML(this.content));
         if (Objects.isNull(page.getCategories())) {

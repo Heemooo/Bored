@@ -21,7 +21,7 @@ public class FrontMatter {
     private String layout = "page";
     private List<String> tags;
     private List<String> categories;
-    private String description;
+    private String summary;
 
     public Map<String, Object> toMap() {
         Field[] fields = ReflectUtil.getFields(this.getClass());

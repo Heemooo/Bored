@@ -20,6 +20,8 @@ public class Site {
 
     private String theme = "default";
 
+    private int summaryLength = 200;
+
     private Boolean enableHtmlSuffix = true;
 
     private Boolean disableTags = false;
