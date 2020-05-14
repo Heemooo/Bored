@@ -1,6 +1,7 @@
 package com.bored.core.command;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Console;
 import com.bored.Bored;
 import com.bored.core.Loader;
 import com.bored.util.Paths;
@@ -24,7 +25,7 @@ public class PublishCommand extends Command {
 
     @Override
     public void displayOptionUsage() {
-        log.info("  <command>   Publish site");
+        Console.log("  <command>   Publish site");
     }
 
     @Override

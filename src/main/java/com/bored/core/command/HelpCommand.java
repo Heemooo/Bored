@@ -1,6 +1,7 @@
 package com.bored.core.command;
 
 
+import cn.hutool.core.lang.Console;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Deque;
@@ -20,7 +21,7 @@ public class HelpCommand extends Command {
 
     @Override
     public void displayOptionUsage() {
-        log.info("  <command>   The name of the command to get help for");
+        Console.log("  <command>   The name of the command to get help for");
         Command.displayAvailableCommands();
     }
 

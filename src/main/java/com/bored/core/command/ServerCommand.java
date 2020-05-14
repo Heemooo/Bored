@@ -1,6 +1,7 @@
 package com.bored.core.command;
 
 
+import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
 import com.bored.server.BoredServer;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,8 @@ public class ServerCommand extends Command {
 
     @Override
     public void displayOptionUsage() {
-        log.info("  port  <portNumber>   Start the server and specify the port number");
-        log.info("  debug   Enable debug mode");
+        Console.log("  port  <portNumber>   Start the server and specify the port number");
+        Console.log("  debug   Enable debug mode");
     }
 
     @Override

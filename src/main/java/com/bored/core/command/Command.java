@@ -1,5 +1,6 @@
 package com.bored.core.command;
 
+import cn.hutool.core.lang.Console;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Deque;
@@ -19,20 +20,22 @@ public abstract class Command {
     }
 
     void displayUsage() {
-        log.info("Usage: Bored command " + getName() + " " + getOptionSyntax());
+        Console.log("Usage: Bored command " + getName() + " " + getOptionSyntax());
         displayOptionUsage();
     }
 
     public static void displayHelp() {
-        log.info("Usage: Bored help <command> [<options>]");
+        Console.log();
+        Console.log("Usage: Bored help <command> [<options>]");
         displayAvailableCommands();
     }
 
     static void displayAvailableCommands() {
-        log.info("Available commands are:");
+        Console.log("Available commands are:");
         for (Command c : COMMANDS) {
-            log.info(c.outHelp());
+            Console.log(c.outHelp());
         }
+        Console.log();
     }
 
     abstract public String outHelp();
@@ -60,7 +63,7 @@ public abstract class Command {
     }
 
     final protected void userFailed(String message) {
-        log.info(message);
+        log.error(message);
         displayUsage();
         throw new IllegalArgumentException(message);
     }

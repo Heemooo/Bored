@@ -242,7 +242,7 @@ public final class Bored {
                 return;
             }
         }
-        System.out.println("Unknown command " + command + ".");
+        log.error("Unknown command " + command + ".");
         Command.displayHelp();
     }
 

@@ -3,6 +3,7 @@ package com.bored.core.command;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
@@ -36,10 +37,10 @@ public class NewCommand extends Command {
 
     @Override
     public void displayOptionUsage() {
-        log.info("  site  <name>   create a new site");
-        log.info("  theme <name>   create a new theme");
-        log.info("  page  <name>   create a new page");
-        log.info("  <name>  [site,theme,page] name");
+        Console.log("  site  <name>   create a new site");
+        Console.log("  theme <name>   create a new theme");
+        Console.log("  page  <name>   create a new page");
+        Console.log("  <name>  [site,theme,page] name");
     }
 
     @Override
@@ -79,7 +80,7 @@ public class NewCommand extends Command {
             return;
         }
         create("template/site-template.zip", new File(sitePath));
-        log.info("Congratulations! Your new Bored site is created in {}. ", sitePath);
+        Console.log("Congratulations! Your new Bored site is created in {}. ", sitePath);
     }
 
     private void theme(String themeName) {
@@ -90,7 +91,7 @@ public class NewCommand extends Command {
             return;
         }
         create("template/theme-template.zip", new File(themePath));
-        log.info("Creating theme at {}.", themePath);
+        Console.log("Creating theme at {}.", themePath);
     }
 
     @SneakyThrows
@@ -132,7 +133,7 @@ public class NewCommand extends Command {
             String content = Bored.jetTemplateHelper().parseSource(templateContent.toString(), frontMatter.toMap());
             @Cleanup FileWriter writer = new FileWriter(filePath);
             writer.write(content);
-            log.info("{} created", filePath);
+            Console.log("{} created", filePath);
         } catch (IOException e) {
             log.error("", e);
         }
