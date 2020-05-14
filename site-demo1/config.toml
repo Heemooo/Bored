@@ -5,13 +5,7 @@ baseURL = "127.0.0.1"
 title = "管他谁谁谁"
 #theme= ""                    #默认使用default
 #enableHtmlSuffix = false     #关闭html后缀，默认开启
-frontMatterSeparator = "+++"  #前辅文分隔符，默认为"---"
 pageSize = 5
-[URLMapping]
-  name="home"
-  #type="layouts"             #默认配置模板路径为主题下layouts，不配置此项则在根目录查找index.ftl
-  layout="index.ftl"
-  #pagging:true                #开启分页，启用此项将为页面注入分页的对象，并在静态化时做分页处理
 
 
 # site your menus             # 配置目录，根据权重排序
