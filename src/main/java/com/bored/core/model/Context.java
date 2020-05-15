@@ -37,6 +37,13 @@ public class Context {
         this.url = url;
     }
 
+    public Context(String title, String url, String layout, Date date) {
+        this.title = title;
+        this.url = url;
+        this.layout = layout;
+        this.date = date;
+    }
+
     public Context(String title, String url, String type, String layout, Date date) {
         this.title = title;
         this.url = url;

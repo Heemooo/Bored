@@ -23,43 +23,101 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
-public class MDFile {
+public final class MDFile {
 
-    public MDFile(File file) {
-        this.file = file;
-        this.fileName = file.getName();
-        this.htmlFileName = StrUtil.removeSuffix(file.getName(), ".md") + ".html";
-        var fileReader = new FileReader(file);
-        var headerAndContent = parseLine(fileReader.readLines());
-        this.frontMatter = FrontMatter.toObject(headerAndContent[0]);
-        this.content = headerAndContent[1];
-        var permLink = StrUtil.removePrefix(file.getPath(), Paths.pagePath());
-        this.permLink = Paths.toUrl(StrUtil.removeSuffix(permLink, ".md") + Bored.config().getURLSuffix());
-        //获取一级目录
-        var absolutePath = StrUtil.removePrefix(file.getPath(), Paths.pagePath());
-        var str = StrUtil.split(Paths.toUrl(absolutePath), "/");
-        this.type = StrUtil.nullToDefault(str[1], "");
-    }
-
-    private String type;
-
-    private String htmlFileName;
-
-    private String fileName;
-
+    /**
+     * 文件实例
+     */
     private File file;
 
-    private FrontMatter frontMatter;
-
-    private String permLink;
-
+    /**
+     * 文章内容
+     */
     private String content;
 
-    private List<String> categories;
+    /**
+     * 文章页输出路径
+     */
+    private String outPutPath;
 
-    private List<String> tags;
+    /**
+     * 文章前辅文
+     */
+    private FrontMatter frontMatter;
 
-    private String[] parseLine(List<String> lines) {
+    public MDFile(File file, String content, String outPutPath, FrontMatter frontMatter) {
+        this.file = file;
+        this.content = content;
+        this.outPutPath = outPutPath;
+        this.frontMatter = frontMatter;
+    }
+
+    /**
+     * 加载文件
+     * @param file 文件
+     * @return md对象
+     */
+    public static MDFile load(File file) {
+        var fileReader = new FileReader(file);
+        var headerAndContent = parseLine(fileReader.readLines());
+        var outPutPath = Paths.outputPath() + StrUtil.removePrefix(file.getPath(), Paths.pagePath());
+        return new MDFile(file, headerAndContent[1], outPutPath, FrontMatter.toObject(headerAndContent[0]));
+    }
+
+    /**
+     * 转换成page对象
+     * @return page对象
+     */
+    public Page toPage() {
+        var page = new Page();
+        BeanUtil.copyProperties(this.getFrontMatter(), page);
+        page.setContent(MDFile.toHTML(this.getContent()));
+        page.setOutPutPath(this.getOutPutPath());
+        page.setType(StrUtil.nullToDefault(this.getFrontMatter().getType(), parseType(this.getFile().getName())));
+        page.setPermLink(StrUtil.nullToDefault(this.getFrontMatter().getUrl(), permLink(this.getFile().getPath())));
+        if (Objects.isNull(page.getDate())) {
+            page.setDate(DateUtil.date());
+        }
+        if (StrUtil.isEmpty(page.getSummary()) && this.getContent().length() > 0) {
+            var summaryLength = Math.min(this.getContent().length(), Bored.config().getSummaryLength());
+            var str = StrUtil.split(this.getContent().replaceAll(Bored.CONSTANT.getStr("summaryReg"), StrUtil.EMPTY), summaryLength);
+            page.setSummary(str[0]);
+        }
+        if (Objects.isNull(page.getCategories())) {
+            page.setCategories(new ArrayList<>());
+        }
+        if (Objects.isNull(page.getTags())) {
+            page.setTags(new ArrayList<>());
+        }
+        return page;
+    }
+
+    /**
+     * 类型此值将自动派生自目录
+     */
+    public static String parseType(String filePath) {
+        var absolutePath = StrUtil.removePrefix(filePath, Paths.pagePath());
+        var str = StrUtil.split(Paths.toUrl(absolutePath), "/");
+        return StrUtil.nullToDefault(str[1], "");
+    }
+
+    /**
+     * 利用文件路径生成访问浏览器的url
+     * @param filePath 文件路径
+     * @return url
+     */
+    public static String permLink(String filePath) {
+        var permLink = StrUtil.removePrefix(filePath, Paths.pagePath());
+        permLink = Paths.toUrl(StrUtil.removeSuffix(permLink, ".md") + Bored.config().getURLSuffix());
+        return permLink;
+    }
+
+    /**
+     * 解析文章内容行
+     * @param lines 内容行
+     * @return 文章内容头+内容体
+     */
+    private static String[] parseLine(List<String> lines) {
         var count = 0;
         var header = new StringBuilder();
         var content = new StringBuilder();
@@ -79,36 +137,6 @@ public class MDFile {
         headerAndContent[0] = header.toString();
         headerAndContent[1] = content.toString();
         return headerAndContent;
-    }
-
-    public Page toPage() {
-        var page = new Page();
-        BeanUtil.copyProperties(this.getFrontMatter(), page);
-        if (StrUtil.isNotBlank(this.getFrontMatter().getUrl())) {
-            page.setPermLink(this.getFrontMatter().getUrl());
-        } else {
-            page.setPermLink(this.getPermLink());
-        }
-        if (Objects.isNull(page.getDate())) {
-            page.setDate(DateUtil.date());
-        }
-        if (StrUtil.isEmpty(page.getSummary()) && this.getContent().length() > 0) {
-            var summaryLength = Math.min(this.content.length(), Bored.config().getSummaryLength());
-            var str = StrUtil.split(this.content.replaceAll(Bored.CONSTANT.getStr("summaryReg"), StrUtil.EMPTY), summaryLength);
-            page.setSummary(str[0]);
-        }
-        page.setContent(MDFile.toHTML(this.content));
-        if (Objects.isNull(page.getCategories())) {
-            page.setCategories(new ArrayList<>());
-        }
-        if (Objects.isNull(page.getTags())) {
-            page.setTags(new ArrayList<>());
-        }
-        if (Objects.isNull(page.getType())) {
-            page.setType(this.getType());
-        }
-        page.setOutPutPath(String.format("%s/%s/%s", Paths.outputPath(), page.getType(), this.getHtmlFileName()));
-        return page;
     }
 
     /**

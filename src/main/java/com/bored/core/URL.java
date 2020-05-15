@@ -51,7 +51,7 @@ public class URL {
             return null;
         }
         this.ctx.put("ctx", this.context());
-        return Bored.jetTemplateHelper().parse(this.context().templatePath(), this.ctx);
+        return Bored.jetTemplateHelper().parse(this.context().template(), this.ctx);
     }
 
     public void out() {

@@ -5,6 +5,7 @@ import com.bored.util.Paths;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -28,7 +29,7 @@ public class Tag {
     }
 
     public URL toURL() {
-        var context = Context.builder().title("标签" + this.getName()).templatePath("base/tag.html").uri(this.getUrl()).build();
+        var context = new Context("标签", this.getUrl(), "base", "tag", new Date());
         return URL.builder().outPutPath(Paths.outputPath() + "/tags/" + this.getName() + ".html")
                 .context(context).contentType("text/html;charset=utf-8").build().add("tag", this);
     }
