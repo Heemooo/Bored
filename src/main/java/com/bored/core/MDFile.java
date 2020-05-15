@@ -17,7 +17,6 @@ import lombok.Data;
 import lombok.SneakyThrows;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -82,12 +81,6 @@ public final class MDFile {
             var summaryLength = Math.min(this.getContent().length(), Bored.config().getSummaryLength());
             var str = StrUtil.split(this.getContent().replaceAll(Bored.CONSTANT.getStr("summaryReg"), StrUtil.EMPTY), summaryLength);
             page.setSummary(str[0]);
-        }
-        if (Objects.isNull(page.getCategories())) {
-            page.setCategories(new ArrayList<>());
-        }
-        if (Objects.isNull(page.getTags())) {
-            page.setTags(new ArrayList<>());
         }
         return page;
     }
