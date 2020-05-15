@@ -6,7 +6,7 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import com.bored.Bored;
-import com.bored.core.Loader;
+import com.bored.core.loader.Loader;
 import com.bored.core.URL;
 import com.bored.core.model.Site;
 import com.bored.util.Paths;

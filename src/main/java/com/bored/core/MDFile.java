@@ -92,8 +92,9 @@ public class MDFile {
         if (Objects.isNull(page.getDate())) {
             page.setDate(DateUtil.date());
         }
-        if (StrUtil.isEmpty(page.getSummary()) || page.getSummary().length() > Bored.config().getSummaryLength()) {
-            var str = StrUtil.split(this.content.replaceAll("[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]+", ""), Bored.config().getSummaryLength());
+        if (StrUtil.isEmpty(page.getSummary()) && this.getContent().length() > 0) {
+            var summaryLength = Math.min(this.content.length(), Bored.config().getSummaryLength());
+            var str = StrUtil.split(this.content.replaceAll(Bored.CONSTANT.getStr("summaryReg"), StrUtil.EMPTY), summaryLength);
             page.setSummary(str[0]);
         }
         page.setContent(MDFile.toHTML(this.content));
@@ -106,7 +107,9 @@ public class MDFile {
         if (Objects.isNull(page.getType())) {
             page.setType(this.getType());
         }
-        page.setOutPutPath(String.format("%s/%s/%s", Paths.outputPath(), page.getType(), this.getHtmlFileName()));
+        page.setOutPutPath(String.format("%s/%s/%s", Paths.outputPath(), page.getType(), this.
+
+                getHtmlFileName()));
         return page;
     }
 

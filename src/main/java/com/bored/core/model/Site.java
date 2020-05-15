@@ -7,11 +7,13 @@ import cn.hutool.core.util.StrUtil;
 import com.bored.util.Paths;
 import com.moandjiezana.toml.Toml;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
+@Slf4j
 public class Site {
 
     private String title;
@@ -44,6 +46,8 @@ public class Site {
         try {
             site = Site.load();
         } catch (Exception e) {
+            log.error("There's a mistake:{}.", Paths.configPath());
+            log.error("Case of error:{}.",e.getCause().getMessage());
             System.exit(0);
         }
         return site;

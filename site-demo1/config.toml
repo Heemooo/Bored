@@ -6,8 +6,6 @@ title = "管他谁谁谁"
 #theme= ""                    #默认使用default
 #enableHtmlSuffix = false     #关闭html后缀，默认开启
 pageSize = 5
-
-
 # site your menus             # 配置目录，根据权重排序
 [[menus.main]]            
   name = "首页"

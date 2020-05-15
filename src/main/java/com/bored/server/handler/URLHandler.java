@@ -22,10 +22,10 @@ public class URLHandler extends AbstractHandler {
             target = "/index" + Bored.config().getURLSuffix();
         }
         Bored.url(target).ifPresent(url -> {
-            if (Objects.isNull(url.content())) {
-                ServletUtil.write(response, url.getInputStream(), url.contentType());
-            } else {
+            if (Objects.isNull(url.getInputStream())) {
                 ServletUtil.write(response, url.content(), url.contentType());
+            } else {
+                ServletUtil.write(response, url.getInputStream(), url.contentType());
             }
             response.setStatus(HttpServletResponse.SC_OK);
             baseRequest.setHandled(true);

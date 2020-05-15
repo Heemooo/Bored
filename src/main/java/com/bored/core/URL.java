@@ -29,7 +29,7 @@ public class URL {
 
     private final Map<String, Object> ctx = new HashMap<>();
 
-    public String uri(){
+    public String uri() {
         return uri;
     }
 
@@ -38,7 +38,8 @@ public class URL {
     }
 
     public BufferedInputStream getInputStream() {
-        if (StrUtil.isEmpty(filePath)) return null;
+        if (StrUtil.isEmpty(filePath))
+            return null;
         return new FileReader(filePath).getInputStream();
     }
 
@@ -48,32 +49,25 @@ public class URL {
     }
 
     public String content() {
-        if (Objects.isNull(context)) {
+        if (Objects.nonNull(this.getInputStream())) {
             return null;
-        } else {
-            this.ctx.put("ctx", this.context);
-            return Bored.jetTemplateHelper().parse(context.getTemplatePath(), this.ctx);
         }
+        this.ctx.put("ctx", this.context);
+        return Bored.jetTemplateHelper().parse(context.getTemplatePath(), this.ctx);
     }
 
     public void out() {
-        var content = content();
-        this.outPutPath = Paths.convertCorrectPath(this.outPutPath);
-        if (StrUtil.isEmpty(content)) {
+        if (Objects.nonNull(this.getInputStream())) {
             FileUtil.writeBytes(new FileReader(this.filePath).readBytes(), this.outPutPath);
-        } else {
-            FileUtil.writeBytes(content.getBytes(CharsetUtil.CHARSET_UTF_8), this.outPutPath);
         }
+        this.outPutPath = Paths.convertCorrectPath(this.outPutPath);
+        FileUtil.writeBytes(content().getBytes(CharsetUtil.CHARSET_UTF_8), this.outPutPath);
     }
 
     @Override
     public String toString() {
-        return "URL{" +
-                "uri='" + uri + '\'' +
-                ", fullFilePath='" + outPutPath + '\'' +
-                ", filePath='" + filePath + '\'' +
-                ", context=" + context +
-                ", contentType='" + contentType + '\'' +
-                '}';
+        return "URL{" + "uri='" + uri + '\'' + ", fullFilePath='" + outPutPath + '\'' + ", filePath='" + filePath + '\''
+                + ", context=" + context + ", contentType='" + contentType + '\'' + '}';
     }
+
 }

@@ -16,7 +16,7 @@ public class Page {
      */
     private Date date;
     /**
-     * page type
+     * 类型，如果前面没有指定，此值将自动派生自目录
      */
     private String type;
     /**

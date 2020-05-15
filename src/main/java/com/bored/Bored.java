@@ -1,6 +1,7 @@
 package com.bored;
 
-import com.bored.core.*;
+import cn.hutool.setting.dialect.Props;
+import com.bored.core.URL;
 import com.bored.core.command.Command;
 import com.bored.core.model.Category;
 import com.bored.core.model.Page;
@@ -20,7 +21,10 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public final class Bored {
-
+    /**
+     * 常量配置
+     */
+    public final static Props CONSTANT = new Props("constant.properties");
     /**
      * 根路径
      * System.getProperty("user.dir")
@@ -104,8 +108,8 @@ public final class Bored {
 
     /**
      * 设置全局变量
-     * @param clazz 变量类型
-     * @param name 变量名
+     * @param clazz  变量类型
+     * @param name   变量名
      * @param object 变量实例
      */
     public static void globalVariable(Class<?> clazz, String name, Object object) {
@@ -169,7 +173,7 @@ public final class Bored {
      * @param pages 文章列表
      * @return 关联后的文章列表
      */
-    private static List<Page> pageRelevance(List<Page> pages){
+    private static List<Page> pageRelevance(List<Page> pages) {
         for (int i = 0, len = pages.size(); i < len; i++) {
             if (i < (len - 1)) pages.get(i).setNext(pages.get(i + 1));
             if (i > 0) pages.get(i).setPrev(pages.get(i - 1));
@@ -202,7 +206,7 @@ public final class Bored {
      * @param url url
      */
     public static void url(URL url) {
-        log.info("Mapping page {}", url.uri());
+        log.debug("Mapping page {}", url.uri());
         Bored.of().URL_MAP.put(url.uri(), url);
     }
 

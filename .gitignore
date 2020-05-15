@@ -29,6 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
+.setting/
 
 # Compiled class file
 *.class
