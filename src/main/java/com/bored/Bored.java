@@ -206,8 +206,8 @@ public final class Bored {
      * @param url url
      */
     public static void url(URL url) {
-        log.debug("Mapping page {}", url.uri());
-        Bored.of().URL_MAP.put(url.uri(), url);
+        log.debug("Mapping page {}", url.context().uri());
+        Bored.of().URL_MAP.put(url.context().uri(), url);
     }
 
     /**

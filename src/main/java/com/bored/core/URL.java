@@ -17,8 +17,6 @@ import java.util.Objects;
 @Builder
 public class URL {
 
-    private final String uri;
-
     private String outPutPath;
 
     private final String filePath;
@@ -29,8 +27,8 @@ public class URL {
 
     private final Map<String, Object> ctx = new HashMap<>();
 
-    public String uri() {
-        return uri;
+    public Context context() {
+        return this.context;
     }
 
     public String contentType() {
@@ -52,8 +50,8 @@ public class URL {
         if (Objects.nonNull(this.getInputStream())) {
             return null;
         }
-        this.ctx.put("ctx", this.context);
-        return Bored.jetTemplateHelper().parse(context.getTemplatePath(), this.ctx);
+        this.ctx.put("ctx", this.context());
+        return Bored.jetTemplateHelper().parse(this.context().templatePath(), this.ctx);
     }
 
     public void out() {
@@ -66,7 +64,7 @@ public class URL {
 
     @Override
     public String toString() {
-        return "URL{" + "uri='" + uri + '\'' + ", fullFilePath='" + outPutPath + '\'' + ", filePath='" + filePath + '\''
+        return "URL{" + ", fullFilePath='" + outPutPath + '\'' + ", filePath='" + filePath + '\''
                 + ", context=" + context + ", contentType='" + contentType + '\'' + '}';
     }
 

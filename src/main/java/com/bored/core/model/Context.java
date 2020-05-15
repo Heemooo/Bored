@@ -1,6 +1,7 @@
 package com.bored.core.model;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.Date;
 import java.util.Objects;
@@ -10,33 +11,31 @@ import java.util.Objects;
  * ${this}
  */
 @Builder
+@Getter
 public class Context {
 
     /**
      * 当前页面标题
      */
-    public final String title;
+    private final String title;
     /**
      * 当前页面的url
      */
-    public final String url;
+    public final String uri;
     /**
-     * 当前页面模板路径
+     * 模板路径
      */
-    public final String type;
-    /**
-     * 当前页面模板名
-     */
-    public final String layout;
+    private final String templatePath;
     /**
      * 创建文章时间
      */
-    public final Date time;
+    public final Date date;
 
-    public String getTemplatePath() {
-        if(Objects.isNull(type)){
-            return layout + ".html";
-        }
-        return type + "/" + layout + ".html";
+    public String uri(){
+        return uri;
+    }
+
+    public String templatePath() {
+        return this.templatePath;
     }
 }

@@ -60,12 +60,10 @@ public final class Pages {
      * @return url对象
      */
     public static URL toURL(Page page) {
-        var context = Context.builder()
-                .time(page.getDate()).title(page.getTitle()).url(page.getPermLink()).type(page.getType())
-                .layout(page.getLayout()).build();
+        var templatePath = String.format("%s/%s.html", page.getType(), page.getLayout());
+        var context = Context.builder().date(page.getDate()).title(page.getTitle()).uri(page.getPermLink()).templatePath(templatePath).build();
         return URL.builder()
                 .outPutPath(page.getOutPutPath())
-                .uri(context.url)
                 .context(context)
                 .contentType("text/html;charset=utf-8")
                 .build().add("page", page);
