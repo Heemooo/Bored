@@ -16,21 +16,9 @@ public class Page {
      */
     private Date date;
     /**
-     * 类型，如果前面没有指定，此值将自动派生自目录
-     */
-    private String type;
-    /**
-     * 文章模板
-     */
-    private String layout;
-    /**
      * url
      */
     private String permLink;
-    /**
-     * 输出路径
-     */
-    private String outPutPath;
     /**
      * 摘要
      */
@@ -61,10 +49,7 @@ public class Page {
         return "Page{" +
                 "title='" + title + '\'' +
                 ", date=" + date +
-                ", type='" + type + '\'' +
-                ", layout='" + layout + '\'' +
                 ", permLink='" + permLink + '\'' +
-                ", outPutPath='" + outPutPath + '\'' +
                 ", summary='" + summary + '\'' +
                 ", content='" + content + '\'' +
                 ", categories=" + categories +

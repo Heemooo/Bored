@@ -39,7 +39,7 @@ public class Loader {
                 var uri = Paths.toUrl(StrUtil.removePrefix(file.getPath(), Paths.themePath(Bored.config().getTheme())));
                 var fullFilePath = Paths.outputPath() + uri;
                 var url = URL.builder().filePath(file.getPath()).contentType(contentType(file.getName(), file.getPath()))
-                        .context(Context.builder().uri(uri).build()).outPutPath(fullFilePath).build();
+                        .context(new Context(uri)).outPutPath(fullFilePath).build();
                 Bored.url(url);
                 log.debug("Mapping static resource {}", uri);
             }

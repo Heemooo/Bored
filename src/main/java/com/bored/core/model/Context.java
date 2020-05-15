@@ -1,41 +1,54 @@
 package com.bored.core.model;
 
-import lombok.Builder;
-import lombok.Getter;
+import cn.hutool.core.util.StrUtil;
+import lombok.Data;
 
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * 当前页面的上下文对象
- * ${this}
+ * ${ctx}
  */
-@Builder
-@Getter
+@Data
 public class Context {
 
     /**
      * 当前页面标题
      */
-    private final String title;
+    private String title;
     /**
      * 当前页面的url
      */
-    public final String uri;
+    private String url;
     /**
-     * 模板路径
+     * 类型，如果前面没有指定，此值将自动派生自目录
      */
-    private final String templatePath;
+    private String type;
     /**
-     * 创建文章时间
+     * 文章模板
      */
-    public final Date date;
+    private String layout;
+    /**
+     * 时间
+     */
+    private Date date;
 
-    public String uri(){
-        return uri;
+    public Context(String url) {
+        this.url = url;
     }
 
-    public String templatePath() {
-        return this.templatePath;
+    public Context(String title, String url, String type, String layout, Date date) {
+        this.title = title;
+        this.url = url;
+        this.type = type;
+        this.layout = layout;
+        this.date = date;
+    }
+
+    public String template() {
+        if (StrUtil.isBlank(this.getType())) {
+            return this.getLayout() + ".html";
+        }
+        return this.getType() + "/" + this.getLayout() + ".html";
     }
 }

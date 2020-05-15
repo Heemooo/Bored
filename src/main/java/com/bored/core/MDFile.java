@@ -107,9 +107,7 @@ public class MDFile {
         if (Objects.isNull(page.getType())) {
             page.setType(this.getType());
         }
-        page.setOutPutPath(String.format("%s/%s/%s", Paths.outputPath(), page.getType(), this.
-
-                getHtmlFileName()));
+        page.setOutPutPath(String.format("%s/%s/%s", Paths.outputPath(), page.getType(), this.getHtmlFileName()));
         return page;
     }
 
