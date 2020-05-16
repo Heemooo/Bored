@@ -17,6 +17,7 @@ import com.bored.util.Paths;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -205,7 +206,7 @@ public class Loader {
         private void _404() {
             var uri = "/404" + Bored.config().getURLSuffix();
             if (Bored.jetTemplateHelper().checkTemplate("404")) {
-
+                var bytes = Bored.CONSTANT.getStr("404.default.content").getBytes(StandardCharsets.UTF_8);
             }
             var context = new Context("404 Not Found", uri, "404", new Date());
             var url = URL.builder().context(context)
