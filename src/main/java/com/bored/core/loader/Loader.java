@@ -2,6 +2,7 @@ package com.bored.core.loader;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.core.MDFile;
@@ -39,7 +40,8 @@ public class Loader {
             for (File file : files) {
                 var uri = Paths.toUrl(StrUtil.removePrefix(file.getPath(), Paths.themePath(Bored.config().getTheme())));
                 var fullFilePath = Paths.outputPath() + uri;
-                var url = URL.builder().filePath(file.getPath()).contentType(contentType(file.getName(), file.getPath()))
+                var bytes = new FileReader(file.getPath()).readBytes();
+                var url = URL.builder().bytes(bytes).contentType(contentType(file.getName(), file.getPath()))
                         .context(new Context(uri)).outPutPath(fullFilePath).build();
                 Bored.url(url);
                 log.debug("Mapping static resource {}", uri);

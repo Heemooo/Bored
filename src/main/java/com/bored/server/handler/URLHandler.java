@@ -9,6 +9,8 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
 @Slf4j
@@ -22,11 +24,7 @@ public class URLHandler extends AbstractHandler {
             target = "/index" + Bored.config().getURLSuffix();
         }
         Bored.url(target).ifPresent(url -> {
-            if (Objects.isNull(url.getInputStream())) {
-                ServletUtil.write(response, url.content(), url.contentType());
-            } else {
-                ServletUtil.write(response, url.getInputStream(), url.contentType());
-            }
+            ServletUtil.write(response, new ByteArrayInputStream(url.bytes()), url.contentType());
             response.setStatus(HttpServletResponse.SC_OK);
             baseRequest.setHandled(true);
         });
