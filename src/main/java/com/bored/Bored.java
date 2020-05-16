@@ -216,7 +216,8 @@ public final class Bored {
      * @return URL实例
      */
     public static Optional<URL> url(String uri) {
-        return Optional.of(Bored.of().URL_MAP.getOrDefault(uri, null));
+        var _404 = Bored.of().URL_MAP.get("/404" + Bored.config().getURLSuffix());
+        return Optional.of(Bored.of().URL_MAP.getOrDefault(uri, _404));
     }
 
     /**

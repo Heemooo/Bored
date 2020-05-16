@@ -202,6 +202,9 @@ public class Loader {
     private static class _404Loader {
         private void _404() {
             var uri = "/404" + Bored.config().getURLSuffix();
+            if (Bored.jetTemplateHelper().checkTemplate("404")) {
+
+            }
             var context = new Context("404 Not Found", uri, "404", new Date());
             var url = URL.builder().context(context)
                     .outPutPath(Paths.outputPath() + "/404.html").contentType(TEXT_HTML).build();

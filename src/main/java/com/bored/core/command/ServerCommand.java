@@ -79,7 +79,7 @@ public class ServerCommand extends Command {
             return;
         }
         if ((count == 2 || options.isEmpty()) && nonError) {
-            BoredHttpServer.start(port);
+            BoredServer.start(port);
         }
     }
 }
