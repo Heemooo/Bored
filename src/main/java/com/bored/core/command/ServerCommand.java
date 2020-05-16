@@ -3,6 +3,7 @@ package com.bored.core.command;
 
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
+import com.bored.server.BoredHttpServer;
 import com.bored.server.BoredServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Level;
@@ -49,10 +50,6 @@ public class ServerCommand extends Command {
         count++;
         ensureMaxArgumentCount(options, 3);
         ensureMinArgumentCount(options, 0);
-        if(options.isEmpty()){
-            BoredServer.start(port);
-            return;
-        }
         String command = options.remove();
         String portStr = StrUtil.EMPTY;
         switch (command) {
@@ -79,9 +76,10 @@ public class ServerCommand extends Command {
         }
         if (!options.isEmpty()) {
             this.execute(options);
+            return;
         }
         if ((count == 2 || options.isEmpty()) && nonError) {
-            BoredServer.start(port);
+            BoredHttpServer.start(port);
         }
     }
 }

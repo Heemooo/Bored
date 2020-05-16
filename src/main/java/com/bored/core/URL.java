@@ -62,6 +62,13 @@ public class URL {
         FileUtil.writeBytes(content().getBytes(CharsetUtil.CHARSET_UTF_8), this.outPutPath);
     }
 
+    public byte[] bytes() {
+        if (Objects.nonNull(this.getInputStream())) {
+            return new FileReader(this.filePath).readBytes();
+        }
+        return content().getBytes(CharsetUtil.CHARSET_UTF_8);
+    }
+
     @Override
     public String toString() {
         return "URL{" + ", fullFilePath='" + outPutPath + '\'' + ", filePath='" + filePath + '\''

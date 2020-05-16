@@ -91,7 +91,7 @@ public final class MDFile {
     public static String parseType(String filePath) {
         var absolutePath = StrUtil.removePrefix(filePath, Paths.pagePath());
         var str = StrUtil.split(Paths.toUrl(absolutePath), "/");
-        return StrUtil.nullToDefault(str[1], "");
+        return str.length > 1 ? str[1] : StrUtil.EMPTY;
     }
 
     /**
