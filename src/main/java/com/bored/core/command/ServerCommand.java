@@ -3,19 +3,19 @@ package com.bored.core.command;
 
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
-import com.bored.server.BoredHttpServer;
 import com.bored.server.BoredServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 
 import java.util.Deque;
+
 @Slf4j
 public class ServerCommand extends Command {
 
     @Override
     public String outHelp() {
-        return "  " + this.getName() + "  " + this.getOptionSyntax() + " " +this.getDescription();
+        return "  " + this.getName() + "  " + this.getOptionSyntax() + " " + this.getDescription();
     }
 
     @Override
@@ -47,7 +47,6 @@ public class ServerCommand extends Command {
 
     @Override
     public void execute(Deque<String> options) {
-        count++;
         ensureMaxArgumentCount(options, 3);
         ensureMinArgumentCount(options, 0);
         String command = options.remove();
@@ -55,6 +54,7 @@ public class ServerCommand extends Command {
         switch (command) {
             case "debug":
                 LogManager.getRootLogger().setLevel(Level.DEBUG);
+                count++;
                 break;
             case "port":
                 try {
@@ -65,6 +65,7 @@ public class ServerCommand extends Command {
                     }
                     portStr = options.remove();
                     port = Integer.parseInt(portStr);
+                    count++;
                 } catch (Exception e) {
                     log.error("Port number must be number,but the input is '{}'", portStr);
                     nonError = false;
@@ -74,12 +75,13 @@ public class ServerCommand extends Command {
                 log.error("Unknown server option {}", command);
                 nonError = false;
         }
-        if (!options.isEmpty()) {
-            this.execute(options);
-            return;
-        }
+
         if ((count == 2 || options.isEmpty()) && nonError) {
             BoredServer.start(port);
+        }
+
+        if (!options.isEmpty()) {
+            this.execute(options);
         }
     }
 }

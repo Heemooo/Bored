@@ -13,7 +13,6 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.util.options.MutableDataSet;
-import lombok.Data;
 import lombok.SneakyThrows;
 
 import java.io.File;
@@ -21,30 +20,45 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@Data
 public final class MDFile {
 
     /**
      * 文件实例
      */
-    private File file;
+    private final File file;
 
     /**
      * 文章内容
      */
-    private String content;
+    private final String content;
 
     /**
      * 文章页输出路径
      */
-    private String outPutPath;
+    private final String outPutPath;
 
     /**
      * 文章前辅文
      */
-    private FrontMatter frontMatter;
+    private final FrontMatter frontMatter;
 
-    public MDFile(File file, String content, String outPutPath, FrontMatter frontMatter) {
+    public File getFile() {
+        return file;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getOutPutPath() {
+        return outPutPath;
+    }
+
+    public FrontMatter getFrontMatter() {
+        return frontMatter;
+    }
+
+    private MDFile(File file, String content, String outPutPath, FrontMatter frontMatter) {
         this.file = file;
         this.content = content;
         this.outPutPath = outPutPath;
@@ -72,8 +86,8 @@ public final class MDFile {
         BeanUtil.copyProperties(this.getFrontMatter(), page);
         page.setContent(MDFile.toHTML(this.getContent()));
         page.setOutPutPath(this.getOutPutPath());
-        page.setType(StrUtil.nullToDefault(this.getFrontMatter().getType(), parseType(this.getFile().getName())));
-        page.setPermLink(StrUtil.nullToDefault(this.getFrontMatter().getUrl(), permLink(this.getFile().getPath())));
+        page.setType(StrUtil.blankToDefault(this.getFrontMatter().getType(), parseType(this.getFile().getPath())));
+        page.setPermLink(StrUtil.blankToDefault(this.getFrontMatter().getUrl(), permLink(this.getFile().getPath())));
         if (Objects.isNull(page.getDate())) {
             page.setDate(DateUtil.date());
         }

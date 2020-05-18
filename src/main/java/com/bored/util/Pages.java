@@ -61,12 +61,7 @@ public final class Pages {
      */
     public static URL toURL(Page page) {
         var context = new Context(page.getTitle(), page.getPermLink(), page.getType(), page.getLayout(), page.getDate());
-        return URL.builder()
-                .outPutPath(page.getOutPutPath())
-                .context(context)
-                .contentType("text/html;charset=utf-8")
-                .build().add("page", page);
+        return URL.createHTMLURL(context, page.getOutPutPath()).add("page", page);
     }
-
 
 }

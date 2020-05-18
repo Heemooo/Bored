@@ -30,8 +30,8 @@ public class Category {
 
     public URL toURL() {
         var context = new Context("分类", this.getUrl(), "base", "category", new Date());
-        return URL.builder().outPutPath(Paths.outputPath() + "/categories/" + this.getName() + ".html")
-                .context(context).contentType("text/html;charset=utf-8").build().add("category", this);
+        var outPutPath = Paths.outputPath() + "/categories/" + this.getName() + ".html";
+        return URL.createHTMLURL(context, outPutPath).add("category", this);
     }
 
 }

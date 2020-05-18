@@ -21,6 +21,11 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public final class Bored {
+
+    /**
+     * 默认模板
+     */
+    public final static Props DEFAULT_TEMPLATE = new Props("default.template.properties");
     /**
      * 常量配置
      */

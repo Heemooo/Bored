@@ -30,7 +30,7 @@ public class Tag {
 
     public URL toURL() {
         var context = new Context("标签", this.getUrl(), "base", "tag", new Date());
-        return URL.builder().outPutPath(Paths.outputPath() + "/tags/" + this.getName() + ".html")
-                .context(context).contentType("text/html;charset=utf-8").build().add("tag", this);
+        var outPutPath = Paths.outputPath() + "/tags/" + this.getName() + ".html";
+        return URL.createHTMLURL(context, outPutPath).add("tag", this);
     }
 }

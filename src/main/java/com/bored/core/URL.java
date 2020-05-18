@@ -5,22 +5,40 @@ import cn.hutool.core.util.CharsetUtil;
 import com.bored.Bored;
 import com.bored.core.model.Context;
 import com.bored.util.Paths;
-import lombok.Builder;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-@Builder
 public class URL {
 
-    private String outPutPath;
+    private final String outPutPath;
 
     private final Context context;
 
     private final String contentType;
 
     private final byte[] bytes;
+
+    private URL(Context context, String contentType, String outPutPath, byte[] bytes) {
+        this.outPutPath = Paths.convertCorrectPath(outPutPath);
+        this.context = context;
+        this.contentType = contentType;
+        this.bytes = bytes;
+    }
+
+    public static URL createHTMLURL(Context context, String outPutPath) {
+        return URL.createDefaultURL(context, outPutPath, null);
+    }
+
+    public static URL createDefaultURL(Context context, String outPutPath, byte[] bytes) {
+        var contentType = "text/html;charset=utf-8";
+        return new URL(context, contentType, outPutPath, bytes);
+    }
+
+    public static URL createStaticURL(Context context, String contentType, String outPutPath, byte[] bytes) {
+        return new URL(context, contentType, outPutPath, bytes);
+    }
 
     private final Map<String, Object> ctx = new HashMap<>();
 
@@ -43,7 +61,6 @@ public class URL {
     }
 
     public void out() {
-        this.outPutPath = Paths.convertCorrectPath(this.outPutPath);
         FileUtil.writeBytes(this.bytes(), this.outPutPath);
     }
 
