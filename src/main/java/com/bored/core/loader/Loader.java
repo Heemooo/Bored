@@ -27,8 +27,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class Loader {
 
-    private static final String TEXT_HTML = "text/html;charset=utf-8";
-
     public static void start() {
         new StaticLoader().statics().pages().tags().categories().archive().list().index()._404();
     }
@@ -44,7 +42,6 @@ public class Loader {
                 var bytes = new FileReader(file.getPath()).readBytes();
                 var url = URL.createStaticURL(new Context(uri), contentType(file.getName(), file.getPath()), fullFilePath, bytes);
                 Bored.url(url);
-                log.debug("Mapping static resource {}", uri);
             }
             return new PageLoader();
         }
@@ -100,7 +97,6 @@ public class Loader {
             tags.parallelStream().forEach(tag -> {
                 var url = tag.toURL();
                 Bored.url(url);
-                log.debug("Mapping tag {} {}", tag.getName(), url.context().getUrl());
             });
             var uri = "/tags" + Bored.config().getURLSuffix();
             var context = new Context("标签列表", uri, "base", "tags", new Date());
@@ -108,7 +104,6 @@ public class Loader {
             var url = URL.createHTMLURL(context, outPutPath).add("tags", tags);
             Bored.url(url);
             Bored.tags().addAll(tags);
-            log.debug("Mapping tags {}", uri);
             return new CategoryLoader();
         }
     }
@@ -130,7 +125,6 @@ public class Loader {
             categories.parallelStream().forEach(tag -> {
                 var url = tag.toURL();
                 Bored.url(url);
-                log.debug("Mapping category {} {}", tag.getName(), url.context().getUrl());
             });
             var uri = "/categories" + Bored.config().getURLSuffix();
             var context = new Context("分类列表", uri, "base", "categoryies", new Date());
@@ -138,7 +132,6 @@ public class Loader {
             var url = URL.createHTMLURL(context, outPutPath).add("categories", categories);
             Bored.url(url);
             Bored.categories().addAll(categories);
-            log.debug("Mapping categories {}", uri);
             return new ArchiveLoader();
         }
     }
@@ -150,7 +143,6 @@ public class Loader {
             var outPutPath = Paths.outputPath() + "/archive/posts.html";
             var url = URL.createHTMLURL(context, outPutPath).add("pages", Bored.pages());
             Bored.url(url);
-            log.debug("Mapping archive {}", uri);
             return new ListLoader();
         }
     }
@@ -171,7 +163,6 @@ public class Loader {
                         .add("pages", pages)
                         .add("pagination", pagination);
                 Bored.url(url);
-                log.debug("Mapping {} page {}", type, pagination.getUri());
             });
         }
     }
@@ -187,7 +178,6 @@ public class Loader {
                         .add("pages", pages)
                         .add("pagination", pagination);
                 Bored.url(url);
-                log.debug("Mapping page {}", pagination.getUri());
             });
             var uri = "/index" + Bored.config().getURLSuffix();
             var context = new Context("首页", uri, "index", new Date());
@@ -196,7 +186,6 @@ public class Loader {
                     .add("pages", pages)
                     .add("pagination", CollUtil.isNotEmpty(paginationList) ? paginationList.get(0) : List.of());
             Bored.url(indexUrl);
-            log.debug("Mapping index {}", uri);
             return new _404Loader();
         }
     }
@@ -215,7 +204,6 @@ public class Loader {
                 var url = URL.createDefaultURL(context, outPutPath, bytes);
                 Bored.url(url);
             }
-            log.debug("Mapping 404 {}", uri);
         }
     }
 
