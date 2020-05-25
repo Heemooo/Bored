@@ -5,10 +5,10 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
+import com.bored.core.constant.DefaultTemplate;
 import com.bored.core.ContentType;
 import com.bored.core.MDFile;
 import com.bored.core.URL;
-import com.bored.core.constant.DefaultTemplate;
 import com.bored.core.model.Category;
 import com.bored.core.model.Context;
 import com.bored.core.model.Page;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public class Loader {
 
     public static void start() {
-        new StaticLoader().statics().pages().tags().categories().archive().list().index()._404();
+        new StaticLoader().statics().pages().tags().categories().archive().list().home()._404();
     }
 
     private static class StaticLoader {
@@ -103,8 +103,8 @@ public class Loader {
                 Bored.url(url);
             });
             var uri = "/tags" + Bored.config().getURLSuffix();
-            var context = new Context("标签列表", uri, "base", "tags", new Date());
-            var outPutPath = Paths.outputPath() + "/tags.html";
+            var context = new Context("标签列表", uri, new Date(), DefaultTemplate.TAGS_TEMPLATE);
+            var outPutPath = String.format(DefaultTemplate.TAGS_OUTPUT_FORMAT, Paths.outputPath());
             var url = URL.createHTMLURL(context, outPutPath).add("tags", tags);
             Bored.url(url);
             Bored.tags().addAll(tags);
@@ -131,8 +131,8 @@ public class Loader {
                 Bored.url(url);
             });
             var uri = "/categories" + Bored.config().getURLSuffix();
-            var context = new Context("分类列表", uri, "base", Bored.DEFAULT_TEMPLATE.getStr("categories"), new Date());
-            var outPutPath = Paths.outputPath() + "/categories.html";
+            var context = new Context("分类列表", uri, new Date(), DefaultTemplate.CATEGORIES_TEMPLATE);
+            var outPutPath = String.format(DefaultTemplate.CATEGORIES_OUTPUT_FORMAT, Paths.outputPath());
             var url = URL.createHTMLURL(context, outPutPath).add("categories", categories);
             Bored.url(url);
             Bored.categories().addAll(categories);
@@ -142,8 +142,8 @@ public class Loader {
 
     private static class ArchiveLoader {
         private ListLoader archive() {
-            var uri = "/archive/posts" + Bored.config().getURLSuffix();
-            var context = new Context("归档:Posts", uri, "base", "archive", new Date());
+            var uri = "/archives" + Bored.config().getURLSuffix();
+            var context = new Context("归档:Posts", uri, new Date(), DefaultTemplate.ARCHIVE_TEMPLATE);
             var outPutPath = Paths.outputPath() + "/archive.html";
             var url = URL.createHTMLURL(context, outPutPath).add("pages", Bored.pages());
             Bored.url(url);
@@ -152,9 +152,9 @@ public class Loader {
     }
 
     private static class ListLoader {
-        private IndexLoader list() {
+        private HomeLoader list() {
             Bored.pageMaps().forEach(ListLoader::loadList);
-            return new IndexLoader();
+            return new HomeLoader();
         }
 
         private static void loadList(String type, List<Page> pageList) {
@@ -171,12 +171,12 @@ public class Loader {
         }
     }
 
-    private static class IndexLoader {
-        public _404Loader index() {
+    private static class HomeLoader {
+        public _404Loader home() {
             List<Page> pages = Bored.pages();
             var paginationList = PaginationUtil.loadPagination(pages, null);
             paginationList.forEach(pagination -> {
-                var context = new Context("首页-第" + pagination.getCurrent() + "页", pagination.getUri(), "index", new Date());
+                var context = new Context("首页-第" + pagination.getCurrent() + "页", pagination.getUri(), new Date(), DefaultTemplate.HOME_TEMPLATE);
                 var outPutPath = Paths.outputPath() + "/page/" + pagination.getCurrent() + ".html";
                 var url = URL.createHTMLURL(context, outPutPath)
                         .add("pages", pages)
@@ -184,7 +184,7 @@ public class Loader {
                 Bored.url(url);
             });
             var uri = "/index" + Bored.config().getURLSuffix();
-            var context = new Context("首页", uri, "index", new Date());
+            var context = new Context("首页", uri, new Date(), DefaultTemplate.HOME_TEMPLATE);
             var outPutPath = Paths.outputPath() + "/index.html";
             var indexUrl = URL.createHTMLURL(context, outPutPath)
                     .add("pages", pages)

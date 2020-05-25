@@ -7,7 +7,7 @@ public final class DefaultTemplate {
     /**
      * 标签页
      */
-    public final static String TAG_TEMPLATE = "base/tag.html";
+    public final static String TAG_TEMPLATE = "base/tag";
     /**
      * 标签输出路径
      */
@@ -15,7 +15,7 @@ public final class DefaultTemplate {
     /**
      * 标签列表页
      */
-    public final static String TAGS_TEMPLATE = "base/tags.html";
+    public final static String TAGS_TEMPLATE = "base/tags";
     /**
      * 标签列表页输出路径
      */
@@ -23,7 +23,7 @@ public final class DefaultTemplate {
     /**
      * 分类页
      */
-    public final static String CATEGORY_TEMPLATE = "base/category.html";
+    public final static String CATEGORY_TEMPLATE = "base/category";
     /**
      * 分类页输出路径
      */
@@ -31,7 +31,7 @@ public final class DefaultTemplate {
     /**
      * 分类列表页
      */
-    public final static String CATEGORIES_TEMPLATE = "base/categories.html";
+    public final static String CATEGORIES_TEMPLATE = "base/categories";
     /**
      * 分类列表输出路径
      */
@@ -39,13 +39,13 @@ public final class DefaultTemplate {
     /**
      * 归档页
      */
-    public final static String ARCHIVE_TEMPLATE = "base/archive.html";
+    public final static String ARCHIVE_TEMPLATE = "base/archive";
     /**
      * 首页
      */
-    public final static String HOME_TEMPLATE = "index.html";
+    public final static String HOME_TEMPLATE = "index";
     /**
      * 404错误页面
      */
-    public final static String _404_TEMPLATE = "404.html";
+    public final static String _404_TEMPLATE = "404";
 }

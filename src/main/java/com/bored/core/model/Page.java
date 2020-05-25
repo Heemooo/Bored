@@ -22,7 +22,7 @@ public class Page {
     /**
      * 文章模板
      */
-    private String layout;
+    private String template;
     /**
      * url
      */
@@ -62,7 +62,7 @@ public class Page {
                 "title='" + title + '\'' +
                 ", date=" + date +
                 ", type='" + type + '\'' +
-                ", layout='" + layout + '\'' +
+                ", layout='" + template + '\'' +
                 ", permLink='" + permLink + '\'' +
                 ", outPutPath='" + outPutPath + '\'' +
                 ", summary='" + summary + '\'' +

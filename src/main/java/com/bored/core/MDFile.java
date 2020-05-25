@@ -86,8 +86,11 @@ public final class MDFile {
         BeanUtil.copyProperties(this.getFrontMatter(), page);
         page.setContent(MDFile.toHTML(this.getContent()));
         page.setOutPutPath(this.getOutPutPath());
-        page.setType(StrUtil.blankToDefault(this.getFrontMatter().getType(), parseType(this.getFile().getPath())));
+        page.setType(parseType(this.getFile().getPath()));
         page.setPermLink(StrUtil.blankToDefault(this.getFrontMatter().getUrl(), permLink(this.getFile().getPath())));
+        if (StrUtil.isBlank(this.getFrontMatter().getTemplate())) {
+            page.setTemplate(page.getType() + "/page");
+        }
         if (Objects.isNull(page.getDate())) {
             page.setDate(DateUtil.date());
         }

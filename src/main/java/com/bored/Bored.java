@@ -24,10 +24,6 @@ import java.util.stream.Collectors;
 public final class Bored {
 
     /**
-     * 默认模板
-     */
-    public final static Props DEFAULT_TEMPLATE = new Props("default.template.properties");
-    /**
      * 常量配置
      */
     public final static Props CONSTANT = new Props("constant.properties");
@@ -85,7 +81,7 @@ public final class Bored {
     public static void config(Site config) {
         Bored.of().config = config;
         jetTemplateHelper(new JetTemplateHelper(Paths.layoutPath(config.getTheme())));
-        globalVariable("site", config);
+        globalVariable(Site.class, "site", config);
     }
 
     /**
@@ -114,11 +110,12 @@ public final class Bored {
 
     /**
      * 设置全局变量
+     * @param clazz    变量类型
      * @param name     变量名
      * @param variable 变量实例
      */
-    public static void globalVariable(String name, Variable variable) {
-        Bored.of().jetTemplateHelper.globalVariable(name, variable);
+    public static void globalVariable(Class<?> clazz, String name, Variable variable) {
+        Bored.of().jetTemplateHelper.globalVariable(clazz, name, variable);
     }
 
     /**

@@ -25,13 +25,10 @@ public class FrontMatter {
     private String url = StrUtil.EMPTY;
 
     @Info("")
-    private String type;
-
-    @Info("")
     private String summary;
 
     @Info("")
-    private String layout = "page";
+    private String template = "page";
 
     @Info("")
     private List<String> tags = new ArrayList<>();

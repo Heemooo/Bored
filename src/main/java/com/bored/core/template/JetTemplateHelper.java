@@ -25,8 +25,8 @@ public class JetTemplateHelper {
         engine = JetEngine.create(props);
     }
 
-    public void globalVariable(String name, Variable variable) {
-        this.engine.getGlobalContext().set(Variable.class,name, variable);
+    public void globalVariable(Class<?> clazz,String name, Variable variable) {
+        this.engine.getGlobalContext().set(clazz, name, variable);
     }
 
     public boolean checkTemplate(String templateName) {
@@ -36,6 +36,8 @@ public class JetTemplateHelper {
 
     public String parse(String templateName, Map<String, Object> context) {
         boolean templateExisted = checkTemplate(templateName);
+        templateName += ".html";
+        log.debug("Load template {}",templateName);
         if (templateExisted) {
             var template = engine.getTemplate(templateName);
             return templateToString(template, context);

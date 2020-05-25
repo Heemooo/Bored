@@ -63,7 +63,7 @@ public final class Pages {
      */
     public static URL toURL(Page page) {
         if (null == page) throw new NullPointerException();
-        var context = new Context(page.getTitle(), page.getPermLink(), page.getType(), page.getLayout(), page.getDate());
+        var context = new Context(page.getTitle(), page.getPermLink(), page.getDate(), page.getTemplate());
         return URL.createHTMLURL(context, page.getOutPutPath()).add("page", page);
     }
 

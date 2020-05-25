@@ -1,6 +1,7 @@
 package com.bored.core.model;
 
 import com.bored.core.URL;
+import com.bored.core.constant.DefaultTemplate;
 import com.bored.util.Paths;
 import lombok.Data;
 
@@ -29,8 +30,9 @@ public class Tag {
     }
 
     public URL toURL() {
-        var context = new Context("标签", this.getUrl(), "base", "tag", new Date());
-        var outPutPath = Paths.outputPath() + "/tags/" + this.getName() + ".html";
+        var title = "标签-" + this.name;
+        var context = new Context(title, this.getUrl(), new Date(), DefaultTemplate.TAG_TEMPLATE);
+        var outPutPath = String.format(DefaultTemplate.TAG_OUTPUT_FORMAT, Paths.outputPath(), this.name);
         return URL.createHTMLURL(context, outPutPath).add("tag", this);
     }
 }
