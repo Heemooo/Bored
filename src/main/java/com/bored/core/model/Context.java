@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 当前页面的上下文对象
@@ -32,6 +33,10 @@ public class Context {
      * 时间
      */
     private Date date;
+    /**
+     * 模板
+     */
+    private String template;
 
     public Context(String url) {
         this.url = url;
@@ -52,10 +57,18 @@ public class Context {
         this.date = date;
     }
 
+    public Context(String title, String url, Date date, String template) {
+        this.title = title;
+        this.url = url;
+        this.date = date;
+        this.template = template;
+    }
+
     public String template() {
-        if (StrUtil.isBlank(this.getType())) {
-            return this.getLayout() + ".html";
+        if (Objects.isNull(this.template)) {
+            this.template = StrUtil.isBlank(this.getType()) ? this.getLayout() :
+                    this.getType() + "/" + this.getLayout();
         }
-        return this.getType() + "/" + this.getLayout() + ".html";
+        return this.template;
     }
 }

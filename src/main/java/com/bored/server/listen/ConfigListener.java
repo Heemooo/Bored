@@ -1,4 +1,4 @@
-package com.bored.core.listen;
+package com.bored.server.listen;
 
 import cn.hutool.core.lang.Console;
 import com.bored.Bored;
@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 
 import java.io.File;
-import java.util.Objects;
 
 /**
  * page改变监听

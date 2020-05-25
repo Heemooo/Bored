@@ -5,8 +5,10 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
+import com.bored.core.ContentType;
 import com.bored.core.MDFile;
 import com.bored.core.URL;
+import com.bored.core.constant.DefaultTemplate;
 import com.bored.core.model.Category;
 import com.bored.core.model.Context;
 import com.bored.core.model.Page;
@@ -47,15 +49,17 @@ public class Loader {
         }
 
         private static String contentType(String fileName, String filePath) {
+            assert fileName != null;
+            assert filePath != null;
             if (StrUtil.endWith(fileName, ".css")) {
-                return "text/css; charset=utf-8";
+                return ContentType.CSS;
             }
             if (StrUtil.endWith(fileName, ".js")) {
-                return "application/javascript; charset=utf-8";
+                return ContentType.JS;
             }
             String contentType = FileUtil.getMimeType(filePath);
             if (StrUtil.isEmpty(contentType)) {
-                return "application/octet-stream";
+                return ContentType.OTHER;
             }
             return contentType;
         }
@@ -127,7 +131,7 @@ public class Loader {
                 Bored.url(url);
             });
             var uri = "/categories" + Bored.config().getURLSuffix();
-            var context = new Context("分类列表", uri, "base", "categoryies", new Date());
+            var context = new Context("分类列表", uri, "base", Bored.DEFAULT_TEMPLATE.getStr("categories"), new Date());
             var outPutPath = Paths.outputPath() + "/categories.html";
             var url = URL.createHTMLURL(context, outPutPath).add("categories", categories);
             Bored.url(url);
@@ -139,8 +143,8 @@ public class Loader {
     private static class ArchiveLoader {
         private ListLoader archive() {
             var uri = "/archive/posts" + Bored.config().getURLSuffix();
-            var context = new Context("归档:Posts", uri, "post", "archive", new Date());
-            var outPutPath = Paths.outputPath() + "/archive/posts.html";
+            var context = new Context("归档:Posts", uri, "base", "archive", new Date());
+            var outPutPath = Paths.outputPath() + "/archive.html";
             var url = URL.createHTMLURL(context, outPutPath).add("pages", Bored.pages());
             Bored.url(url);
             return new ListLoader();
@@ -195,7 +199,7 @@ public class Loader {
         private void _404() {
             var uri = "/404" + Bored.config().getURLSuffix();
             var outPutPath = Paths.outputPath() + "/404.html";
-            var context = new Context("404 Not Found", uri, "404", new Date());
+            var context = new Context("404 Not Found", uri, new Date(), DefaultTemplate._404_TEMPLATE);
             if (Bored.jetTemplateHelper().checkTemplate(context.template())) {
                 var url = URL.createHTMLURL(context, outPutPath);
                 Bored.url(url);

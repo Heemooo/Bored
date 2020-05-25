@@ -179,6 +179,7 @@ public final class Bored {
      * @return 关联后的文章列表
      */
     private static List<Page> pageRelevance(List<Page> pages) {
+        assert pages != null;
         for (int i = 0, len = pages.size(); i < len; i++) {
             if (i < (len - 1)) pages.get(i).setNext(pages.get(i + 1));
             if (i > 0) pages.get(i).setPrev(pages.get(i - 1));

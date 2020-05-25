@@ -11,6 +11,7 @@ import java.util.List;
 
 public class PaginationUtil {
     public static List<Pagination> loadPagination(List<Page> pages, String type) {
+        if (null == pages) throw new NullPointerException();
         var paginations = new ArrayList<Pagination>();
         var pageSize = Bored.config().getPageSize();
         int pageCount = getPageCount(pages, pageSize);
@@ -40,7 +41,7 @@ public class PaginationUtil {
     }
 
     private static String getPaginationUrl(String type, int pageSize) {
-        if(StrUtil.isBlank(type)) return "/page/" + pageSize + Bored.config().getURLSuffix();
+        if (StrUtil.isBlank(type)) return "/page/" + pageSize + Bored.config().getURLSuffix();
         return "/" + type + "/page/" + pageSize + Bored.config().getURLSuffix();
     }
 

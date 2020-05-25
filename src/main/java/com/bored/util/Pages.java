@@ -24,6 +24,7 @@ public final class Pages {
      * @return 文章列表
      */
     public static List<Page> sortByDate(List<Page> pages) {
+        if (null == pages) throw new NullPointerException();
         return pages.stream().sorted(Comparator.comparing(Page::getDate).reversed()).collect(Collectors.toList());
     }
 
@@ -33,6 +34,7 @@ public final class Pages {
      * @return 文章列表
      */
     public static List<Page> top(List<Page> pages, int number) {
+        if (null == pages) throw new NullPointerException();
         if (pages.size() <= number) return pages;
         return pages.subList(0, number);
     }
@@ -44,7 +46,7 @@ public final class Pages {
      */
     public static TreeMap<String, List<Page>> groupByDate(List<Page> pages, String type) {
         var dateFormat = "yyyy";
-        if (type.trim().equals("month")) {
+        if ("month".equals(type.trim())) {
             dateFormat = "yyyy-MM";
         }
         String finalDateFormat = dateFormat;
@@ -60,6 +62,7 @@ public final class Pages {
      * @return url对象
      */
     public static URL toURL(Page page) {
+        if (null == page) throw new NullPointerException();
         var context = new Context(page.getTitle(), page.getPermLink(), page.getType(), page.getLayout(), page.getDate());
         return URL.createHTMLURL(context, page.getOutPutPath()).add("page", page);
     }
