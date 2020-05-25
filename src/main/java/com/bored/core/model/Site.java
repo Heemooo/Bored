@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
+import com.bored.core.Variable;
 import com.bored.util.Paths;
 import com.moandjiezana.toml.Toml;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Data
 @Slf4j
-public class Site {
+public class Site implements Variable {
 
     private String title;
 
@@ -47,7 +48,7 @@ public class Site {
             site = Site.load();
         } catch (Exception e) {
             log.error("There's a mistake:{}.", Paths.configPath());
-            log.error("Case of error:{}.",e.getCause().getMessage());
+            log.error("Case of error:{}.", e.getCause().getMessage());
             System.exit(0);
         }
         return site;

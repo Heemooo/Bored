@@ -2,6 +2,7 @@ package com.bored;
 
 import cn.hutool.setting.dialect.Props;
 import com.bored.core.URL;
+import com.bored.core.Variable;
 import com.bored.core.command.Command;
 import com.bored.core.model.Category;
 import com.bored.core.model.Page;
@@ -84,7 +85,7 @@ public final class Bored {
     public static void config(Site config) {
         Bored.of().config = config;
         jetTemplateHelper(new JetTemplateHelper(Paths.layoutPath(config.getTheme())));
-        globalVariable(Site.class, "site", config);
+        globalVariable("site", config);
     }
 
     /**
@@ -113,12 +114,11 @@ public final class Bored {
 
     /**
      * 设置全局变量
-     * @param clazz  变量类型
-     * @param name   变量名
-     * @param object 变量实例
+     * @param name     变量名
+     * @param variable 变量实例
      */
-    public static void globalVariable(Class<?> clazz, String name, Object object) {
-        Bored.of().jetTemplateHelper.getEngine().getGlobalContext().set(clazz, name, object);
+    public static void globalVariable(String name, Variable variable) {
+        Bored.of().jetTemplateHelper.globalVariable(name, variable);
     }
 
     /**
