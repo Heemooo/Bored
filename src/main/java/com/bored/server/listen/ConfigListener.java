@@ -2,7 +2,6 @@ package com.bored.server.listen;
 
 import cn.hutool.core.lang.Console;
 import com.bored.Bored;
-import com.bored.core.model.Site;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 
@@ -16,8 +15,7 @@ public class ConfigListener extends FileAlterationListenerAdaptor {
     @Override
     public void onFileChange(File file) {
         Console.log("{} is changed", file.getPath());
-        Site site = Site.instance();
-        Bored.config(site);
+        Bored.loadingConfig();
         Console.log("{} is reload", file.getPath());
     }
 }

@@ -4,15 +4,22 @@ import cn.hutool.setting.dialect.Props;
 import com.bored.core.URL;
 import com.bored.core.Variable;
 import com.bored.core.command.Command;
+import com.bored.core.loader.Loader;
 import com.bored.core.model.Category;
 import com.bored.core.model.Page;
 import com.bored.core.model.Site;
 import com.bored.core.model.Tag;
 import com.bored.core.template.JetTemplateHelper;
+import com.bored.server.listen.ConfigFilter;
+import com.bored.server.listen.ConfigListener;
 import com.bored.util.Pages;
 import com.bored.util.Paths;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.monitor.FileAlterationMonitor;
+import org.apache.commons.io.monitor.FileAlterationObserver;
 
+import java.io.FileFilter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -75,13 +82,37 @@ public final class Bored {
     }
 
     /**
-     * 加载网站配置
-     * @param config 配置
+     * 加载配置
      */
-    public static void config(Site config) {
+    public static void loadingConfig() {
+        var config = Site.instance();
         Bored.of().config = config;
         jetTemplateHelper(new JetTemplateHelper(Paths.layoutPath(config.getTheme())));
         globalVariable(Site.class, "site", config);
+    }
+
+    /**
+     * 加载文件
+     */
+    public static void loadingFiles() {
+        Loader.start();
+    }
+
+    /**
+     * 开始监听配置文件
+     */
+    public static void listingConfig() {
+        // 每隔1000毫秒扫描一次
+        FileAlterationMonitor monitor = new FileAlterationMonitor(1000L);
+        FileFilter filter = FileFilterUtils.and(new ConfigFilter());
+        FileAlterationObserver observer = new FileAlterationObserver(Bored.ROOT, filter);
+        observer.addListener(new ConfigListener());
+        monitor.addObserver(observer);
+        try {
+            monitor.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -243,7 +274,7 @@ public final class Bored {
                 try {
                     c.execute(argList);
                 } catch (IllegalArgumentException iae) {
-                    return; // already handled by command
+                    return;
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }

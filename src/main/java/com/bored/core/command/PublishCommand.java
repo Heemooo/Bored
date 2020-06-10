@@ -46,8 +46,10 @@ public class PublishCommand extends Command {
     public void execute(Deque<String> options) {
         ensureMaxArgumentCount(options, 0);
         ensureMinArgumentCount(options, 0);
-        Bored.config(Site.instance());
-        Loader.start();
+
+        Bored.loadingConfig();
+        Bored.loadingFiles();
+
         FileUtil.del(Paths.outputPath());
         Bored.urls().parallelStream().forEach(URL::out);
         JSONArray json = new JSONArray();

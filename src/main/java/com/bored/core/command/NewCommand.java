@@ -102,7 +102,7 @@ public class NewCommand extends Command {
     }
 
     private void page(String name) {
-        Bored.config(Site.instance());
+        Bored.loadingConfig();
         if (name.contains(".md") == Boolean.FALSE) {
             name = name + ".md";
         }

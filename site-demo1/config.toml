@@ -4,37 +4,6 @@
 baseURL = "127.0.0.1"
 title = "管他谁谁谁"
 theme= "test"                    #默认使用default
-#enableHtmlSuffix = false     #关闭html后缀，默认开启
-pageSize = 5
-# site your menus             # 配置目录，根据权重排序
-[[menus.main]]            
-  name = "首页"
-  weight = 10
-  id = "home"
-  url = "/"
-[[menus.main]]
-  name = "归档"
-  weight = 20
-  id = "archives/posts"
-  url = "/archive/posts.html"
-[[menus.main]]
-  name = "分类"
-  weight = 20
-  id = "categories"
-  url = "/categories.html"
-[[menus.main]]
-  name = "标签"
-  weight = 30
-  id = "tags"
-  url = "/tags.html"
-[[menus.main]]
-  name = "关于"
-  weight = 40
-  id = "about"
-  url = "/about.html"
-
-  
 [params]                      #额外配置
-  dateFormatToUse = "2006-01-02"
   subTitle = "逍遥天地外、不在五行中"
   author = "管他谁谁谁"
