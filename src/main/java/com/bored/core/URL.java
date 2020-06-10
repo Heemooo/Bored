@@ -7,7 +7,6 @@ import com.bored.core.model.Context;
 import com.bored.util.Paths;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +57,8 @@ public class URL {
 
     public String content() {
         this.ctx.put("ctx", this.context());
-        return Bored.jetTemplateHelper().parse(this.context().template(), this.ctx);
+        var template = this.context().template() + ".html";
+        return Bored.jetTemplateHelper().parse(template, this.ctx);
     }
 
     public void out() {

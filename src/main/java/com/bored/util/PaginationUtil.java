@@ -21,14 +21,17 @@ public class PaginationUtil {
             pagina.setCurrent(i);
             pagina.setPageCount(pageCount);
             pagina.setData(startPage(pages, i, pageSize));
-            if (i == 1) {
+            if (1 == i && 1 != pageCount) {
                 pagina.setHasPrev(false);
                 pagina.setHasNext(true);
                 pagina.setNext(getPaginationUrl(type, i + 1));
-            } else if (i == pageCount) {
+            } else if (i == pageCount && 1 != pageCount) {
                 pagina.setHasPrev(true);
                 pagina.setHasNext(false);
                 pagina.setPrev(getPaginationUrl(type, i - 1));
+            } else if (1 == pageCount) {
+                pagina.setHasPrev(false);
+                pagina.setHasNext(false);
             } else {
                 pagina.setHasPrev(true);
                 pagina.setHasNext(true);

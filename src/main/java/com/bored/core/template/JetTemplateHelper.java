@@ -13,40 +13,38 @@ import java.io.StringWriter;
 import java.util.Map;
 
 @Slf4j
-public class JetTemplateHelper {
+public final class JetTemplateHelper {
 
     private final JetEngine engine;
 
     public JetTemplateHelper(String loadRootPath) {
         assert FileUtil.exist(loadRootPath);
         log.debug("Layout load root path {}", loadRootPath);
-        Props props = new Props("jetx.properties");
+        var props = new Props("jetx.properties");
         props.setProperty("$loader.root", loadRootPath);
         engine = JetEngine.create(props);
     }
 
-    public void globalVariable(Class<?> clazz,String name, Variable variable) {
+    public void globalVariable(Class<?> clazz, String name, Variable variable) {
         this.engine.getGlobalContext().set(clazz, name, variable);
     }
 
-    public boolean checkTemplate(String templateName) {
-        templateName += ".html";
+    public boolean checkTemplate(final String templateName) {
         return this.engine.checkTemplate(templateName);
     }
 
-    public String parse(String templateName, Map<String, Object> context) {
-        boolean templateExisted = checkTemplate(templateName);
-        templateName += ".html";
-        log.debug("Load template {}",templateName);
+    public String parse(final String templateName, Map<String, Object> context) {
+        final boolean templateExisted = checkTemplate(templateName);
+        log.debug("Load template {}", templateName);
         if (templateExisted) {
-            var template = engine.getTemplate(templateName);
+            final var template = engine.getTemplate(templateName);
             return templateToString(template, context);
         }
         log.error("{} template is not found", templateName);
         return StrUtil.EMPTY;
     }
 
-    public String parseSource(String source, Map<String, Object> context) {
+    public String parseSource(final String source, Map<String, Object> context) {
         if (StrUtil.isNotBlank(source)) {
             var engine = JetEngine.create();
             var template = engine.createTemplate(source);

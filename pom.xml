@@ -52,16 +52,6 @@
             <artifactId>flexmark-ext-tables</artifactId>
             <version>0.34.48</version>
         </dependency>
-<!--        <dependency>
-            <groupId>com.youbenzi</groupId>
-            <artifactId>MDTool</artifactId>
-            <version>1.2.4</version>
-        </dependency>-->
-<!--        <dependency>
-            <groupId>com.atlassian.commonmark</groupId>
-            <artifactId>commonmark</artifactId>
-            <version>0.14.0</version>
-        </dependency>-->
         <dependency>
             <groupId>com.github.subchen</groupId>
             <artifactId>jetbrick-template</artifactId>
