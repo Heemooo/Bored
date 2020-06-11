@@ -13,8 +13,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class TagLoader {
-     CategoryLoader tags() {
+enum TagLoader implements Loader {
+    /**
+     * 唯一的实例
+     */
+    INSTANCE;
+
+    @Override
+    public void loading() {
         List<Tag> tagList = new ArrayList<>();
         Bored.pages().parallelStream().forEach(page -> Optional.of(page.getTags()).ifPresent(strings -> strings.parallelStream().forEach(tagName -> {
             var uri = "/tag/" + tagName + Bored.config().getURLSuffix();
@@ -37,6 +43,5 @@ public class TagLoader {
         var url = URL.createHTMLURL(context, outPutPath).add("tags", tags);
         Bored.url(url);
         Bored.tags().addAll(tags);
-        return new CategoryLoader();
     }
 }

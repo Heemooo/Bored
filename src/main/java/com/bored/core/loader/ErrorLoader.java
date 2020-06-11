@@ -9,9 +9,14 @@ import com.bored.util.Paths;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-public final class _404Loader {
+enum ErrorLoader implements Loader {
+    /**
+     * 唯一的实例
+     */
+    INSTANCE;
 
-    void _404() {
+    @Override
+    public void loading() {
         var uri = "/404" + Bored.config().getURLSuffix();
         var outPutPath = Paths.outputPath() + "/404.html";
         var context = new Context("404 Not Found", uri, new Date(), DefaultTemplate._404_TEMPLATE);

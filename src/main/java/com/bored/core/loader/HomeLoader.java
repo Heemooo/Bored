@@ -12,8 +12,14 @@ import com.bored.util.Paths;
 import java.util.Date;
 import java.util.List;
 
-public class HomeLoader {
-    public _404Loader home() {
+enum HomeLoader implements Loader {
+    /**
+     * 唯一的实例
+     */
+    INSTANCE;
+
+    @Override
+    public void loading() {
         List<Page> pages = Bored.pages();
         var paginationList = PaginationUtil.loadPagination(pages, null);
         paginationList.forEach(pagination -> {
@@ -31,6 +37,5 @@ public class HomeLoader {
                 .add("pages", pages)
                 .add("pagination", CollUtil.isNotEmpty(paginationList) ? paginationList.get(0) : List.of());
         Bored.url(indexUrl);
-        return new _404Loader();
     }
 }

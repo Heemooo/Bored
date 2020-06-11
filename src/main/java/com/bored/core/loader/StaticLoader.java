@@ -11,20 +11,12 @@ import com.bored.util.Paths;
 
 import java.io.File;
 
-public class StaticLoader {
+enum StaticLoader implements Loader {
 
-    PageLoader statics() {
-        var themeName = Bored.config().getTheme();
-        var files = FileUtil.loopFiles(Paths.staticPath(themeName));
-        for (File file : files) {
-            var uri = Paths.toUrl(StrUtil.removePrefix(file.getPath(), Paths.themePath(Bored.config().getTheme())));
-            var fullFilePath = Paths.outputPath() + uri;
-            var bytes = new FileReader(file.getPath()).readBytes();
-            var url = URL.createStaticURL(new Context(uri), contentType(file.getName(), file.getPath()), fullFilePath, bytes);
-            Bored.url(url);
-        }
-        return new PageLoader();
-    }
+    /**
+     * 唯一的实例
+     */
+    INSTANCE;
 
     private static String contentType(String fileName, String filePath) {
         assert fileName != null;
@@ -40,5 +32,18 @@ public class StaticLoader {
             return ContentType.OTHER;
         }
         return contentType;
+    }
+
+    @Override
+    public void loading() {
+        var themeName = Bored.config().getTheme();
+        var files = FileUtil.loopFiles(Paths.staticPath(themeName));
+        for (File file : files) {
+            var uri = Paths.toUrl(StrUtil.removePrefix(file.getPath(), Paths.themePath(Bored.config().getTheme())));
+            var fullFilePath = Paths.outputPath() + uri;
+            var bytes = new FileReader(file.getPath()).readBytes();
+            var url = URL.createStaticURL(new Context(uri), contentType(file.getName(), file.getPath()), fullFilePath, bytes);
+            Bored.url(url);
+        }
     }
 }

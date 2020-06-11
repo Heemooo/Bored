@@ -6,11 +6,29 @@ import com.bored.Bored;
 import com.bored.core.MDFile;
 import com.bored.util.Pages;
 import com.bored.util.Paths;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.util.List;
 
-public class PageLoader {
-    TagLoader pages() {
+@Slf4j
+public class Loaders {
+
+    private static final List<Loader> loaders = List.of(
+            ErrorLoader.INSTANCE,
+            StaticLoader.INSTANCE,
+            TagLoader.INSTANCE,
+            CategoryLoader.INSTANCE,
+            ArchiveLoader.INSTANCE,
+            ListLoader.INSTANCE,
+            HomeLoader.INSTANCE
+    );
+
+    private Loaders() {
+
+    }
+
+    public static void loading() {
         var files = FileUtil.loopFiles(Paths.pagePath());
         for (File file : files) {
             var mdFile = MDFile.load(file);
@@ -24,6 +42,6 @@ public class PageLoader {
             }
         }
         Bored.pages().forEach(page -> Bored.url(Pages.toURL(page)));
-        return new TagLoader();
+        loaders.forEach(Loader::loading);
     }
 }

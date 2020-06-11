@@ -11,11 +11,11 @@ import com.bored.util.Paths;
 import java.util.Date;
 import java.util.List;
 
-public class ListLoader {
-     HomeLoader list() {
-        Bored.pageMaps().forEach(ListLoader::loadList);
-        return new HomeLoader();
-    }
+enum ListLoader implements Loader {
+    /**
+     * 唯一的实例
+     */
+    INSTANCE;
 
     private static void loadList(String type, List<Page> pageList) {
         List<Page> pages = Pages.sortByDate(pageList);
@@ -28,5 +28,10 @@ public class ListLoader {
                     .add("pagination", pagination);
             Bored.url(url);
         });
+    }
+
+    @Override
+    public void loading() {
+        Bored.pageMaps().forEach(ListLoader::loadList);
     }
 }

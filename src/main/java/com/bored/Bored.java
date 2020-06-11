@@ -4,7 +4,7 @@ import cn.hutool.setting.dialect.Props;
 import com.bored.core.URL;
 import com.bored.core.Variable;
 import com.bored.core.command.Command;
-import com.bored.core.loader.Loader;
+import com.bored.core.loader.Loaders;
 import com.bored.core.model.Category;
 import com.bored.core.model.Page;
 import com.bored.core.model.Site;
@@ -28,7 +28,12 @@ import java.util.stream.Collectors;
  * @since 2020/3/27
  */
 @Slf4j
-public final class Bored {
+public enum Bored {
+
+    /**
+     * 唯一实例
+     */
+    INSTANCE;
 
     /**
      * 常量配置
@@ -65,28 +70,12 @@ public final class Bored {
      */
     private final Map<String, URL> URL_MAP = new HashMap<>();
 
-
-    private Bored() {
-    }
-
-    private static class BoredHolder {
-        private static final Bored INSTANCE = new Bored();
-    }
-
-    /**
-     * 获取Bored实例
-     * @return Bored 实例(单例)
-     */
-    private static Bored of() {
-        return BoredHolder.INSTANCE;
-    }
-
     /**
      * 加载配置
      */
     public static void loadingConfig() {
         var config = Site.instance();
-        Bored.of().config = config;
+        Bored.INSTANCE.config = config;
         jetTemplateHelper(new JetTemplateHelper(Paths.layoutPath(config.getTheme())));
         globalVariable(Site.class, "site", config);
     }
@@ -95,7 +84,7 @@ public final class Bored {
      * 加载文件
      */
     public static void loadingFiles() {
-        Loader.start();
+        Loaders.loading();
     }
 
     /**
@@ -120,7 +109,7 @@ public final class Bored {
      * @return 网站配置
      */
     public static Site config() {
-        return Bored.of().config;
+        return Bored.INSTANCE.config;
     }
 
     /**
@@ -128,7 +117,7 @@ public final class Bored {
      * @param helper 模板引擎帮助类
      */
     public static void jetTemplateHelper(JetTemplateHelper helper) {
-        Bored.of().jetTemplateHelper = helper;
+        Bored.INSTANCE.jetTemplateHelper = helper;
     }
 
     /**
@@ -136,7 +125,7 @@ public final class Bored {
      * @return jetTemplateHelper
      */
     public static JetTemplateHelper jetTemplateHelper() {
-        return Bored.of().jetTemplateHelper;
+        return Bored.INSTANCE.jetTemplateHelper;
     }
 
     /**
@@ -146,7 +135,7 @@ public final class Bored {
      * @param variable 变量实例
      */
     public static void globalVariable(Class<?> clazz, String name, Variable variable) {
-        Bored.of().jetTemplateHelper.globalVariable(clazz, name, variable);
+        Bored.INSTANCE.jetTemplateHelper.globalVariable(clazz, name, variable);
     }
 
     /**
@@ -154,7 +143,7 @@ public final class Bored {
      * @param tag 标签
      */
     public static void tag(Tag tag) {
-        Bored.of().TAG_LIST.add(tag);
+        Bored.INSTANCE.TAG_LIST.add(tag);
     }
 
     /**
@@ -162,7 +151,7 @@ public final class Bored {
      * @return 标签列表
      */
     public static List<Tag> tags() {
-        return Bored.of().TAG_LIST;
+        return Bored.INSTANCE.TAG_LIST;
     }
 
     /**
@@ -170,7 +159,7 @@ public final class Bored {
      * @param category 分类
      */
     public static void category(Category category) {
-        Bored.of().CATEGORY_LIST.add(category);
+        Bored.INSTANCE.CATEGORY_LIST.add(category);
     }
 
     /**
@@ -178,7 +167,7 @@ public final class Bored {
      * @return 分类列表
      */
     public static List<Category> categories() {
-        return Bored.of().CATEGORY_LIST;
+        return Bored.INSTANCE.CATEGORY_LIST;
     }
 
     /**
@@ -186,10 +175,10 @@ public final class Bored {
      * @param page 文章
      */
     public static void page(Page page) {
-        if (!Bored.of().PAGE_MAPS.containsKey(page.getType())) {
-            Bored.of().PAGE_MAPS.put(page.getType(), new ArrayList<>());
+        if (!Bored.INSTANCE.PAGE_MAPS.containsKey(page.getType())) {
+            Bored.INSTANCE.PAGE_MAPS.put(page.getType(), new ArrayList<>());
         }
-        Bored.of().PAGE_MAPS.get(page.getType()).add(page);
+        Bored.INSTANCE.PAGE_MAPS.get(page.getType()).add(page);
     }
 
     /**
@@ -198,7 +187,7 @@ public final class Bored {
      * @return 文章列表
      */
     public static List<Page> pages(String type) {
-        return pageRelevance(Pages.sortByDate(Bored.of().PAGE_MAPS.get(type)));
+        return pageRelevance(Pages.sortByDate(Bored.INSTANCE.PAGE_MAPS.get(type)));
     }
 
     /**
@@ -220,7 +209,7 @@ public final class Bored {
      * @return 文章列表
      */
     public static List<Page> pages() {
-        List<Page> pages = Bored.of().PAGE_MAPS.values().stream().reduce(new ArrayList<>(), (t1, t2) -> {
+        List<Page> pages = Bored.INSTANCE.PAGE_MAPS.values().stream().reduce(new ArrayList<>(), (t1, t2) -> {
             t1.addAll(t2);
             return t1;
         }).stream().sorted(Comparator.comparing(Page::getDate).reversed()).collect(Collectors.toList());
@@ -232,7 +221,7 @@ public final class Bored {
      * @return 文章合集
      */
     public static Map<String, List<Page>> pageMaps() {
-        return Bored.of().PAGE_MAPS;
+        return Bored.INSTANCE.PAGE_MAPS;
     }
 
     /**
@@ -241,7 +230,7 @@ public final class Bored {
      */
     public static void url(URL url) {
         log.debug("Mapping url {}", url.context().getUrl());
-        Bored.of().URL_MAP.put(url.context().getUrl(), url);
+        Bored.INSTANCE.URL_MAP.put(url.context().getUrl(), url);
     }
 
     /**
@@ -250,8 +239,8 @@ public final class Bored {
      * @return URL实例
      */
     public static Optional<URL> url(String uri) {
-        var _404 = Bored.of().URL_MAP.get("/404" + Bored.config().getURLSuffix());
-        return Optional.of(Bored.of().URL_MAP.getOrDefault(uri, _404));
+        var _404 = Bored.INSTANCE.URL_MAP.get("/404" + Bored.config().getURLSuffix());
+        return Optional.of(Bored.INSTANCE.URL_MAP.getOrDefault(uri, _404));
     }
 
     /**
@@ -259,7 +248,7 @@ public final class Bored {
      * @return url列表
      */
     public static List<URL> urls() {
-        return new ArrayList<>(Bored.of().URL_MAP.values());
+        return new ArrayList<>(Bored.INSTANCE.URL_MAP.values());
     }
 
     public static void main(String[] commands) {

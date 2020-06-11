@@ -13,8 +13,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CategoryLoader {
-     ArchiveLoader categories() {
+enum CategoryLoader implements Loader {
+    /**
+     * 唯一的实例
+     */
+    INSTANCE;
+
+    @Override
+    public void loading() {
         List<Category> categoryList = new ArrayList<>();
         Bored.pages().parallelStream().forEach(page -> Optional.of(page.getCategories()).ifPresent(strings -> strings.parallelStream().forEach(categoryName -> {
             var uri = "/category/" + categoryName + Bored.config().getURLSuffix();
@@ -37,6 +43,5 @@ public class CategoryLoader {
         var url = URL.createHTMLURL(context, outPutPath).add("categories", categories);
         Bored.url(url);
         Bored.categories().addAll(categories);
-        return new ArchiveLoader();
     }
 }
