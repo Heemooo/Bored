@@ -1,0 +1,2 @@
+#短模板定义
+template="${type}/${layout}.html"

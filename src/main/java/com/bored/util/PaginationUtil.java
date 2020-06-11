@@ -9,7 +9,10 @@ import jetbrick.util.annotation.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaginationUtil {
+public final class PaginationUtil {
+
+    private PaginationUtil(){}
+
     public static List<Pagination> loadPagination(List<Page> pages, String type) {
         if (null == pages) throw new NullPointerException();
         var paginations = new ArrayList<Pagination>();

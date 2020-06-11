@@ -1,6 +1,6 @@
 package com.bored.core.model;
 
-import com.bored.core.URL;
+import com.bored.core.ContentType;
 import com.bored.core.constant.DefaultTemplate;
 import com.bored.util.Paths;
 import lombok.Data;
@@ -29,10 +29,17 @@ public class Tag {
         this.url = url;
     }
 
-    public URL toURL() {
+    public Context toContext() {
         var title = "标签-" + this.name;
-        var context = new Context(title, this.getUrl(), new Date(), DefaultTemplate.TAG_TEMPLATE);
         var outPutPath = String.format(DefaultTemplate.TAG_OUTPUT_FORMAT, Paths.outputPath(), this.name);
-        return URL.createHTMLURL(context, outPutPath).add("tag", this);
+        return Context.builder()
+                .title(title)
+                .url(this.getUrl())
+                .date(new Date())
+                .type("base")
+                .layout("tag.html")
+                .outPutPath(outPutPath)
+                .contentType(ContentType.TEXT_HTML)
+                .build().addObject("tag", this);
     }
 }

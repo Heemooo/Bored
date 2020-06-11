@@ -2,7 +2,6 @@ package com.bored.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
-import com.bored.core.URL;
 import com.bored.core.model.Context;
 import com.bored.core.model.Page;
 
@@ -61,10 +60,17 @@ public final class Pages {
      * @param page page对象
      * @return url对象
      */
-    public static URL toURL(Page page) {
-        if (null == page) throw new NullPointerException();
-        var context = new Context(page.getTitle(), page.getPermLink(), page.getDate(), page.getTemplate());
-        return URL.createHTMLURL(context, page.getOutPutPath()).add("page", page);
+    public static Context toContext(Page page) {
+        assert page != null;
+        return Context.builder()
+                .title(page.getTitle())
+                .url(page.getPermLink())
+                .date(page.getDate())
+                .type(page.getType())
+                .layout(page.getLayout())
+                .outPutPath(page.getOutPutPath())
+                .build()
+                .addObject("page", page);
     }
 
 }

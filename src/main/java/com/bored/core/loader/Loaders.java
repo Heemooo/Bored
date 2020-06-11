@@ -35,13 +35,13 @@ public class Loaders {
             var page = mdFile.toPage();
             /*不加载根目录下的md文件到list列表中*/
             if (StrUtil.count(page.getPermLink(), "/") == 1) {
-                var url = Pages.toURL(page);
+                var url = Pages.toContext(page);
                 Bored.url(url);
             } else {
                 Bored.page(page);
             }
         }
-        Bored.pages().forEach(page -> Bored.url(Pages.toURL(page)));
+        Bored.pages().forEach(page -> Bored.url(Pages.toContext(page)));
         loaders.forEach(Loader::loading);
     }
 }

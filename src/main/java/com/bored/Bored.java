@@ -1,19 +1,18 @@
 package com.bored;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.dialect.Props;
-import com.bored.core.URL;
 import com.bored.core.Variable;
 import com.bored.core.command.Command;
 import com.bored.core.loader.Loaders;
-import com.bored.core.model.Category;
-import com.bored.core.model.Page;
-import com.bored.core.model.Site;
-import com.bored.core.model.Tag;
+import com.bored.core.model.*;
 import com.bored.core.template.JetTemplateHelper;
 import com.bored.server.listen.ConfigFilter;
 import com.bored.server.listen.ConfigListener;
 import com.bored.util.Pages;
 import com.bored.util.Paths;
+import com.moandjiezana.toml.Toml;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
@@ -35,10 +34,13 @@ public enum Bored {
      */
     INSTANCE;
 
+    public static final Map<String, Object> SHORT_TPL = new HashMap<>();
+
     /**
      * 常量配置
      */
     public final static Props CONSTANT = new Props("constant.properties");
+
     /**
      * 根路径
      * System.getProperty("user.dir")
@@ -68,7 +70,17 @@ public enum Bored {
     /**
      * url map
      */
-    private final Map<String, URL> URL_MAP = new HashMap<>();
+    private final Map<String, Context> URL_MAP = new HashMap<>();
+
+    public static Object shortTpl(String key) {
+        if (SHORT_TPL.isEmpty()) {
+            var toml = new Toml();
+            var file = FileUtil.file("short.template.toml");
+            toml.read(file);
+            SHORT_TPL.putAll(toml.toMap());
+        }
+        return SHORT_TPL.getOrDefault(key, StrUtil.EMPTY);
+    }
 
     /**
      * 加载配置
@@ -226,11 +238,11 @@ public enum Bored {
 
     /**
      * 添加url到url容器
-     * @param url url
+     * @param context context
      */
-    public static void url(URL url) {
-        log.debug("Mapping url {}", url.context().getUrl());
-        Bored.INSTANCE.URL_MAP.put(url.context().getUrl(), url);
+    public static void url(Context context) {
+        log.debug("Mapping url {}", context.getUrl());
+        Bored.INSTANCE.URL_MAP.put(context.getUrl(), context);
     }
 
     /**
@@ -238,7 +250,7 @@ public enum Bored {
      * @param uri uri
      * @return URL实例
      */
-    public static Optional<URL> url(String uri) {
+    public static Optional<Context> url(String uri) {
         var _404 = Bored.INSTANCE.URL_MAP.get("/404" + Bored.config().getURLSuffix());
         return Optional.of(Bored.INSTANCE.URL_MAP.getOrDefault(uri, _404));
     }
@@ -247,7 +259,7 @@ public enum Bored {
      * 获取url列表
      * @return url列表
      */
-    public static List<URL> urls() {
+    public static List<Context> urls() {
         return new ArrayList<>(Bored.INSTANCE.URL_MAP.values());
     }
 

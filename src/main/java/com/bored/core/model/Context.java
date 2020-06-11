@@ -1,67 +1,90 @@
 package com.bored.core.model;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.Data;
+import com.bored.Bored;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.util.Date;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 当前页面的上下文对象
- * ${ctx}
  */
-@Data
+@Getter
+@Builder
 public class Context {
-
     /**
      * 当前页面标题
      */
-    private String title;
+    private final String title;
     /**
      * 当前页面的url
      */
-    private String url;
+    private final String url;
     /**
      * 类型，如果前面没有指定，此值将自动派生自目录
      */
-    private String type;
+    private final String type;
     /**
      * 文章模板
      */
-    private String layout;
+    private final String layout;
     /**
      * 时间
      */
-    private Date date;
+    private final Date date;
     /**
-     * 模板
+     * 输出路径
      */
-    private String template;
+    private final String outPutPath;
+    /**
+     * contentType
+     */
+    private final String contentType;
+    /**
+     * 内容
+     */
+    private final byte[] bytes;
+    /**
+     * 上下文携带的参数
+     */
+    private final Map<String, Object> ctx = new HashMap<>();
 
-    public Context(String url) {
-        this.url = url;
+    public Context addObject(String key, Object object) {
+        assert key != null;
+        assert object != null;
+        this.ctx.put(key, object);
+        return this;
     }
 
-    public Context(String title, String url, String type, String layout, Date date) {
-        this.title = title;
-        this.url = url;
-        this.type = type;
-        this.layout = layout;
-        this.date = date;
+    public void out() {
+        assert this.outPutPath != null;
+        assert this.bytes != null;
+        FileUtil.writeBytes(this.bytes(), this.outPutPath);
     }
 
-    public Context(String title, String url, Date date, String template) {
-        this.title = title;
-        this.url = url;
-        this.date = date;
-        this.template = template;
-    }
-
-    public String template() {
-        if (Objects.isNull(this.template)) {
-            this.template = StrUtil.isBlank(this.getType()) ? this.getLayout() :
-                    this.getType() + "/" + this.getLayout();
+    public byte[] bytes() {
+        if (this.bytes != null && this.bytes.length != 0) {
+            return this.bytes;
         }
-        return this.template;
+
+        this.ctx.put("title", this.getTitle());
+        this.ctx.put("url", this.getUrl());
+
+        assert StrUtil.isNotBlank(this.getType());
+        this.ctx.put("type", this.getType());
+        this.ctx.put("layout", this.getLayout());
+
+        var template = StrUtil.isBlank(this.getType()) ? this.getLayout() :
+                this.getType() + "/" + this.getLayout();
+
+        assert StrUtil.isNotBlank(template);
+        var content = Bored.jetTemplateHelper().parse(template, this.ctx);
+        return content.getBytes(CharsetUtil.CHARSET_UTF_8);
     }
+
 }

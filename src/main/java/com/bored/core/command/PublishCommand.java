@@ -6,7 +6,7 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import com.bored.Bored;
-import com.bored.core.URL;
+import com.bored.core.model.Context;
 import com.bored.util.Paths;
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,7 +49,7 @@ public class PublishCommand extends Command {
         Bored.loadingFiles();
 
         FileUtil.del(Paths.outputPath());
-        Bored.urls().parallelStream().forEach(URL::out);
+        Bored.urls().parallelStream().forEach(Context::out);
         JSONArray json = new JSONArray();
         Bored.pages().forEach(page -> {
             var map = new JSONObject();

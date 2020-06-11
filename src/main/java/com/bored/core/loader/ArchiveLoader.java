@@ -1,8 +1,6 @@
 package com.bored.core.loader;
 
 import com.bored.Bored;
-import com.bored.core.URL;
-import com.bored.core.constant.DefaultTemplate;
 import com.bored.core.model.Context;
 import com.bored.util.Paths;
 
@@ -16,10 +14,15 @@ enum ArchiveLoader implements Loader {
 
     @Override
     public void loading() {
-        var uri = "/archives" + Bored.config().getURLSuffix();
-        var context = new Context("归档:Posts", uri, new Date(), DefaultTemplate.ARCHIVE_TEMPLATE);
+        var url = "/archives" + Bored.config().getURLSuffix();
         var outPutPath = Paths.outputPath() + "/archive.html";
-        var url = URL.createHTMLURL(context, outPutPath).add("pages", Bored.pages());
-        Bored.url(url);
+        var context = Context.builder().title("归档:Posts")
+                .url(url)
+                .date(new Date())
+                .type("base")
+                .layout("archive.html")
+                .outPutPath(outPutPath).build();
+        context.addObject("pages", Bored.pages());
+        Bored.url(context);
     }
 }

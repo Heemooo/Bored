@@ -28,7 +28,7 @@ public class FrontMatter {
     private String summary;
 
     @Info("")
-    private String template = "page";
+    private String layout = "page.html";
 
     @Info("")
     private List<String> tags = new ArrayList<>();

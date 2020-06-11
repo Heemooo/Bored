@@ -88,8 +88,8 @@ public final class MDFile {
         page.setOutPutPath(this.getOutPutPath());
         page.setType(parseType(this.getFile().getPath()));
         page.setPermLink(StrUtil.blankToDefault(this.getFrontMatter().getUrl(), permLink(this.getFile().getPath())));
-        if (StrUtil.isBlank(this.getFrontMatter().getTemplate())) {
-            page.setTemplate(page.getType() + "/page");
+        if (StrUtil.isBlank(this.getFrontMatter().getLayout())) {
+            page.setLayout("page.html");
         }
         if (Objects.isNull(page.getDate())) {
             page.setDate(DateUtil.date());

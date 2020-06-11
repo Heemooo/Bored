@@ -5,7 +5,6 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.core.ContentType;
-import com.bored.core.URL;
 import com.bored.core.model.Context;
 import com.bored.util.Paths;
 
@@ -39,11 +38,12 @@ enum StaticLoader implements Loader {
         var themeName = Bored.config().getTheme();
         var files = FileUtil.loopFiles(Paths.staticPath(themeName));
         for (File file : files) {
-            var uri = Paths.toUrl(StrUtil.removePrefix(file.getPath(), Paths.themePath(Bored.config().getTheme())));
-            var fullFilePath = Paths.outputPath() + uri;
+            var url = Paths.toUrl(StrUtil.removePrefix(file.getPath(), Paths.themePath(Bored.config().getTheme())));
+            var outPutPath = Paths.outputPath() + url;
             var bytes = new FileReader(file.getPath()).readBytes();
-            var url = URL.createStaticURL(new Context(uri), contentType(file.getName(), file.getPath()), fullFilePath, bytes);
-            Bored.url(url);
+            var contentType = contentType(file.getName(), file.getPath());
+            var context = Context.builder().url(url).contentType(contentType).outPutPath(outPutPath).bytes(bytes).build();
+            Bored.url(context);
         }
     }
 }
