@@ -13,6 +13,6 @@ import java.io.IOException;
 public class ErrorHandler extends AbstractHandler {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect("/error."+ Bored.config().getURLSuffix());
+        response.sendRedirect("/error"+ Bored.config().getURLSuffix());
     }
 }

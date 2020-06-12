@@ -4,7 +4,7 @@
 baseURL = "127.0.0.1"
 title = "管他谁谁谁"
 theme= "test"
-URLSuffix = "action"
+#uglyURLs = false
 [params]
   subTitle = "逍遥天地外、不在五行中"
   author = "管他谁谁谁"

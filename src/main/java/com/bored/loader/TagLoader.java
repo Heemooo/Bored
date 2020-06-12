@@ -1,10 +1,8 @@
 package com.bored.loader;
 
 import com.bored.Bored;
-import com.bored.constant.DefaultTemplate;
 import com.bored.context.DefaultContextFactory;
 import com.bored.model.bean.Tag;
-import com.bored.util.Paths;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,10 +39,9 @@ enum TagLoader implements Loader {
             var url = "/tags";
             var type = "base";
             var layout = "tags.html";
-            var outputPath = String.format(DefaultTemplate.TAGS_OUTPUT_FORMAT, Paths.outputPath());
             var title = "标签列表";
             var date = new Date();
-            var tagsContext = new DefaultContextFactory(url, type, layout, outputPath)
+            var tagsContext = new DefaultContextFactory(url, type, layout)
                     .create()
                     .addObject("title", title)
                     .addObject("date", date)

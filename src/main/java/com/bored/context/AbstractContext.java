@@ -1,6 +1,7 @@
 package com.bored.context;
 
 import cn.hutool.core.io.FileUtil;
+import com.bored.util.Paths;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,6 +36,11 @@ public abstract class AbstractContext implements Context {
      * 内容
      */
     private byte[] bytes;
+
+    public void setUrl(String url) {
+        this.url = url;
+        this.outputPath = Paths.outputPath(this.url);
+    }
 
     /**
      * 上下文携带的参数

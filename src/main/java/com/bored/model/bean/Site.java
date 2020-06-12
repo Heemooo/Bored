@@ -24,8 +24,8 @@ public class Site implements Variable {
     @Info("主题名称. 默认值是 'default'.")
     private String theme = "default";
 
-    @Info("customize url suffix")
-    private String URLSuffix = "";
+    @Info("ugly url . contain .html suffix")
+    private boolean uglyURLs;
 
     private int summaryLength = 200;
 
@@ -38,6 +38,10 @@ public class Site implements Variable {
     private Map<String, List<Menu>> menus;
 
     private Map<String, Object> params;
+
+    public String getURLSuffix() {
+        return uglyURLs ? ".html" : "";
+    }
 
     public static Site instance() {
         assertConfigExisted();

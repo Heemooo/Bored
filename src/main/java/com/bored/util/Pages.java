@@ -63,7 +63,7 @@ public final class Pages {
      */
     public static Context toContext(Page page) {
         assert page != null;
-        return new DefaultContextFactory(page.getPermLink(), page.getType(), page.getLayout(), page.getOutPutPath())
+        return new DefaultContextFactory(page.getPermLink(), page.getType(), page.getLayout())
                 .create()
                 .addObject("title", page.getTitle())
                 .addObject("date", page.getDate())

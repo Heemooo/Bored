@@ -59,6 +59,10 @@ public final class Paths {
         return convertCorrectPath(Bored.ROOT + "/public");
     }
 
+    public static String outputPath(String url) {
+        return convertCorrectPath(outputPath() + url + ".html");
+    }
+
     /**
      * 根据主题名称生成对应的主题路径
      * @param themeName 主题名
@@ -102,7 +106,7 @@ public final class Paths {
      * @return 是否符合
      */
     public static boolean checkUrl(String url) {
-        return StrUtil.endWith(url, "." + Bored.config().getURLSuffix());
+        return StrUtil.endWith(url, Bored.config().getURLSuffix());
     }
 
     /**
@@ -111,6 +115,6 @@ public final class Paths {
      * @return 真实 url
      */
     public static String getUrl(String url) {
-        return StrUtil.removeSuffix(url, "." + Bored.config().getURLSuffix());
+        return StrUtil.removeSuffix(url, Bored.config().getURLSuffix());
     }
 }

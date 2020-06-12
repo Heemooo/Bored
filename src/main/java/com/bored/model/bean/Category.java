@@ -1,9 +1,7 @@
 package com.bored.model.bean;
 
-import com.bored.constant.DefaultTemplate;
 import com.bored.context.Context;
 import com.bored.context.DefaultContextFactory;
-import com.bored.util.Paths;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -32,11 +30,10 @@ public class Category {
 
     public Context toContext() {
         var title = "分类-" + this.name;
-        var outPutPath = String.format(DefaultTemplate.CATEGORY_OUTPUT_FORMAT, Paths.outputPath(), this.name);
         var type = "base";
         var layout = "category";
         var date = new Date();
-        return new DefaultContextFactory(url, type, layout, outPutPath)
+        return new DefaultContextFactory(url, type, layout)
                 .create()
                 .addObject("title", title)
                 .addObject("date", date)

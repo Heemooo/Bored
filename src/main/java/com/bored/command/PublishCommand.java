@@ -2,9 +2,6 @@ package com.bored.command;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Console;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
 import com.bored.Bored;
 import com.bored.context.Context;
 import com.bored.util.Paths;
@@ -50,13 +47,5 @@ public class PublishCommand extends Command {
 
         FileUtil.del(Paths.outputPath());
         Bored.urls().parallelStream().forEach(Context::out);
-        JSONArray json = new JSONArray();
-        Bored.pages().forEach(page -> {
-            var map = new JSONObject();
-            map.put("permLink", page.getPermLink());
-            map.put("title", page.getTitle());
-            json.add(map);
-        });
-        FileUtil.writeBytes(json.toString().getBytes(CharsetUtil.CHARSET_UTF_8), Paths.outputPath() + "/pages.json");
     }
 }

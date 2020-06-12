@@ -1,10 +1,8 @@
 package com.bored.loader;
 
 import com.bored.Bored;
-import com.bored.constant.DefaultTemplate;
 import com.bored.context.DefaultContextFactory;
 import com.bored.model.bean.Category;
-import com.bored.util.Paths;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,10 +38,9 @@ enum CategoryLoader implements Loader {
             var url = "/categories";
             var type = "base";
             var layout = "categories.html";
-            var outputPath = String.format(DefaultTemplate.CATEGORIES_OUTPUT_FORMAT, Paths.outputPath());
             var title = "分类列表";
             var date = new Date();
-            var categoriesContext = new DefaultContextFactory(url, type, layout, outputPath)
+            var categoriesContext = new DefaultContextFactory(url, type, layout)
                     .create()
                     .addObject("title", title)
                     .addObject("date", date)

@@ -38,10 +38,9 @@ enum StaticLoader implements Loader {
         var files = FileUtil.loopFiles(Paths.staticPath(themeName));
         for (File file : files) {
             var url = Paths.toUrl(StrUtil.removePrefix(file.getPath(), Paths.themePath(Bored.config().getTheme())));
-            var outPutPath = Paths.outputPath() + url;
             var bytes = new FileReader(file.getPath()).readBytes();
             var contentType = contentType(file.getName(), file.getPath());
-            var context = new StaticContextFactory(url, contentType, bytes, outPutPath).create();
+            var context = new StaticContextFactory(url, contentType, bytes).create();
             Bored.url(context);
         }
     }

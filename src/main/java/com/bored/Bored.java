@@ -245,7 +245,7 @@ public enum Bored {
      * @param context context
      */
     public static void url(Context context) {
-        log.debug("Mapping url {}.{}", context.url(),config().getURLSuffix());
+        log.debug("Mapping url {}{}", context.url(),config().getURLSuffix());
         Bored.INSTANCE.URL_MAP.put(context.url(), context);
     }
 
