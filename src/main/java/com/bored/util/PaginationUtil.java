@@ -47,8 +47,8 @@ public final class PaginationUtil {
     }
 
     private static String getPaginationUrl(String type, int pageSize) {
-        if (StrUtil.isBlank(type)) return "/page/" + pageSize + Bored.config().getURLSuffix();
-        return "/" + type + "/page/" + pageSize + Bored.config().getURLSuffix();
+        if (StrUtil.isBlank(type)) return "/page/" + pageSize;
+        return "/" + type + "/page/" + pageSize;
     }
 
     /**

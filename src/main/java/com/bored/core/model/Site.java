@@ -3,7 +3,7 @@ package com.bored.core.model;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Console;
-import cn.hutool.core.util.StrUtil;
+import com.bored.core.Info;
 import com.bored.core.Variable;
 import com.bored.util.Paths;
 import com.moandjiezana.toml.Toml;
@@ -21,11 +21,13 @@ public class Site implements Variable {
 
     private String baseURL;
 
+    @Info("主题名称. 默认值是 'default'.")
     private String theme = "default";
 
-    private int summaryLength = 200;
+    @Info("customize url suffix")
+    private String URLSuffix = "";
 
-    private Boolean enableHtmlSuffix = true;
+    private int summaryLength = 200;
 
     private Boolean disableTags = false;
 
@@ -36,10 +38,6 @@ public class Site implements Variable {
     private Map<String, List<Menu>> menus;
 
     private Map<String, Object> params;
-
-    public String getURLSuffix() {
-        return enableHtmlSuffix ? ".html" : StrUtil.EMPTY;
-    }
 
     public static Site instance() {
         assertConfigExisted();

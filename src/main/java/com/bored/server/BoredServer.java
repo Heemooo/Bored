@@ -2,7 +2,7 @@ package com.bored.server;
 
 import cn.hutool.core.lang.Console;
 import com.bored.Bored;
-import com.bored.server.handler.NotFoundHandler;
+import com.bored.server.handler.ErrorHandler;
 import com.bored.server.handler.URLHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class BoredServer {
         Server server = new Server(port);
         HandlerList handlers = new HandlerList();
         handlers.addHandler(new URLHandler());
-        handlers.addHandler(new NotFoundHandler());
+        handlers.addHandler(new ErrorHandler());
         server.setStopTimeout(300000);
         // 设置handler
         server.setHandler(handlers);

@@ -23,7 +23,7 @@ enum TagLoader implements Loader {
         if (Bored.config().getDisableTags().equals(Boolean.FALSE)) {
             List<Tag> tagList = new ArrayList<>();
             Bored.pages().parallelStream().forEach(page -> Optional.of(page.getTags()).ifPresent(strings -> strings.parallelStream().forEach(tagName -> {
-                var uri = "/tag/" + tagName + Bored.config().getURLSuffix();
+                var uri = "/tag/" + tagName;
                 var tag = new Tag(tagName, uri);
                 tag.getPages().add(page);
                 tagList.add(tag);
@@ -38,7 +38,7 @@ enum TagLoader implements Loader {
                 Bored.url(url);
             });
 
-            var url = "/tags" + Bored.config().getURLSuffix();
+            var url = "/tags";
             var type = "base";
             var layout = "tags.html";
             var outputPath = String.format(DefaultTemplate.TAGS_OUTPUT_FORMAT, Paths.outputPath());

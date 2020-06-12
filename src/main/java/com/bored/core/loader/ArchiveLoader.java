@@ -14,7 +14,7 @@ enum ArchiveLoader implements Loader {
 
     @Override
     public void loading() {
-        var url = "/archives" + Bored.config().getURLSuffix();
+        var url = "/archives";
         var outPutPath = Paths.outputPath() + "/archive.html";
         var title = "归档:Posts";
         var type = "base";

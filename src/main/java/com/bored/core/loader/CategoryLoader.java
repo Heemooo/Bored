@@ -23,7 +23,7 @@ enum CategoryLoader implements Loader {
         if (Bored.config().getDisableCategories().equals(Boolean.FALSE)) {
             List<Category> categoryList = new ArrayList<>();
             Bored.pages().parallelStream().forEach(page -> Optional.of(page.getCategories()).ifPresent(strings -> strings.parallelStream().forEach(categoryName -> {
-                var uri = "/category/" + categoryName + Bored.config().getURLSuffix();
+                var uri = "/category/" + categoryName;
                 var tag = new Category(categoryName, uri);
                 tag.getPages().add(page);
                 categoryList.add(tag);
@@ -37,7 +37,7 @@ enum CategoryLoader implements Loader {
                 var url = tag.toContext();
                 Bored.url(url);
             });
-            var url = "/categories" + Bored.config().getURLSuffix();
+            var url = "/categories";
             var type = "base";
             var layout = "categories.html";
             var outputPath = String.format(DefaultTemplate.CATEGORIES_OUTPUT_FORMAT, Paths.outputPath());

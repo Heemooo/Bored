@@ -23,7 +23,7 @@ enum ErrorLoader implements Loader {
 
     static {
         var bytes = Bored.CONSTANT.getStr("404.default.content").getBytes(StandardCharsets.UTF_8);
-        url = "error" + Bored.config().getURLSuffix();
+        url = "/error";
         outputPath = Paths.outputPath() + "/error.html";
         DEFAULT_ERROR = new StaticContextFactory(url, ContentType.TEXT_HTML, bytes, outputPath).create();
     }

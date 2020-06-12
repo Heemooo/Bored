@@ -37,7 +37,7 @@ enum HomeLoader implements Loader {
                     .addObject("pagination", pagination);
             Bored.url(context);
         });
-        var url = "/index" + Bored.config().getURLSuffix();
+        var url = "/index";
         var outputPath = Paths.outputPath() + "/index.html";
         var title = "首页";
         var context = new DefaultContextFactory(url, type, layout, outputPath)

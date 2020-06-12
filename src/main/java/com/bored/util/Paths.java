@@ -1,5 +1,6 @@
 package com.bored.util;
 
+import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 
 import java.io.File;
@@ -91,7 +92,25 @@ public final class Paths {
      * @param path 路径
      * @return 正确的url
      */
-    public static String toUrl(String path){
+    public static String toUrl(String path) {
         return path.replaceAll("\\\\", "/");
+    }
+
+    /**
+     * 判断请求路径是否符合后缀设定
+     * @param url 请求路径
+     * @return 是否符合
+     */
+    public static boolean checkUrl(String url) {
+        return StrUtil.endWith(url, "." + Bored.config().getURLSuffix());
+    }
+
+    /**
+     * 获取去除后缀的真实 url
+     * @param url 请求路径
+     * @return 真实 url
+     */
+    public static String getUrl(String url) {
+        return StrUtil.removeSuffix(url, "." + Bored.config().getURLSuffix());
     }
 }

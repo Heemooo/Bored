@@ -118,7 +118,7 @@ public final class MDFile {
      */
     public static String permLink(String filePath) {
         var permLink = StrUtil.removePrefix(filePath, Paths.pagePath());
-        permLink = Paths.toUrl(StrUtil.removeSuffix(permLink, ".md") + Bored.config().getURLSuffix());
+        permLink = Paths.toUrl(StrUtil.removeSuffix(permLink, ".md"));
         return permLink;
     }
 

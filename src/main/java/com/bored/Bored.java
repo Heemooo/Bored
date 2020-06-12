@@ -253,8 +253,8 @@ public enum Bored {
      * @return URL 实例
      */
     public static Optional<Context> url(String url) {
-        var _404 = Bored.INSTANCE.URL_MAP.get("/404" + Bored.config().getURLSuffix());
-        return Optional.of(Bored.INSTANCE.URL_MAP.getOrDefault(url, _404));
+        var error = Bored.INSTANCE.URL_MAP.get("/error");
+        return Optional.of(Bored.INSTANCE.URL_MAP.getOrDefault(url, error));
     }
 
     /**
