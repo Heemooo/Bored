@@ -3,15 +3,17 @@ package com.bored;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.dialect.Props;
-import com.bored.core.context.Context;
-import com.bored.core.context.HtmlContext;
-import com.bored.core.Variable;
-import com.bored.core.command.Command;
-import com.bored.core.loader.Loaders;
-import com.bored.core.model.*;
-import com.bored.core.template.JetTemplateHelper;
+import com.bored.command.Command;
+import com.bored.context.Context;
+import com.bored.loader.Loaders;
+import com.bored.model.Variable;
+import com.bored.model.bean.Category;
+import com.bored.model.bean.Page;
+import com.bored.model.bean.Site;
+import com.bored.model.bean.Tag;
 import com.bored.server.listen.ConfigFilter;
 import com.bored.server.listen.ConfigListener;
+import com.bored.template.JetTemplateHelper;
 import com.bored.util.Pages;
 import com.bored.util.Paths;
 import com.moandjiezana.toml.Toml;
@@ -243,7 +245,7 @@ public enum Bored {
      * @param context context
      */
     public static void url(Context context) {
-        log.debug("Mapping url {}", context.url());
+        log.debug("Mapping url {}.{}", context.url(),config().getURLSuffix());
         Bored.INSTANCE.URL_MAP.put(context.url(), context);
     }
 

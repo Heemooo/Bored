@@ -1,7 +1,6 @@
 package com.bored.server.handler;
 
 import com.bored.Bored;
-import com.bored.core.model.Site;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
