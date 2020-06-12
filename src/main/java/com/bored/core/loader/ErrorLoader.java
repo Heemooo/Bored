@@ -2,11 +2,12 @@ package com.bored.core.loader;
 
 import com.bored.Bored;
 import com.bored.core.ContentType;
-import com.bored.core.model.Context;
+import com.bored.core.context.Context;
+import com.bored.core.context.DefaultContextFactory;
+import com.bored.core.context.StaticContextFactory;
 import com.bored.util.Paths;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 
 enum ErrorLoader implements Loader {
     /**
@@ -14,22 +15,26 @@ enum ErrorLoader implements Loader {
      */
     INSTANCE;
 
+    private static final Context DEFAULT_ERROR;
+
+    private static final String url;
+
+    private static final String outputPath;
+
+    static {
+        var bytes = Bored.CONSTANT.getStr("404.default.content").getBytes(StandardCharsets.UTF_8);
+        url = "error" + Bored.config().getURLSuffix();
+        outputPath = Paths.outputPath() + "/error.html";
+        DEFAULT_ERROR = new StaticContextFactory(url, ContentType.TEXT_HTML, bytes, outputPath).create();
+    }
+
     @Override
     public void loading() {
-        var url = "/404" + Bored.config().getURLSuffix();
-        var outPutPath = Paths.outputPath() + "/404.html";
-        var template = "404.html";
-        var contextBuilder = Context.builder()
-                .url(url)
-                .title("404 Not Found")
-                .date(new Date())
-                .outPutPath(outPutPath)
-                .layout(template)
-                .contentType(ContentType.TEXT_HTML);
-        if (!Bored.jetTemplateHelper().checkTemplate(template)) {
-            var bytes = Bored.CONSTANT.getStr("404.default.content").getBytes(StandardCharsets.UTF_8);
-            contextBuilder.bytes(bytes);
+        if (!Bored.jetTemplateHelper().checkTemplate("error.html")) {
+            Bored.url(DEFAULT_ERROR);
+        } else {
+            var context = new DefaultContextFactory(url, "", "error", outputPath).create();
+            Bored.url(context);
         }
-        Bored.url(contextBuilder.build());
     }
 }

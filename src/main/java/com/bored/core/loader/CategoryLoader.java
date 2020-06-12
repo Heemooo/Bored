@@ -1,10 +1,9 @@
 package com.bored.core.loader;
 
 import com.bored.Bored;
-import com.bored.core.ContentType;
 import com.bored.core.constant.DefaultTemplate;
+import com.bored.core.context.DefaultContextFactory;
 import com.bored.core.model.Category;
-import com.bored.core.model.Context;
 import com.bored.util.Paths;
 
 import java.util.ArrayList;
@@ -38,17 +37,16 @@ enum CategoryLoader implements Loader {
                 var url = tag.toContext();
                 Bored.url(url);
             });
-            var uri = "/categories" + Bored.config().getURLSuffix();
-            var outPutPath = String.format(DefaultTemplate.CATEGORIES_OUTPUT_FORMAT, Paths.outputPath());
-            var categoriesContext = Context.builder()
-                    .title("分类列表")
-                    .url(uri)
-                    .date(new Date())
-                    .type("base")
-                    .layout("layout")
-                    .contentType(ContentType.TEXT_HTML)
-                    .outPutPath(outPutPath)
-                    .build()
+            var url = "/categories" + Bored.config().getURLSuffix();
+            var type = "base";
+            var layout = "categories.html";
+            var outputPath = String.format(DefaultTemplate.CATEGORIES_OUTPUT_FORMAT, Paths.outputPath());
+            var title = "分类列表";
+            var date = new Date();
+            var categoriesContext = new DefaultContextFactory(url, type, layout, outputPath)
+                    .create()
+                    .addObject("title", title)
+                    .addObject("date", date)
                     .addObject("categories", categories);
             Bored.url(categoriesContext);
             Bored.categories().addAll(categories);

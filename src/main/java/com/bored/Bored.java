@@ -3,6 +3,8 @@ package com.bored;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.dialect.Props;
+import com.bored.core.context.Context;
+import com.bored.core.context.HtmlContext;
 import com.bored.core.Variable;
 import com.bored.core.command.Command;
 import com.bored.core.loader.Loaders;
@@ -241,18 +243,18 @@ public enum Bored {
      * @param context context
      */
     public static void url(Context context) {
-        log.debug("Mapping url {}", context.getUrl());
-        Bored.INSTANCE.URL_MAP.put(context.getUrl(), context);
+        log.debug("Mapping url {}", context.url());
+        Bored.INSTANCE.URL_MAP.put(context.url(), context);
     }
 
     /**
-     * 根据uri获取URL实例
-     * @param uri uri
-     * @return URL实例
+     * 根据 url 获取 Context 实例
+     * @param url url
+     * @return URL 实例
      */
-    public static Optional<Context> url(String uri) {
+    public static Optional<Context> url(String url) {
         var _404 = Bored.INSTANCE.URL_MAP.get("/404" + Bored.config().getURLSuffix());
-        return Optional.of(Bored.INSTANCE.URL_MAP.getOrDefault(uri, _404));
+        return Optional.of(Bored.INSTANCE.URL_MAP.getOrDefault(url, _404));
     }
 
     /**

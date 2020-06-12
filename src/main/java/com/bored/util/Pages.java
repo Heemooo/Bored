@@ -2,7 +2,8 @@ package com.bored.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
-import com.bored.core.model.Context;
+import com.bored.core.context.Context;
+import com.bored.core.context.DefaultContextFactory;
 import com.bored.core.model.Page;
 
 import java.util.Comparator;
@@ -62,14 +63,10 @@ public final class Pages {
      */
     public static Context toContext(Page page) {
         assert page != null;
-        return Context.builder()
-                .title(page.getTitle())
-                .url(page.getPermLink())
-                .date(page.getDate())
-                .type(page.getType())
-                .layout(page.getLayout())
-                .outPutPath(page.getOutPutPath())
-                .build()
+        return new DefaultContextFactory(page.getPermLink(), page.getType(), page.getLayout(), page.getOutPutPath())
+                .create()
+                .addObject("title", page.getTitle())
+                .addObject("date", page.getDate())
                 .addObject("page", page);
     }
 

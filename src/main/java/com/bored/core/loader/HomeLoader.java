@@ -2,8 +2,7 @@ package com.bored.core.loader;
 
 import cn.hutool.core.collection.CollUtil;
 import com.bored.Bored;
-import com.bored.core.ContentType;
-import com.bored.core.model.Context;
+import com.bored.core.context.DefaultContextFactory;
 import com.bored.core.model.Page;
 import com.bored.util.PaginationUtil;
 import com.bored.util.Paths;
@@ -23,33 +22,30 @@ enum HomeLoader implements Loader {
     @Override
     public void loading() {
         List<Page> pages = Bored.pages();
+        var type = "";
+        var layout = "index.html";
+        var date = new Date();
         var paginationList = PaginationUtil.loadPagination(pages, null);
         paginationList.forEach(pagination -> {
-            var outPutPath = Paths.outputPath() + "/page/" + pagination.getCurrent() + ".html";
-            var context = Context.builder().contentType(ContentType.TEXT_HTML)
-                    .title("首页-第" + pagination.getCurrent() + "页")
-                    .url(pagination.getUri())
-                    .date(new Date())
-                    .layout("index.html")
-                    .outPutPath(outPutPath)
-                    .build()
+            var outputPath = Paths.outputPath() + "/page/" + pagination.getCurrent() + ".html";
+            var title = "首页-第" + pagination.getCurrent() + "页";
+            var context = new DefaultContextFactory(pagination.getUri(), type, layout, outputPath)
+                    .create()
+                    .addObject("title", title)
+                    .addObject("date", date)
                     .addObject("pages", pages)
                     .addObject("pagination", pagination);
             Bored.url(context);
-
         });
-        var uri = "/index" + Bored.config().getURLSuffix();
-        var outPutPath = Paths.outputPath() + "/index.html";
-        var indexContext = Context.builder()
-                .contentType(ContentType.TEXT_HTML)
-                .title("首页")
-                .url(uri)
-                .date(new Date())
-                .layout("index.html")
-                .outPutPath(outPutPath)
-                .build()
+        var url = "/index" + Bored.config().getURLSuffix();
+        var outputPath = Paths.outputPath() + "/index.html";
+        var title = "首页";
+        var context = new DefaultContextFactory(url, type, layout, outputPath)
+                .create()
+                .addObject("title", title)
+                .addObject("date", date)
                 .addObject("pages", pages)
                 .addObject("pagination", CollUtil.isNotEmpty(paginationList) ? paginationList.get(0) : List.of());
-        Bored.url(indexContext);
+        Bored.url(context);
     }
 }

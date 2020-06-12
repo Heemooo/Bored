@@ -6,7 +6,7 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import com.bored.Bored;
-import com.bored.core.model.Context;
+import com.bored.core.context.Context;
 import com.bored.util.Paths;
 import lombok.extern.slf4j.Slf4j;
 

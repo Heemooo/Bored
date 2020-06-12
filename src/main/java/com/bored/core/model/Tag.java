@@ -1,7 +1,8 @@
 package com.bored.core.model;
 
-import com.bored.core.ContentType;
 import com.bored.core.constant.DefaultTemplate;
+import com.bored.core.context.Context;
+import com.bored.core.context.DefaultContextFactory;
 import com.bored.util.Paths;
 import lombok.Data;
 
@@ -32,14 +33,13 @@ public class Tag {
     public Context toContext() {
         var title = "标签-" + this.name;
         var outPutPath = String.format(DefaultTemplate.TAG_OUTPUT_FORMAT, Paths.outputPath(), this.name);
-        return Context.builder()
-                .title(title)
-                .url(this.getUrl())
-                .date(new Date())
-                .type("base")
-                .layout("tag.html")
-                .outPutPath(outPutPath)
-                .contentType(ContentType.TEXT_HTML)
-                .build().addObject("tag", this);
+        var date = new Date();
+        var type = "base";
+        var layout = "tag.html";
+        return new DefaultContextFactory(url, type, layout, outPutPath)
+                .create()
+                .addObject("title", title)
+                .addObject("date", date)
+                .addObject("tag", this);
     }
 }

@@ -1,4 +1,4 @@
-package com.bored.core.model;
+package com.bored.core.context;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
@@ -16,7 +16,7 @@ import java.util.Map;
  */
 @Getter
 @Builder
-public class Context {
+public class HtmlContext {
     /**
      * 当前页面标题
      */
@@ -54,7 +54,7 @@ public class Context {
      */
     private final Map<String, Object> ctx = new HashMap<>();
 
-    public Context addObject(String key, Object object) {
+    public HtmlContext addObject(String key, Object object) {
         assert key != null;
         assert object != null;
         this.ctx.put(key, object);

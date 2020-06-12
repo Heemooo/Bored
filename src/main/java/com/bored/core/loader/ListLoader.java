@@ -2,7 +2,8 @@ package com.bored.core.loader;
 
 import com.bored.Bored;
 import com.bored.core.ContentType;
-import com.bored.core.model.Context;
+import com.bored.core.context.DefaultContextFactory;
+import com.bored.core.context.HtmlContext;
 import com.bored.core.model.Page;
 import com.bored.util.Pages;
 import com.bored.util.PaginationUtil;
@@ -21,16 +22,14 @@ enum ListLoader implements Loader {
         List<Page> pages = Pages.sortByDate(pageList);
         var paginationMap = PaginationUtil.loadPagination(pages, type);
         paginationMap.forEach(pagination -> {
-            var outPutPath = Paths.outputPath() + "/" + type + "/page/" + pagination.getCurrent() + ".html";
-            var context = Context.builder()
-                    .title("文章列表")
-                    .url(pagination.getUri())
-                    .type(type)
-                    .layout("list.html")
-                    .date(new Date())
-                    .outPutPath(outPutPath)
-                    .contentType(ContentType.TEXT_HTML)
-                    .build()
+            var outputPath = Paths.outputPath() + "/" + type + "/page/" + pagination.getCurrent() + ".html";
+            var title = "文章列表";
+            var date = new Date();
+            var layout = "list.html";
+            var context = new DefaultContextFactory(pagination.getUri(), type, layout, outputPath)
+                    .create()
+                    .addObject("title", title)
+                    .addObject("date", date)
                     .addObject("pages", pages)
                     .addObject("pagination", pagination);
             Bored.url(context);

@@ -5,7 +5,7 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.core.ContentType;
-import com.bored.core.model.Context;
+import com.bored.core.context.StaticContextFactory;
 import com.bored.util.Paths;
 
 import java.io.File;
@@ -42,7 +42,7 @@ enum StaticLoader implements Loader {
             var outPutPath = Paths.outputPath() + url;
             var bytes = new FileReader(file.getPath()).readBytes();
             var contentType = contentType(file.getName(), file.getPath());
-            var context = Context.builder().url(url).contentType(contentType).outPutPath(outPutPath).bytes(bytes).build();
+            var context = new StaticContextFactory(url, contentType, bytes, outPutPath).create();
             Bored.url(context);
         }
     }

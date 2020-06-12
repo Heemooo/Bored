@@ -25,7 +25,7 @@ public class URLHandler extends AbstractHandler {
             target = "/index" + Bored.config().getURLSuffix();
         }
         Bored.url(target).ifPresent(context -> {
-            ServletUtil.write(response, new ByteArrayInputStream(context.bytes()), context.getContentType());
+            ServletUtil.write(response, new ByteArrayInputStream(context.bytes()), context.contentType());
             response.setStatus(HttpServletResponse.SC_OK);
             baseRequest.setHandled(true);
         });

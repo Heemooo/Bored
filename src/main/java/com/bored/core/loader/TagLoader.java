@@ -1,9 +1,8 @@
 package com.bored.core.loader;
 
 import com.bored.Bored;
-import com.bored.core.ContentType;
 import com.bored.core.constant.DefaultTemplate;
-import com.bored.core.model.Context;
+import com.bored.core.context.DefaultContextFactory;
 import com.bored.core.model.Tag;
 import com.bored.util.Paths;
 
@@ -39,15 +38,16 @@ enum TagLoader implements Loader {
                 Bored.url(url);
             });
 
-            var tagsContext = Context.builder()
-                    .url("/tags" + Bored.config().getURLSuffix())
-                    .title("标签列表")
-                    .date(new Date())
-                    .type("base")
-                    .layout("tags.html")
-                    .outPutPath(String.format(DefaultTemplate.TAGS_OUTPUT_FORMAT, Paths.outputPath()))
-                    .contentType(ContentType.TEXT_HTML)
-                    .build()
+            var url = "/tags" + Bored.config().getURLSuffix();
+            var type = "base";
+            var layout = "tags.html";
+            var outputPath = String.format(DefaultTemplate.TAGS_OUTPUT_FORMAT, Paths.outputPath());
+            var title = "标签列表";
+            var date = new Date();
+            var tagsContext = new DefaultContextFactory(url, type, layout, outputPath)
+                    .create()
+                    .addObject("title", title)
+                    .addObject("date", date)
                     .addObject("tags", tags);
             Bored.url(tagsContext);
             Bored.tags().addAll(tags);

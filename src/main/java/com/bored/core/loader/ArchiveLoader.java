@@ -1,7 +1,7 @@
 package com.bored.core.loader;
 
 import com.bored.Bored;
-import com.bored.core.model.Context;
+import com.bored.core.context.DefaultContextFactory;
 import com.bored.util.Paths;
 
 import java.util.Date;
@@ -16,13 +16,14 @@ enum ArchiveLoader implements Loader {
     public void loading() {
         var url = "/archives" + Bored.config().getURLSuffix();
         var outPutPath = Paths.outputPath() + "/archive.html";
-        var context = Context.builder().title("归档:Posts")
-                .url(url)
-                .date(new Date())
-                .type("base")
-                .layout("archive.html")
-                .outPutPath(outPutPath).build();
-        context.addObject("pages", Bored.pages());
+        var title = "归档:Posts";
+        var type = "base";
+        var layout = "archive.html";
+        var context = new DefaultContextFactory(url, type, layout, outPutPath)
+                .create()
+                .addObject("title", title)
+                .addObject("date", new Date())
+                .addObject("pages", Bored.pages());
         Bored.url(context);
     }
 }
