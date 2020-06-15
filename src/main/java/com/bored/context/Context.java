@@ -1,6 +1,6 @@
 package com.bored.context;
 
-import com.bored.constant.ContentType;
+import com.bored.constant.Constants;
 
 public interface Context {
 
@@ -15,7 +15,7 @@ public interface Context {
      * @return Content-Type
      */
     default String contentType() {
-        return ContentType.TEXT_HTML;
+        return Constants.CONTENT_TYPE_TEXT_HTML;
     }
 
     /**

@@ -2,7 +2,6 @@ package com.bored;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.setting.dialect.Props;
 import com.bored.command.Command;
 import com.bored.context.Context;
 import com.bored.loader.Loaders;
@@ -39,25 +38,11 @@ public enum Bored {
     INSTANCE;
 
     public static final Map<String, Object> SHORT_TPL = new HashMap<>();
-
-    /**
-     * 常量配置
-     */
-    public final static Props CONSTANT = new Props("constant.properties");
-
     /**
      * 根路径
      * System.getProperty("user.dir")
      */
     public final static String ROOT = System.getProperty("user.dir") + "/site-demo1";
-    /**
-     * 网站配置
-     */
-    private Site config;
-    /**
-     * 模板引擎
-     */
-    private JetTemplateHelper jetTemplateHelper;
     /**
      * 标签列表
      */
@@ -75,6 +60,14 @@ public enum Bored {
      * url map
      */
     private final Map<String, Context> URL_MAP = new HashMap<>();
+    /**
+     * 网站配置
+     */
+    private Site config;
+    /**
+     * 模板引擎
+     */
+    private JetTemplateHelper jetTemplateHelper;
 
     public static Object shortTpl(String key) {
         if (SHORT_TPL.isEmpty()) {

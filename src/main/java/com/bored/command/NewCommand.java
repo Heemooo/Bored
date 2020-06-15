@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Deque;
 import java.util.List;
-
 @Slf4j
 public class NewCommand extends Command {
 

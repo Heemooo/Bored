@@ -1,7 +1,7 @@
 package com.bored.loader;
 
 import com.bored.Bored;
-import com.bored.constant.ContentType;
+import com.bored.constant.Constants;
 import com.bored.context.Context;
 import com.bored.context.DefaultContextFactory;
 import com.bored.context.StaticContextFactory;
@@ -19,9 +19,10 @@ enum ErrorLoader implements Loader {
     private static final String url;
 
     static {
-        var bytes = Bored.CONSTANT.getStr("404.default.content").getBytes(StandardCharsets.UTF_8);
+        var _404 = "404 not found";
+        var bytes = _404.getBytes(StandardCharsets.UTF_8);
         url = "/error";
-        DEFAULT_ERROR = new StaticContextFactory(url, ContentType.TEXT_HTML, bytes).create();
+        DEFAULT_ERROR = new StaticContextFactory(url, Constants.CONTENT_TYPE_TEXT_HTML, bytes).create();
     }
 
     @Override

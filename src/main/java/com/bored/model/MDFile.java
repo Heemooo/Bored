@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
+import com.bored.constant.Constants;
 import com.bored.model.bean.Page;
 import com.bored.util.Paths;
 import com.vladsch.flexmark.ast.Node;
@@ -96,7 +97,7 @@ public final class MDFile {
         }
         if (StrUtil.isEmpty(page.getSummary()) && this.getContent().length() > 0) {
             var summaryLength = Math.min(this.getContent().length(), Bored.config().getSummaryLength());
-            var str = StrUtil.split(this.getContent().replaceAll(Bored.CONSTANT.getStr("summaryReg"), StrUtil.EMPTY), summaryLength);
+            var str = StrUtil.split(this.getContent().replaceAll(Constants.SUMMARY_REG, StrUtil.EMPTY), summaryLength);
             page.setSummary(str[0]);
         }
         return page;
