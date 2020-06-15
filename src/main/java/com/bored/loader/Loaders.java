@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 public class Loaders {
@@ -23,6 +25,8 @@ public class Loaders {
             ListLoader.INSTANCE,
             HomeLoader.INSTANCE
     );
+
+    private static final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     private Loaders() {
 
@@ -42,6 +46,6 @@ public class Loaders {
             }
         }
         Bored.pages().forEach(page -> Bored.url(Pages.toContext(page)));
-        loaders.forEach(Loader::loading);
+        loaders.forEach(loader -> executorService.execute(loader::loading));
     }
 }
