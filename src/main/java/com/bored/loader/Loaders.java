@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 @Slf4j
 public class Loaders {
 
-    private static final List<Loader> loaders = List.of(
+    private static final List<Loader> LOADER_LIST = List.of(
             ErrorLoader.INSTANCE,
             StaticLoader.INSTANCE,
             TagLoader.INSTANCE,
@@ -26,7 +26,7 @@ public class Loaders {
             HomeLoader.INSTANCE
     );
 
-    private static final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    private static final ExecutorService THREAD_POOL = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     private Loaders() {
 
@@ -46,6 +46,6 @@ public class Loaders {
             }
         }
         Bored.pages().forEach(page -> Bored.url(Pages.toContext(page)));
-        loaders.forEach(loader -> executorService.execute(loader::loading));
+        LOADER_LIST.forEach(loader -> THREAD_POOL.execute(loader::loading));
     }
 }
