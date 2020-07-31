@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>首页</title>
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.map"></script>
+</head>
+<body>
+<script>
+$(function(){
+    $.ajax({
+        type:'post',
+        url:'pages.json.html',
+        success:function(response){
+            let array = JSON.parse(response);
+            array.forEach(function(item){
+                console.log(item);
+            });
+        }
+    });
+});
+</script>
+</body>
+</html>
