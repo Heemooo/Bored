@@ -17,9 +17,9 @@ public class BoredServer {
         Bored.loadingConfig();
         Bored.loadingFiles();
         Bored.listingConfig();
-        new MyHttpServer(port);
+        //new MyHttpServer(port);
 
-      /*  Server server = new Server(port);
+        Server server = new Server(port);
         HandlerList handlers = new HandlerList();
         handlers.addHandler(new URLHandler());
         handlers.addHandler(new ErrorHandler());
@@ -27,10 +27,10 @@ public class BoredServer {
         // 设置handler
         server.setHandler(handlers);
         // 启动服务器
-        server.start();*/
+        server.start();
         Console.log("Server started successfully! listening port {}, click http://127.0.0.1:{}", port, port);
         // 阻塞Jetty server的线程池，直到线程池停止
-        /*server.join();*/
+        server.join();
     }
 
 }
