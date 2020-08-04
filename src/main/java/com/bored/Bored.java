@@ -10,6 +10,7 @@ import com.bored.model.bean.Category;
 import com.bored.model.bean.Page;
 import com.bored.model.bean.Site;
 import com.bored.model.bean.Tag;
+import com.bored.server.HttpServer;
 import com.bored.server.listen.ConfigFilter;
 import com.bored.server.listen.ConfigListener;
 import com.bored.template.JetTemplateHelper;
@@ -111,6 +112,10 @@ public enum Bored {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void startHttpServer(int port){
+        new HttpServer(port);
     }
 
     /**

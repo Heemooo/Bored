@@ -10,10 +10,14 @@ import java.io.IOException;
 
 public class HttpServer extends NanoHTTPD {
 
-    public HttpServer(int port) throws IOException {
+    public HttpServer(int port){
         super(port);
         Console.log("Server started successfully! listening port {}, click http://127.0.0.1:{}", port, port);
-        start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+        try {
+            start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.bored.command;
 
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.StrUtil;
-import com.bored.server.BoredServer;
+import com.bored.Bored;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -77,7 +77,10 @@ public class ServerCommand extends Command {
         }
 
         if ((count == 2 || options.isEmpty()) && nonError) {
-            BoredServer.start(port);
+            Bored.loadingConfig();
+            Bored.loadingFiles();
+            Bored.listingConfig();
+            Bored.startHttpServer(port);
         }
 
         if (!options.isEmpty()) {
