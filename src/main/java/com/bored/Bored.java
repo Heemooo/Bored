@@ -247,9 +247,9 @@ public enum Bored {
      * @param url url
      * @return URL 实例
      */
-    public static Optional<Context> url(String url) {
+    public static Context url(String url) {
         var error = Bored.INSTANCE.URL_MAP.get("/error");
-        return Optional.of(Bored.INSTANCE.URL_MAP.getOrDefault(url, error));
+        return Bored.INSTANCE.URL_MAP.getOrDefault(url, error);
     }
 
     /**
