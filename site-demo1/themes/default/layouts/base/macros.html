@@ -141,20 +141,7 @@ $('.headBand').headBand({
                         <a class="link" href="${page.permLink}">${page.title}</a>
                         <span class="in">in</span>
                         <span class="category-name">
-                            #define(List labels)
-                            #if(ctx.layout == 'tag')
-                            #set(labels = page.tags)
-                            #else
-                            #set(labels = page.categories)
-                            #end
-                            #for(String name:labels)
-                            #if(ctx.layout == 'tag')
-                                <a href="${tagUrl(name)}">${name}</a>
-                            #else
-                                <a href="${categoryUrl(name)}">${name}</a>
-                            #end
-                            #end
-                            </String></span>
+<!--                        </span>
                     </div>
                 </div>
             </div>

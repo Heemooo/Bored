@@ -1,14 +1,14 @@
 package com.bored.loader;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.model.MDFile;
+import com.bored.util.FileUtil;
 import com.bored.util.Pages;
 import com.bored.util.Paths;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,9 +33,9 @@ public class Loaders {
     }
 
     public static void loading() {
-        var files = FileUtil.loopFiles(Paths.pagePath());
-        for (File file : files) {
-            var mdFile = MDFile.load(file);
+        var paths = FileUtil.loopFiles(Paths.pagePath());
+        for (Path path : paths) {
+            var mdFile = MDFile.load(path.toFile());
             var page = mdFile.toPage();
             /*不加载根目录下的md文件到list列表中*/
             if (StrUtil.count(page.getPermLink(), "/") == 1) {

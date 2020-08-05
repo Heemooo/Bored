@@ -1,13 +1,12 @@
 package com.bored.loader;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.bored.Bored;
 import com.bored.context.StaticContextFactory;
+import com.bored.util.FileUtil;
 import com.bored.util.Paths;
 
-import java.io.File;
+import java.nio.file.Path;
 
 enum StaticLoader implements Loader {
 
@@ -16,30 +15,28 @@ enum StaticLoader implements Loader {
      */
     INSTANCE;
 
-    private static String contentType(String fileName, String filePath) {
+    private static String contentType(Path path) {
+        assert path != null;
+        var fileName = path.getFileName().toString();
         assert fileName != null;
-        assert filePath != null;
         if (StrUtil.endWith(fileName, ".css")) {
             return "text/css; charset=utf-8";
         }
         if (StrUtil.endWith(fileName, ".js")) {
             return "application/javascript; charset=utf-8";
         }
-        String contentType = FileUtil.getMimeType(filePath);
-        if (StrUtil.isEmpty(contentType)) {
-            return "application/octet-stream";
-        }
-        return contentType;
+        return FileUtil.contentType(path);
     }
 
     @Override
     public void loading() {
         var themeName = Bored.config().getTheme();
-        var files = FileUtil.loopFiles(Paths.staticPath(themeName));
-        for (File file : files) {
-            var url = Paths.toUrl(StrUtil.removePrefix(file.getPath(), Paths.themePath(Bored.config().getTheme())));
-            var bytes = new FileReader(file.getPath()).readBytes();
-            var contentType = contentType(file.getName(), file.getPath());
+        var paths = FileUtil.loopFiles(Paths.staticPath(themeName));
+        for (Path path : paths) {
+            var filePath = path.toString();
+            var url = Paths.toUrl(StrUtil.removePrefix(filePath, Paths.themePath(Bored.config().getTheme())));
+            var bytes = FileUtil.readBytes(path);
+            var contentType = contentType(path);
             var context = new StaticContextFactory(url, contentType, bytes).create();
             Bored.url(context);
         }

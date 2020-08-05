@@ -45,7 +45,7 @@ public class HttpServer extends NanoHTTPD {
                 sOut.append("\tat ").append(s).append("\r\n");
             }
             Console.log(sOut);
-            contentType = "application/json";
+            contentType = "text/plain";
             content = sOut.toString().getBytes();
             status = Response.Status.INTERNAL_ERROR;
         }
